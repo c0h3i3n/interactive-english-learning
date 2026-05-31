@@ -268,6 +268,7 @@
       align-items: center;
       border-radius: 24px;
       padding: 28px 20px;
+      overflow: hidden;
       /* 像老舊羊皮紙 + 魔法氛圍 */
       background: linear-gradient(160deg, rgba(28, 24, 48, 0.95), rgba(20, 16, 36, 0.98));
       border: 1px solid rgba(200, 180, 140, 0.08);
@@ -320,6 +321,9 @@
       margin-bottom: 6px;
       position: relative;
       z-index: 1;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
     }
 
     .card-word.en {
@@ -330,10 +334,13 @@
 
     .card-word.zh {
       color: #d4af37;
-      font-size: clamp(26px, 6vw, 34px);
+      font-size: clamp(24px, 5.5vw, 32px);
       font-family: 'Inter', sans-serif;
       font-weight: 700;
       text-shadow: 0 0 20px rgba(212, 175, 55, 0.08);
+      word-break: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
     }
 
     /* 單字小提示（例句或分類） */
@@ -627,6 +634,7 @@
           <span class="card-lang-tag">English 咒語</span>
           <div class="card-word en" id="wordEn">Cat</div>
           <div class="card-hint">👆 點擊施展咒語</div>
+          <button class="speak-btn" id="speakBtn" title="朗讀咒語" aria-label="朗讀咒語">🔊</button>
         </div>
         <!-- 背面：中文 — 像翻譯咒 -->
         <div class="card-face card-back">
@@ -634,8 +642,6 @@
           <div class="card-word zh" id="wordZh">貓</div>
           <div class="card-hint">👆 點擊變回原形</div>
         </div>
-        <!-- 小喇叭語音按鈕 -->
-        <button class="speak-btn" id="speakBtn" title="朗讀咒語" aria-label="朗讀咒語">🔊</button>
       </div>
     </div>
 
