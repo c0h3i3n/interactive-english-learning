@@ -900,6 +900,10 @@
 
     <!-- ===== Vocabulary Card ===== -->
     <div class="card-wrapper" id="cardWrapper">
+    <!-- ===== Navigation Buttons ===== -->
+    <button class="nav-btn prev-btn" id="prevBtn" aria-label="Previous word">◀</button>
+    <button class="nav-btn next-btn" id="nextBtn" aria-label="Next word">▶</button>
+
       <div class="card" id="vocabCard">
         <div class="card-inner" id="cardInner">
           <!-- Front: English — The original spell -->
@@ -2183,62 +2187,96 @@
     window.speechSynthesis.speak(utterance);
   };
   
-  // ---- Touch Swipe Support ----
+  // ---- Touch Swipe & Tap Navigation ----
   let touchStartX = 0, touchStartY = 0, touchMoved = false;
-  let touchThreshold = 40;
+  let swipeThreshold = 30;
+  let didSwipe = false;
   
   function initSwipe() {
-    const cardInner = document.getElementById('cardInner');
-    if (!cardInner) return;
+    const cardWrapper = document.getElementById('cardWrapper');
+    if (!cardWrapper) return;
     
-    cardInner.addEventListener('touchstart', function(e) {
+    cardWrapper.addEventListener('touchstart', function(e) {
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
       touchMoved = false;
+      didSwipe = false;
     }, { passive: true });
     
-    cardInner.addEventListener('touchmove', function(e) {
+    cardWrapper.addEventListener('touchmove', function(e) {
       const diffX = e.changedTouches[0].screenX - touchStartX;
       const diffY = e.changedTouches[0].screenY - touchStartY;
-      if (Math.abs(diffX) > touchThreshold || Math.abs(diffY) > touchThreshold) {
+      if (Math.abs(diffX) > swipeThreshold || Math.abs(diffY) > swipeThreshold) {
         touchMoved = true;
+      }
+      // Visual feedback - subtle movement
+      const cardInner = document.getElementById('cardInner');
+      if (cardInner && Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+        const translateX = Math.min(Math.max(diffX * 0.3, -60), 60);
+        cardInner.style.transform = currentWords.length > 0 ? 'translateX(' + translateX + 'px)' : '';
       }
     }, { passive: true });
     
-    // Click handler - don't flip if user swiped
-    cardInner.addEventListener('click', function(e) {
-      if (touchMoved) {
-        e.preventDefault();
-        e.stopPropagation();
-        // Handle the swipe navigation
-        const diffX = e.changedTouches ? e.changedTouches[0].screenX - touchStartX : 0;
-        // Use the last known touchStartX from touchstart
-        return;
-      }
-    });
-    
-    cardInner.addEventListener('touchend', function(e) {
+    cardWrapper.addEventListener('touchend', function(e) {
       const diffX = e.changedTouches[0].screenX - touchStartX;
       const diffY = e.changedTouches[0].screenY - touchStartY;
       
-      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > touchThreshold) {
-        // Cancel the click to prevent card flip
+      // Reset visual transform
+      const cardInner = document.getElementById('cardInner');
+      if (cardInner) cardInner.style.transform = '';
+      
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+        didSwipe = true;
         touchMoved = true;
         
         if (diffX > 0 && currentIndex > 0) {
+          // Swipe right - previous word
           currentIndex--;
           showWord(currentIndex);
           updateProgress();
         } else if (diffX < 0 && currentIndex < currentWords.length - 1) {
+          // Swipe left - next word
           currentIndex++;
           showWord(currentIndex);
           updateProgress();
         }
       } else if (!touchMoved && Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
-        // This was a tap, not a swipe - let the card flip handle it
-        // (click event will fire normally)
+        // It's a tap on the card - check left/right half for navigation
+        const rect = cardWrapper.getBoundingClientRect();
+        if (rect) {
+          const tapX = e.changedTouches[0].clientX - rect.left;
+          const tapY = e.changedTouches[0].clientY - rect.top;
+          const halfWidth = rect.width / 2;
+          const halfHeight = rect.height / 2;
+          
+          // Tap on top half = flip card, tap on bottom-left/right = navigate
+          if (tapY > halfHeight) {
+            // Bottom half: left = prev, right = next
+            if (tapX < halfWidth && currentIndex > 0) {
+              currentIndex--;
+              showWord(currentIndex);
+              updateProgress();
+              return;
+            } else if (tapX >= halfWidth && currentIndex < currentWords.length - 1) {
+              currentIndex++;
+              showWord(currentIndex);
+              updateProgress();
+              return;
+            }
+          }
+          // Top half or center: proceed with normal card flip via click
+        }
       }
     }, { passive: true });
+    
+    // Prevent click after swipe
+    cardWrapper.addEventListener('click', function(e) {
+      if (didSwipe) {
+        e.preventDefault();
+        e.stopPropagation();
+        didSwipe = false;
+      }
+    }, true);
   }
   
   // ---- Enhanced updateProgress ----
@@ -2334,11 +2372,59 @@
     }
   };
   
+
+  // ---- Navigation Buttons ----
+  function setupNavButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (currentIndex > 0) {
+          currentIndex--;
+          showWord(currentIndex);
+          updateProgress();
+        }
+      });
+    }
+    
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (currentIndex < currentWords.length - 1) {
+          currentIndex++;
+          showWord(currentIndex);
+          updateProgress();
+        }
+      });
+    }
+  }
+  
+  // Override showWord to update nav button visibility
+  const origShowWordNav = window.showWord;
+  window.showWord = function(index) {
+    if (origShowWordNav) origShowWordNav(index);
+    // Update nav button states
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    if (prevBtn) {
+      prevBtn.style.opacity = index > 0 ? '1' : '0.3';
+      prevBtn.disabled = index <= 0;
+    }
+    if (nextBtn) {
+      nextBtn.style.opacity = index < currentWords.length - 1 ? '1' : '0.3';
+      nextBtn.disabled = index >= currentWords.length - 1;
+    }
+  };
+
   // ---- Initialize enhanced features ----
   loadSR();
   loadStreak();
   setupTabs();
   initSwipe();
+  setupNavButtons();
+
   
   // Setup voice toggle
   const voiceBtn = document.getElementById('voiceToggle');
