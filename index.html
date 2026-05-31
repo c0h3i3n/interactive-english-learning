@@ -222,6 +222,7 @@
     /* ===== 單字卡片 — 像活米村的巫師卡片 ===== */
     .card-wrapper {
       perspective: 1200px;
+      -webkit-perspective: 1200px;
       margin-bottom: 20px;
       position: relative;
     }
@@ -249,10 +250,15 @@
       padding-bottom: 70%;
       cursor: pointer;
       transform-style: preserve-3d;
-      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+      -webkit-transform-style: preserve-3d;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      will-change: transform;
+      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     .card.flipped {
+      -webkit-transform: rotateY(180deg);
       transform: rotateY(180deg);
     }
 
@@ -260,8 +266,8 @@
     .card-face {
       position: absolute;
       inset: 0;
-      backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -292,7 +298,10 @@
     }
 
     .card-back {
+      -webkit-transform: rotateY(180deg);
       transform: rotateY(180deg);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     /* 類別標籤（像課本分類） */
