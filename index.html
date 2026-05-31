@@ -602,6 +602,233 @@
         font-size: 12px;
       }
     }
+  
+    /* ===== Parchment Texture Overlay ===== */
+    .container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(180, 150, 100, 0.015) 2px,
+          rgba(180, 150, 100, 0.015) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(140, 110, 70, 0.008) 3px,
+          rgba(140, 110, 70, 0.008) 4px
+        );
+    }
+
+    
+    .candle-glow {
+      position: absolute;
+      bottom: -8px;
+      left: 20px;
+      width: 30px;
+      height: 40px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .candle-glow.right { left: auto; right: 20px; }
+    .candle-glow::before {
+      content: '🕯️';
+      font-size: 20px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: candleFlicker 2s ease-in-out infinite alternate;
+    }
+    .candle-glow::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(ellipse, rgba(255, 180, 50, 0.15), transparent 70%);
+      border-radius: 50%;
+      animation: candleGlowPulse 2.5s ease-in-out infinite alternate;
+    }
+
+    /* ===== Candle Glow Animation ===== */
+    @keyframes candleFlicker {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 200, 50, 0.4)); }
+      25% { filter: drop-shadow(0 0 10px rgba(255, 200, 50, 0.7)); }
+      50% { filter: drop-shadow(0 0 6px rgba(255, 200, 50, 0.5)); }
+      75% { filter: drop-shadow(0 0 12px rgba(255, 200, 50, 0.6)); }
+    }
+    @keyframes candleGlowPulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 0.8; transform: scale(1.2); }
+    }
+
+    /* ===== Enhanced Card Flip Pulse ===== */
+    @keyframes flipPulse {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    /* ===== Swipe Indicators ===== */
+    .swipe-indicator {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(200, 180, 140, 0.08);
+      border: 1px solid rgba(200, 180, 140, 0.15);
+      color: rgba(212, 175, 55, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 5;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .swipe-indicator:hover {
+      background: rgba(200, 180, 140, 0.15);
+      color: rgba(212, 175, 55, 0.7);
+    }
+    .swipe-indicator.prev { left: -18px; }
+    .swipe-indicator.next { right: -18px; }
+    .card-wrapper:hover .swipe-indicator { opacity: 1; }
+    @media (max-width: 600px) {
+      .swipe-indicator { display: none; }
+    }
+
+    /* ===== Progress Bar Enhancement ===== */
+    .progress-fill.complete {
+      background: linear-gradient(90deg, #d4af37, #f0e6a0, #d4af37);
+      background-size: 200% 100%;
+      -webkit-animation: shimmer 2s ease-in-out infinite;
+      animation: shimmer 2s ease-in-out infinite;
+    }
+
+    /* ===== Quiz Tabs ===== */
+    .quiz-tabs {
+      display: none;
+      gap: 4px;
+      margin-bottom: 16px;
+      background: rgba(60, 40, 80, 0.2);
+      border-radius: 12px;
+      padding: 4px;
+    }
+    .quiz-tab {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: #8880a8;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+    .quiz-tab.active {
+      background: rgba(212, 175, 55, 0.15);
+      color: #d4af37;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+    }
+    .quiz-tab:hover:not(.active) { color: #b8a8d8; }
+    
+    /* ===== Quiz Options ===== */
+    .quiz-panel { display: none; }
+    .quiz-panel.active { display: block; }
+    .quiz-option {
+      display: block;
+      width: 100%;
+      padding: 14px 18px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(200, 180, 140, 0.12);
+      border-radius: 14px;
+      background: rgba(60, 40, 80, 0.2);
+      color: #d0c8e0;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+    }
+    .quiz-option:hover {
+      border-color: rgba(212, 175, 55, 0.3);
+      background: rgba(60, 40, 80, 0.4);
+    }
+    .quiz-option.correct {
+      border-color: #2ecc71;
+      background: rgba(46, 204, 113, 0.15);
+      color: #2ecc71;
+    }
+    .quiz-option.incorrect {
+      border-color: #e74c3c;
+      background: rgba(231, 76, 60, 0.15);
+      color: #e74c3c;
+    }
+
+    /* ===== Streak Display ===== */
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      font-size: 13px;
+      font-weight: 600;
+      color: #d4af37;
+      margin-left: auto;
+    }
+    .streak-fire { animation: fireBurn 1s ease-in-out infinite alternate; }
+    @keyframes fireBurn {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    /* ===== Stats Panel ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .stat-card {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(60, 40, 80, 0.2);
+      border: 1px solid rgba(200, 180, 140, 0.08);
+      text-align: center;
+    }
+    .stat-card .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f0e6a0;
+      display: block;
+    }
+    .stat-card .stat-label {
+      font-size: 11px;
+      color: #8880a8;
+      margin-top: 4px;
+      display: block;
+    }
+
   </style>
 </head>
 <body>
@@ -611,11 +838,14 @@
 
   <!-- ===== 左上角裝飾 ===== -->
   <div class="corner-star">✦</div>
+    <div class="candle-glow"></div>
+    <div class="candle-glow right"></div>
 
   <div class="container" id="app">
     <!-- ===== 頂部：魔法書標題 + 分類帽下拉選單 ===== -->
     <div class="header">
       <h1>🔮 Hogwarts Spellbook</h1>
+      <div class="streak-badge" id="streakBadge"><span class="streak-fire">🔥</span> <span id="streakCount">0</span> day streak</div>
       <div class="vocab-selector">
         <select id="vocabSelect">
           <option value="irregular">🔮 Irregular Verbs</option>
@@ -654,6 +884,7 @@
             <div class="card-word en" id="wordEn">Cat</div>
             <div class="card-hint">👆 Tap to reveal</div>
             <button class="speak-btn" id="speakBtn" title="Read aloud" aria-label="Read aloud">🔊</button>
+          <button class="voice-toggle" id="voiceToggle" title="Toggle accent" style="position:absolute;bottom:8px;right:8px;background:none;border:1px solid rgba(212,175,55,0.2);border-radius:8px;color:#d4af37;font-size:11px;padding:2px 8px;cursor:pointer;z-index:2;">US</button>
           </div>
           <!-- Back: Definition — The meaning -->
           <div class="card-face card-back">
@@ -678,6 +909,37 @@
       <span>📚 Total Words <span class="stat-number" id="totalCount">0</span></span>
       <span>🪄 Learned <span class="stat-number" id="knownCount">0</span></span>
       <span>📖 To Review <span class="stat-number" id="remainingCount">0</span></span>
+    </div>
+
+    
+    <!-- ===== Quiz Mode Panel ===== -->
+    <div class="quiz-panel" id="quizPanel">
+      <div class="quiz-tabs" id="quizTabs">
+        <button class="quiz-tab active" data-mode="flashcard">🃏 Flashcards</button>
+        <button class="quiz-tab" data-mode="choice">🎯 Multiple Choice</button>
+        <button class="quiz-tab" data-mode="stats">📊 Stats</button>
+      </div>
+      
+      <!-- Flashcard Mode (default view) -->
+      <div class="quiz-panel active" id="panelFlashcard">
+        <!-- Normal flashcard content is shown above -->
+      </div>
+      
+      <!-- Multiple Choice Mode -->
+      <div class="quiz-panel" id="panelChoice" style="display:none;">
+        <div id="choiceQuestion"></div>
+        <div id="choiceOptions"></div>
+        <div id="choiceFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="choiceNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+      
+      <!-- Stats Mode -->
+      <div class="quiz-panel" id="panelStats" style="display:none;">
+        <div class="stats-grid" id="statsGrid"></div>
+        <div style="margin-top:16px;">
+          <div id="categoryChart" style="height:120px;display:flex;gap:6px;align-items:flex-end;padding-top:10px;"></div>
+        </div>
+      </div>
     </div>
 
     <!-- ===== Celebration ===== -->
@@ -1626,7 +1888,432 @@
       window.speechSynthesis.getVoices();
     }
     document.removeEventListener('click', initVoices);
-  }, { once: true });
+  
+  // ===================================================================
+  //  ENHANCED FEATURES
+  // ===================================================================
+  
+  // ---- Spaced Repetition System ----
+  const SR_KEY = 'hogwarts_sr_data';
+  let srData = {};
+  
+  function loadSR() {
+    try {
+      const saved = localStorage.getItem(SR_KEY);
+      srData = saved ? JSON.parse(saved) : {};
+    } catch(e) { srData = {}; }
+  }
+  
+  function saveSR() {
+    try { localStorage.setItem(SR_KEY, JSON.stringify(srData)); } catch(e) {}
+  }
+  
+  function getSR(word) {
+    return srData[word] || { level: 0, interval: 1, nextReview: 0, lastReview: 0, correctStreak: 0 };
+  }
+  
+  function updateSR(word, correct) {
+    const sr = getSR(word);
+    sr.lastReview = Date.now();
+    if (correct) {
+      sr.correctStreak++;
+      sr.level = Math.min(sr.level + 1, 7);
+      // Ebbinghaus-inspired intervals: 1, 2, 4, 7, 15, 30, 60 days
+      const intervals = [1, 2, 4, 7, 15, 30, 60];
+      sr.interval = intervals[Math.min(sr.level, intervals.length - 1)];
+    } else {
+      sr.correctStreak = 0;
+      sr.level = Math.max(sr.level - 1, 0);
+      sr.interval = 1;
+    }
+    sr.nextReview = Date.now() + sr.interval * 24 * 60 * 60 * 1000;
+    srData[word] = sr;
+    saveSR();
+  }
+  
+  function getDueWords(category) {
+    const now = Date.now();
+    const words = VOCABULARY[category] || [];
+    return words.filter(w => {
+      const sr = getSR(w.en);
+      return sr.nextReview <= now || sr.lastReview === 0;
+    });
+  }
+  
+  function getMasteryLevel(word) {
+    const sr = getSR(word);
+    return sr.level;
+  }
+  
+  // ---- Daily Streak ----
+  const STREAK_KEY = 'hogwarts_streak';
+  let currentStreak = 0;
+  
+  function loadStreak() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STREAK_KEY) || '{}');
+      const lastDate = data.lastDate;
+      const today = new Date().toDateString();
+      
+      if (lastDate === today) {
+        currentStreak = data.count || 0;
+      } else {
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+        if (lastDate === yesterday) {
+          currentStreak = data.count || 0;
+        } else {
+          currentStreak = 0;
+        }
+      }
+      updateStreakDisplay();
+    } catch(e) {}
+  }
+  
+  function updateStreak() {
+    try {
+      const today = new Date().toDateString();
+      const data = JSON.parse(localStorage.getItem(STREAK_KEY) || '{}');
+      
+      if (data.lastDate !== today) {
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+        if (data.lastDate === yesterday) {
+          currentStreak = (data.count || 0) + 1;
+        } else {
+          currentStreak = 1;
+        }
+        localStorage.setItem(STREAK_KEY, JSON.stringify({ count: currentStreak, lastDate: today }));
+      }
+      updateStreakDisplay();
+    } catch(e) {}
+  }
+  
+  function updateStreakDisplay() {
+    const el = document.getElementById('streakCount');
+    if (el) el.textContent = currentStreak;
+  }
+  
+  // ---- Difficulty Tags ----
+  function getDifficulty(word) {
+    const sr = getSR(word.en);
+    const level = sr.level;
+    if (level <= 1) return { tag: 'New', color: '#3498db' };
+    if (level <= 3) return { tag: 'Learning', color: '#f39c12' };
+    if (level <= 5) return { tag: 'Reviewing', color: '#2ecc71' };
+    return { tag: 'Mastered', color: '#d4af37' };
+  }
+  
+  // ---- Quiz Mode: Multiple Choice ----
+  let quizState = { active: false, words: [], index: 0, correct: 0, total: 0 };
+  
+  function startChoiceQuiz(category) {
+    const words = [...(VOCABULARY[category] || [])];
+    // Shuffle
+    for (let i = words.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [words[i], words[j]] = [words[j], words[i]];
+    }
+    quizState = { active: true, words: words.slice(0, Math.min(10, words.length)), index: 0, correct: 0, total: 0 };
+    showChoiceQuestion();
+  }
+  
+  function showChoiceQuestion() {
+    if (quizState.index >= quizState.words.length) {
+      document.getElementById('choiceQuestion').textContent = `🎉 Quiz complete! ${quizState.correct}/${quizState.total} correct`;
+      document.getElementById('choiceOptions').innerHTML = '';
+      document.getElementById('choiceFeedback').textContent = '';
+      document.getElementById('choiceNextBtn').style.display = 'none';
+      return;
+    }
+    
+    const word = quizState.words[quizState.index];
+    const correctDef = word.zh;
+    
+    // Get 3 wrong answers from other words
+    let wrong = quizState.words
+      .filter(w => w.en !== word.en)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(w => w.zh);
+    
+    // Pad if not enough
+    while (wrong.length < 3) {
+      const allWords = Object.values(VOCABULARY).flat();
+      const rand = allWords[Math.floor(Math.random() * allWords.length)];
+      if (rand.zh !== correctDef && !wrong.includes(rand.zh)) {
+        wrong.push(rand.zh);
+      } else break;
+    }
+    
+    const options = [correctDef, ...wrong].sort(() => Math.random() - 0.5);
+    
+    document.getElementById('choiceQuestion').innerHTML = `<div style="font-size:24px;font-weight:700;margin-bottom:8px;text-align:center;">"${word.en}"</div><div style="text-align:center;color:#8880a8;font-size:13px;margin-bottom:16px;">What does this word mean?</div>`;
+    
+    const optsHtml = options.map(opt => 
+      `<button class="quiz-option" data-correct="${opt === correctDef}">${opt}</button>`
+    ).join('');
+    document.getElementById('choiceOptions').innerHTML = optsHtml;
+    document.getElementById('choiceFeedback').textContent = '';
+    document.getElementById('choiceNextBtn').style.display = 'none';
+    
+    // Add click handlers
+    document.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', function() {
+        if (this.disabled) return;
+        const isCorrect = this.dataset.correct === 'true';
+        document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+        
+        if (isCorrect) {
+          this.classList.add('correct');
+          document.getElementById('choiceFeedback').innerHTML = '<span style="color:#2ecc71;">✅ Correct!</span>';
+          quizState.correct++;
+          updateSR(word.en, true);
+        } else {
+          this.classList.add('incorrect');
+          document.querySelector('[data-correct="true"]').classList.add('correct');
+          document.getElementById('choiceFeedback').innerHTML = `<span style="color:#e74c3c;">❌ Incorrect. The answer is: ${correctDef}</span>`;
+          updateSR(word.en, false);
+        }
+        quizState.total++;
+        updateStreak();
+        document.getElementById('choiceNextBtn').style.display = 'block';
+      });
+    });
+  }
+  
+  // ---- Stats & Progress ----
+  function buildStats() {
+    const grid = document.getElementById('statsGrid');
+    if (!grid) return;
+    
+    const totalLearned = Object.keys(srData).length;
+    let mastered = 0, learning = 0;
+    Object.values(srData).forEach(sr => {
+      if (sr.level >= 5) mastered++;
+      else if (sr.level > 0) learning++;
+    });
+    
+    grid.innerHTML = `
+      <div class="stat-card"><span class="stat-value">${totalLearned}</span><span class="stat-label">Words Learned</span></div>
+      <div class="stat-card"><span class="stat-value">${mastered}</span><span class="stat-label">Mastered</span></div>
+      <div class="stat-card"><span class="stat-value">${learning}</span><span class="stat-label">In Progress</span></div>
+      <div class="stat-card"><span class="stat-value">${currentStreak}</span><span class="stat-label">Day Streak</span></div>
+    `;
+    
+    // Category breakdown
+    const chart = document.getElementById('categoryChart');
+    if (chart) {
+      const catNames = Object.keys(VOCABULARY);
+      const catLabels = {
+        irregular: 'Verbs', animals: 'Animals', colors: 'Colors', numbers: 'Numbers',
+        body: 'Body', food: 'Food', family: 'Family', school: 'School',
+        weather: 'Weather', actions: 'Actions', adjectives: 'Adjectives'
+      };
+      let chartHtml = '';
+      let maxCount = 0;
+      const catCounts = {};
+      catNames.forEach(cat => {
+        const words = VOCABULARY[cat] || [];
+        const learned = words.filter(w => srData[w.en] && srData[w.en].level > 0).length;
+        catCounts[cat] = learned;
+        if (learned > maxCount) maxCount = learned;
+      });
+      catNames.forEach(cat => {
+        const count = catCounts[cat] || 0;
+        const pct = maxCount > 0 ? (count / maxCount * 100) : 0;
+        const label = catLabels[cat] || cat;
+        chartHtml += `<div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+          <div style="width:100%;background:rgba(60,40,80,0.2);border-radius:4px 4px 0 0;height:100px;display:flex;align-items:flex-end;">
+            <div style="width:100%;background:linear-gradient(180deg,#d4af37,#b8942e);border-radius:4px 4px 0 0;height:${pct}%;transition:height 0.5s;min-height:${count > 0 ? '4px' : '0'};"></div>
+          </div>
+          <span style="font-size:9px;color:#8880a8;margin-top:4px;white-space:nowrap;">${label}</span>
+        </div>`;
+      });
+      chart.innerHTML = chartHtml;
+    }
+  }
+  
+  // ---- Enhanced Speak with US/UK toggle ----
+  let voiceAccent = 'US';
+  
+  function toggleAccent() {
+    voiceAccent = voiceAccent === 'US' ? 'UK' : 'US';
+    const btn = document.getElementById('voiceToggle');
+    if (btn) btn.textContent = voiceAccent;
+  }
+  
+  // Override speakText to use selected accent
+  const originalSpeak = window.speakText;
+  window.speakText = function(text) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const lang = voiceAccent === 'US' ? 'en-US' : 'en-GB';
+    const voice = voices.find(v => v.lang.startsWith(lang));
+    if (voice) utterance.voice = voice;
+    utterance.lang = lang;
+    utterance.rate = 0.85;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    window.speechSynthesis.speak(utterance);
+  };
+  
+  // ---- Touch Swipe Support ----
+  let touchStartX = 0, touchStartY = 0;
+  
+  function initSwipe() {
+    const card = dom.card;
+    if (!card) return;
+    
+    card.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    
+    card.addEventListener('touchend', function(e) {
+      const diffX = e.changedTouches[0].screenX - touchStartX;
+      const diffY = e.changedTouches[0].screenY - touchStartY;
+      
+      // Only horizontal swipes that are longer than vertical
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        if (diffX > 0 && currentIndex > 0) {
+          // Swipe right - previous
+          currentIndex--;
+          showWord(currentIndex);
+          updateProgress();
+        } else if (diffX < 0 && currentIndex < currentWords.length - 1) {
+          // Swipe left - next
+          currentIndex++;
+          showWord(currentIndex);
+          updateProgress();
+        }
+      }
+    }, { passive: true });
+  }
+  
+  // ---- Enhanced updateProgress ----
+  const originalUpdateProgress = window.updateProgress;
+  window.updateProgress = function() {
+    if (originalUpdateProgress) originalUpdateProgress();
+    // Also update streak
+    updateStreak();
+    // Build stats if stats panel is visible
+    const statsPanel = document.getElementById('panelStats');
+    if (statsPanel && statsPanel.style.display !== 'none') {
+      buildStats();
+    }
+  };
+  
+  // ---- Tab switching ----
+  function setupTabs() {
+    const tabs = document.querySelectorAll('.quiz-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        
+        document.querySelectorAll('.quiz-panel > .quiz-panel').forEach(p => p.style.display = 'none');
+        const mode = this.dataset.mode;
+        const panel = document.getElementById('panel' + mode.charAt(0).toUpperCase() + mode.slice(1));
+        if (panel) {
+          panel.style.display = 'block';
+          if (mode === 'choice') startChoiceQuiz(currentCategory);
+          if (mode === 'stats') buildStats();
+        }
+        
+        // Show/hide flashcard content
+        const cardSection = document.querySelector('.card-wrapper');
+        const actionButtons = document.querySelector('.action-buttons');
+        const tapHint = document.querySelector('.tap-hint');
+        const stats = document.querySelector('.stats');
+        const progressSection = document.querySelector('.progress-section');
+        
+        if (mode === 'flashcard') {
+          if (cardSection) cardSection.style.display = '';
+          if (actionButtons) actionButtons.style.display = '';
+          if (tapHint) tapHint.style.display = '';
+          if (stats) stats.style.display = '';
+          if (progressSection) progressSection.style.display = '';
+        } else {
+          if (cardSection) cardSection.style.display = 'none';
+          if (actionButtons) actionButtons.style.display = 'none';
+          if (tapHint) tapHint.style.display = 'none';
+          if (stats) stats.style.display = 'none';
+          if (progressSection) progressSection.style.display = 'none';
+        }
+      });
+    });
+  }
+  
+  // ---- Integration with existing functions ----
+  // Override handleKnow and handleDontKnow to use SR
+  const origHandleKnow = window.handleKnow;
+  window.handleKnow = function() {
+    const word = currentWords[currentIndex];
+    if (!word) return;
+    learningState[word.en] = 'known';
+    updateSR(word.en, true);
+    updateStreak();
+    advanceToNext();
+    updateProgress();
+  };
+  
+  const origHandleDontKnow = window.handleDontKnow;
+  window.handleDontKnow = function() {
+    const word = currentWords[currentIndex];
+    if (!word) return;
+    if (learningState[word.en] === 'known') delete learningState[word.en];
+    learningState[word.en] = 'unknown';
+    updateSR(word.en, false);
+    advanceToNext();
+    updateProgress();
+  };
+  
+  // ---- Enhanced showWord with difficulty tag ----
+  const origShowWord = window.showWord;
+  window.showWord = function(index) {
+    if (origShowWord) origShowWord(index);
+    // Add difficulty indicator to card
+    const word = currentWords[index];
+    if (word) {
+      const diff = getDifficulty(word);
+      const tag = document.querySelector('.card-lang-tag');
+      if (tag) {
+        tag.style.color = diff.color;
+      }
+    }
+  };
+  
+  // ---- Initialize enhanced features ----
+  loadSR();
+  loadStreak();
+  setupTabs();
+  initSwipe();
+  
+  // Setup voice toggle
+  const voiceBtn = document.getElementById('voiceToggle');
+  if (voiceBtn) {
+    voiceBtn.addEventListener('click', toggleAccent);
+  }
+  
+  // Setup choice next button
+  const choiceNext = document.getElementById('choiceNextBtn');
+  if (choiceNext) {
+    choiceNext.addEventListener('click', function() {
+      quizState.index++;
+      showChoiceQuestion();
+    });
+  }
+  
+  // Override switchCategory to start quiz when in quiz mode
+  const origSwitchCategory = window.switchCategory;
+  window.switchCategory = function(category) {
+    if (origSwitchCategory) origSwitchCategory(category);
+    // Rebuild stats if visible
+    const statsPanel = document.getElementById('panelStats');
+    if (statsPanel && statsPanel.style.display !== 'none') buildStats();
+  };
+}, { once: true });
   </script>
 
 </body>
