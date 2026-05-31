@@ -249,17 +249,26 @@
       width: 100%;
       padding-bottom: 70%;
       cursor: pointer;
-      transform-style: preserve-3d;
-      -webkit-transform-style: preserve-3d;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-      will-change: transform;
-      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
     }
-
-    .card.flipped {
+    
+    .card-inner {
+      position: absolute;
+      inset: 0;
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+      -webkit-perspective: 1200px;
+      perspective: 1200px;
+      border-radius: 24px;
+    }
+    
+    .card-inner.flipped .card-front {
       -webkit-transform: rotateY(180deg);
       transform: rotateY(180deg);
+    }
+    
+    .card-inner.flipped .card-back {
+      -webkit-transform: rotateY(360deg);
+      transform: rotateY(360deg);
     }
 
     /* 卡片正反面共用樣式 — 羊皮紙魔法風格 */
@@ -638,18 +647,20 @@
     <!-- ===== Vocabulary Card ===== -->
     <div class="card-wrapper" id="cardWrapper">
       <div class="card" id="vocabCard">
-        <!-- Front: English — The original spell -->
-        <div class="card-face card-front">
-          <span class="card-lang-tag">The Spell</span>
-          <div class="card-word en" id="wordEn">Cat</div>
-          <div class="card-hint">👆 Tap to reveal</div>
-          <button class="speak-btn" id="speakBtn" title="Read aloud" aria-label="Read aloud">🔊</button>
-        </div>
-        <!-- Back: Definition — The meaning -->
-        <div class="card-face card-back">
-          <span class="card-lang-tag">The Meaning</span>
-          <div class="card-word zh" id="wordZh">a small furry pet that purrs</div>
-          <div class="card-hint">👆 Tap to flip back</div>
+        <div class="card-inner" id="cardInner">
+          <!-- Front: English — The original spell -->
+          <div class="card-face card-front">
+            <span class="card-lang-tag">The Spell</span>
+            <div class="card-word en" id="wordEn">Cat</div>
+            <div class="card-hint">👆 Tap to reveal</div>
+            <button class="speak-btn" id="speakBtn" title="Read aloud" aria-label="Read aloud">🔊</button>
+          </div>
+          <!-- Back: Definition — The meaning -->
+          <div class="card-face card-back">
+            <span class="card-lang-tag">The Meaning</span>
+            <div class="card-word zh" id="wordZh">a small furry pet that purrs</div>
+            <div class="card-hint">👆 Tap to flip back</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1237,6 +1248,7 @@
     wordEn:            document.getElementById('wordEn'),
     wordZh:            document.getElementById('wordZh'),
     card:              document.getElementById('vocabCard'),
+    cardInner:         document.getElementById('cardInner'),
     cardWrapper:       document.getElementById('cardWrapper'),
     progressFill:      document.getElementById('progressFill'),
     progressPercent:   document.getElementById('progressPercent'),
@@ -1288,7 +1300,7 @@
     dom.wordZh.textContent = word.zh;
 
     //  Return card to front (English side)
-    dom.card.classList.remove('flipped');
+    dom.cardInner.classList.remove('flipped');
   }
 
   /**
@@ -1296,7 +1308,7 @@
    * 這就像把單字從英文變成中文 ✨
    */
   function toggleCard() {
-    dom.card.classList.toggle('flipped');
+    dom.cardInner.classList.toggle('flipped');
     //  Glow effect on card border when flipped
     dom.cardWrapper.classList.add('glowing');
     setTimeout(() => {
