@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔮 霍格華茲單字魔法書</title>
+  <style>
+    /* ================================================================
+       全域重置 & 哈利波特魔法風格基礎樣式
+       靈感來自：霍格華茲城堡、魔藥學課本、飛天掃帚、分類帽
+       ================================================================ */
+
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      /* 深色星空魔法背景 — 像霍格華茲大廳天花板 */
+      background: #0a0a14;
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(60, 30, 100, 0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(20, 40, 100, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(100, 40, 60, 0.12) 0%, transparent 50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #e8e0f0;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* ===== 飄浮魔法粒子（星星 ✨） ===== */
+    .magic-particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #f0e6a0;
+      border-radius: 50%;
+      box-shadow: 0 0 6px 2px rgba(240, 230, 160, 0.3);
+      animation: floatParticle linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes floatParticle {
+      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.7; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ===== 主要容器 — 像一本魔法書 ===== */
+    .container {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(18, 16, 30, 0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(200, 180, 140, 0.12);
+      border-radius: 28px;
+      padding: 32px 28px;
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(240, 220, 180, 0.05);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 書本頂部金色裝飾線 */
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 8%;
+      right: 8%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), rgba(180, 140, 60, 0.6), rgba(212, 175, 55, 0.4), transparent);
+      border-radius: 2px;
+    }
+
+    /* 書角裝飾（左上 + 右上） */
+    .container::after {
+      content: '✦';
+      position: absolute;
+      top: 12px;
+      right: 20px;
+      font-size: 14px;
+      color: rgba(212, 175, 55, 0.25);
+    }
+
+    /* 左上角星星裝飾 */
+    .corner-star {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 14px;
+      color: rgba(212, 175, 55, 0.25);
+      z-index: 0;
+    }
+
+    /* ===== 頂部區域：魔法標題 + 分類帽（下拉選單） ===== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #f0e6a0, #d4af37, #b8942e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
+    }
+
+    /* ===== 自訂分類帽（下拉選單） ===== */
+    .vocab-selector {
+      position: relative;
+    }
+
+    .vocab-selector select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: rgba(60, 40, 80, 0.4);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      color: #d0c8e0;
+      padding: 9px 38px 9px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .vocab-selector select:hover {
+      border-color: rgba(212, 175, 55, 0.4);
+      background: rgba(60, 40, 80, 0.6);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.08);
+    }
+
+    .vocab-selector::after {
+      content: '⚡';
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(212, 175, 55, 0.5);
+      pointer-events: none;
+      font-size: 13px;
+    }
+
+    /* ===== 進度條 — 像魔藥學的溫度計 ===== */
+    .progress-section {
+      margin-bottom: 26px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #8880a8;
+      margin-bottom: 8px;
+    }
+
+    .progress-header .progress-label {
+      font-weight: 500;
+    }
+
+    .progress-header .progress-percent {
+      font-weight: 700;
+      color: #f0e6a0;
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.06);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #d4af37, #f0e6a0, #d4af37);
+      background-size: 200% 100%;
+      animation: shimmer 2.5s ease-in-out infinite;
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 0%; }
+      50%      { background-position: 100% 0%; }
+    }
+
+    /* ===== 單字卡片 — 像活米村的巫師卡片 ===== */
+    .card-wrapper {
+      perspective: 1200px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    /* 卡片周圍的魔法光暈（當卡片翻轉時） */
+    .card-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(160, 120, 200, 0.05), rgba(212, 175, 55, 0.05));
+      opacity: 0;
+      transition: opacity 0.6s;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .card-wrapper.glowing::before {
+      opacity: 1;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      padding-bottom: 70%;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    /* 卡片正反面共用樣式 — 羊皮紙魔法風格 */
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 24px;
+      padding: 28px 20px;
+      /* 像老舊羊皮紙 + 魔法氛圍 */
+      background: linear-gradient(160deg, rgba(28, 24, 48, 0.95), rgba(20, 16, 36, 0.98));
+      border: 1px solid rgba(200, 180, 140, 0.08);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(240, 220, 180, 0.04),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* 卡片表面的微紋理 */
+    .card-face::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(160, 120, 200, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* 類別標籤（像課本分類） */
+    .card-lang-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(212, 175, 55, 0.5);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 分類標籤左邊的小閃電 */
+    .card-lang-tag::before {
+      content: '⚡ ';
+    }
+
+    /* 主文字（英文／中文） */
+    .card-word {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 7vw, 40px);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-word.en {
+      color: #f0eae8;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 30px rgba(240, 230, 160, 0.06);
+    }
+
+    .card-word.zh {
+      color: #d4af37;
+      font-size: clamp(26px, 6vw, 34px);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.08);
+    }
+
+    /* 單字小提示（例句或分類） */
+    .card-hint {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.18);
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== 語音按鈕（小喇叭）— 像現影術 ===== */
+    .speak-btn {
+      position: absolute;
+      bottom: 16px;
+      right: 20px;
+      background: rgba(60, 40, 80, 0.5);
+      border: 1px solid rgba(212, 175, 55, 0.12);
+      color: rgba(212, 175, 55, 0.6);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+    }
+
+    .speak-btn:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: rgba(212, 175, 55, 0.3);
+      color: #f0e6a0;
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.12);
+    }
+
+    .speak-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* 語音播放時脈衝動畫 */
+    .speak-btn.speaking {
+      animation: pulseSpeak 0.6s ease-in-out infinite;
+      border-color: rgba(212, 175, 55, 0.5);
+      color: #f0e6a0;
+    }
+
+    @keyframes pulseSpeak {
+      0%, 100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.15); }
+      50%      { box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+    }
+
+    /* ===== 翻頁提示文字 ===== */
+    .tap-hint {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.12);
+      margin-bottom: 18px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== 咒語按鈕組（認識／不認識）= 像施展魔法 ===== */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+      padding: 14px 0;
+      border: none;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 按鈕底部的微光效果 */
+    .action-buttons button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      border-radius: 2px;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+
+    /* 「學會了！」— 葛來分多金紅色調 */
+    .btn-know {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.10), rgba(180, 140, 60, 0.06));
+      color: #f0e6a0;
+      border: 1px solid rgba(212, 175, 55, 0.10);
+    }
+
+    .btn-know::after {
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    }
+
+    .btn-know:hover {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(180, 140, 60, 0.12));
+      border-color: rgba(212, 175, 55, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(212, 175, 55, 0.10);
+    }
+
+    /* 「再練練！」— 史萊哲林綠色調 */
+    .btn-dont-know {
+      background: linear-gradient(135deg, rgba(60, 180, 120, 0.08), rgba(40, 140, 90, 0.05));
+      color: #80d0b0;
+      border: 1px solid rgba(60, 180, 120, 0.08);
+    }
+
+    .btn-dont-know::after {
+      background: linear-gradient(90deg, transparent, #5ab88a, transparent);
+    }
+
+    .btn-dont-know:hover {
+      background: linear-gradient(135deg, rgba(60, 180, 120, 0.16), rgba(40, 140, 90, 0.10));
+      border-color: rgba(60, 180, 120, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(60, 180, 120, 0.08);
+    }
+
+    .action-buttons button:active {
+      transform: translateY(0px) scale(0.97);
+    }
+
+    /* ===== 統計資訊 — 像魔法部的紀錄 ===== */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(212, 175, 55, 0.06);
+      font-size: 13px;
+      color: #7870a0;
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .stats .stat-number {
+      font-weight: 700;
+      color: #b8a8d0;
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+    }
+
+    /* ===== 全部學完 — 慶祝畫面 ===== */
+    .congrats-message {
+      display: none;
+      text-align: center;
+      padding: 36px 20px 24px;
+    }
+
+    .congrats-message .emoji {
+      font-size: 64px;
+      margin-bottom: 12px;
+      display: block;
+      animation: celebrateBounce 1s ease-in-out infinite;
+    }
+
+    @keyframes celebrateBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-8px) scale(1.05); }
+    }
+
+    .congrats-message h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #f0e6a0, #d4af37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .congrats-message p {
+      color: #8880b0;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .congrats-message .reset-btn {
+      margin-top: 24px;
+      padding: 12px 36px;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      background: rgba(212, 175, 55, 0.06);
+      color: #f0e6a0;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .congrats-message .reset-btn:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: rgba(212, 175, 55, 0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.08);
+    }
+
+    /* ===== 響應式調整 ===== */
+    @media (max-width: 480px) {
+      .container {
+        padding: 24px 16px;
+        border-radius: 22px;
+      }
+      .header h1 {
+        font-size: 19px;
+      }
+      .action-buttons button {
+        font-size: 14px;
+        padding: 12px 0;
+      }
+      .stats {
+        gap: 18px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== 飄浮魔法粒子（星星） ===== -->
+  <div class="magic-particles" id="magicParticles"></div>
+
+  <!-- ===== 左上角裝飾 ===== -->
+  <div class="corner-star">✦</div>
+
+  <div class="container" id="app">
+    <!-- ===== 頂部：魔法書標題 + 分類帽下拉選單 ===== -->
+    <div class="header">
+      <h1>🔮 單字魔法書</h1>
+      <div class="vocab-selector">
+        <select id="vocabSelect">
+          <option value="irregular">🔮 不規則動詞魔法</option>
+          <option value="animals">🦁 奇獸飼育學</option>
+          <option value="colors">🌈 變色咒語</option>
+          <option value="numbers">🔢 數字占卜學</option>
+          <option value="body">🦴 人體現形術</option>
+          <option value="food">🍺 蜂蜜公爵</option>
+          <option value="family">👨‍👩‍👧‍👦 家庭魔法</option>
+          <option value="school">📚 霍格華茲日常</option>
+          <option value="weather">🌤️ 天氣咒語</option>
+          <option value="actions">🏃 動態魔法</option>
+          <option value="adjectives">✨ 形容魔法</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ===== 進度條 ===== -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <span class="progress-label">📜 魔法學習進度</span>
+        <span class="progress-percent" id="progressPercent">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- ===== 魔法單字卡片 ===== -->
+    <div class="card-wrapper" id="cardWrapper">
+      <div class="card" id="vocabCard">
+        <!-- 正面：英文 — 像咒語原文 -->
+        <div class="card-face card-front">
+          <span class="card-lang-tag">English 咒語</span>
+          <div class="card-word en" id="wordEn">Cat</div>
+          <div class="card-hint">👆 點擊施展咒語</div>
+        </div>
+        <!-- 背面：中文 — 像翻譯咒 -->
+        <div class="card-face card-back">
+          <span class="card-lang-tag">中文魔法</span>
+          <div class="card-word zh" id="wordZh">貓</div>
+          <div class="card-hint">👆 點擊變回原形</div>
+        </div>
+        <!-- 小喇叭語音按鈕 -->
+        <button class="speak-btn" id="speakBtn" title="朗讀咒語" aria-label="朗讀咒語">🔊</button>
+      </div>
+    </div>
+
+    <div class="tap-hint">✨ 點擊卡片施展翻轉咒 ✨</div>
+
+    <!-- ===== 咒語按鈕 ===== -->
+    <div class="action-buttons">
+      <button class="btn-know" id="btnKnow">🪄 學會了！</button>
+      <button class="btn-dont-know" id="btnDontKnow">📖 再練練</button>
+    </div>
+
+    <!-- ===== 魔法部統計 ===== -->
+    <div class="stats">
+      <span>📚 咒語總數 <span class="stat-number" id="totalCount">0</span></span>
+      <span>🪄 已學會 <span class="stat-number" id="knownCount">0</span></span>
+      <span>📖 待複習 <span class="stat-number" id="remainingCount">0</span></span>
+    </div>
+
+    <!-- ===== 全部完成慶祝 ===== -->
+    <div class="congrats-message" id="congratsMessage">
+      <span class="emoji">🏆</span>
+      <h2>出色的魔法 feat！</h2>
+      <p>你已經學會這個分類的所有咒語了！<br>梅林爵士團勳章頒發給你 🎖️</p>
+      <button class="reset-btn" id="resetBtn">🔄 重新施展魔法</button>
+    </div>
+  </div>
+
+  <script>
+  // ===================================================================
+  //  第一部份：國小英文單字庫（哈利波特主題分類）
+  //  每個分類就像霍格華茲的一門課 🧙‍♂️
+  // ===================================================================
+
+  /**
+   * 單字庫總表，key 是下拉選單的 value。
+   * 每個單字包含：
+   *   - en   : 英文單字（國小程度，簡單常用）
+   *   - zh   : 中文解釋
+   *   - hint : 額外的小提示（幫助小朋友記憶）
+   */
+  const VOCABULARY = {
+    irregular: [
+      { en: 'abide', zh: '遵守／忍受', hint: '過去式 abided / abode · 過去分詞 abided / abode' },
+      { en: 'arise', zh: '出現／升起', hint: '過去式 arose · 過去分詞 arisen' },
+      { en: 'awake', zh: '醒來', hint: '過去式 awoke · 過去分詞 awoken' },
+      { en: 'baa', zh: '咩咩叫', hint: '過去式 baaed · 過去分詞 baaed' },
+      { en: 'babysit', zh: '當保母', hint: '過去式 babysat · 過去分詞 babysat' },
+      { en: 'be', zh: '是／存在', hint: '過去式 was, were · 過去分詞 been' },
+      { en: 'bear', zh: '忍受／生產', hint: '過去式 bore · 過去分詞 borne / born' },
+      { en: 'beat', zh: '打敗／跳動', hint: '過去式 beat · 過去分詞 beaten' },
+      { en: 'become', zh: '變成', hint: '過去式 became · 過去分詞 become' },
+      { en: 'befall', zh: '降臨／發生', hint: '過去式 befell · 過去分詞 befallen' },
+      { en: 'beget', zh: '產生／為父', hint: '過去式 begot / begat · 過去分詞 begot / begotten' },
+      { en: 'begin', zh: '開始', hint: '過去式 began · 過去分詞 begun' },
+      { en: 'behold', zh: '注視／看', hint: '過去式 beheld · 過去分詞 beheld' },
+      { en: 'bend', zh: '彎曲', hint: '過去式 bent · 過去分詞 bent' },
+      { en: 'beseech', zh: '懇求', hint: '過去式 beseeched / besought · 過去分詞 beseeched / besought' },
+      { en: 'beset', zh: '困擾／包圍', hint: '過去式 beset · 過去分詞 beset' },
+      { en: 'bet', zh: '打賭', hint: '過去式 bet · 過去分詞 bet' },
+      { en: 'bid', zh: '出價／命令', hint: '過去式 bid / bade · 過去分詞 bid / bidden' },
+      { en: 'bind', zh: '綁／約束', hint: '過去式 bound · 過去分詞 bound' },
+      { en: 'bite', zh: '咬', hint: '過去式 bit · 過去分詞 bitten' },
+      { en: 'bleed', zh: '流血', hint: '過去式 bled · 過去分詞 bled' },
+      { en: 'blow', zh: '吹', hint: '過去式 blew · 過去分詞 blown' },
+      { en: 'breastfeed', zh: '餵母乳', hint: '過去式 breastfed · 過去分詞 breastfed' },
+      { en: 'break', zh: '打破', hint: '過去式 broke · 過去分詞 broken' },
+      { en: 'breed', zh: '繁殖／養育', hint: '過去式 bred · 過去分詞 bred' },
+      { en: 'bring', zh: '帶來', hint: '過去式 brought · 過去分詞 brought' },
+      { en: 'broadcast', zh: '廣播', hint: '過去式 broadcast · 過去分詞 broadcast' },
+      { en: 'browbeat', zh: '威嚇', hint: '過去式 browbeat · 過去分詞 browbeaten' },
+      { en: 'build', zh: '建造', hint: '過去式 built · 過去分詞 built' },
+      { en: 'burn', zh: '燃燒', hint: '過去式 burned / burnt · 過去分詞 burned / burnt' },
+      { en: 'burst', zh: '爆發／破裂', hint: '過去式 burst · 過去分詞 burst' },
+      { en: 'bust', zh: '打破／破產', hint: '過去式 busted / bust · 過去分詞 busted / bust' },
+      { en: 'buy', zh: '買', hint: '過去式 bought · 過去分詞 bought' },
+      { en: 'can', zh: '能夠', hint: '過去式 could · 過去分詞 been able to' },
+      { en: 'cast', zh: '投擲／分配角色', hint: '過去式 cast · 過去分詞 cast' },
+      { en: 'catch', zh: '抓住', hint: '過去式 caught · 過去分詞 caught' },
+      { en: 'choose', zh: '選擇', hint: '過去式 chose · 過去分詞 chosen' },
+      { en: 'cleave', zh: '緊貼／劈開', hint: '過去式 cleaved / clove / clave · 過去分詞 cleaved' },
+      { en: 'cling', zh: '緊抓／依附', hint: '過去式 clung · 過去分詞 clung' },
+      { en: 'come', zh: '來', hint: '過去式 came · 過去分詞 come' },
+      { en: 'cost', zh: '花費／價值', hint: '過去式 cost · 過去分詞 cost' },
+      { en: 'creep', zh: '爬行／潛行', hint: '過去式 crept · 過去分詞 crept' },
+      { en: 'cut', zh: '切／割', hint: '過去式 cut · 過去分詞 cut' },
+      { en: 'deal', zh: '處理／交易', hint: '過去式 dealt · 過去分詞 dealt' },
+      { en: 'dig', zh: '挖／挖掘', hint: '過去式 dug · 過去分詞 dug' },
+      { en: 'dive', zh: '潛水', hint: '過去式 dived / dove · 過去分詞 dived' },
+      { en: 'do', zh: '做', hint: '過去式 did · 過去分詞 done' },
+      { en: 'draw', zh: '畫／拉', hint: '過去式 drew · 過去分詞 drawn' },
+      { en: 'dream', zh: '做夢', hint: '過去式 dreamed / dreamt · 過去分詞 dreamed / dreamt' },
+      { en: 'drink', zh: '喝', hint: '過去式 drank · 過去分詞 drunk' },
+      { en: 'drive', zh: '駕駛／驅動', hint: '過去式 drove · 過去分詞 driven' },
+      { en: 'dwell', zh: '居住', hint: '過去式 dwelled / dwelt · 過去分詞 dwelled / dwelt' },
+      { en: 'eat', zh: '吃', hint: '過去式 ate · 過去分詞 eaten' },
+      { en: 'fall', zh: '掉落', hint: '過去式 fell · 過去分詞 fallen' },
+      { en: 'feed', zh: '餵食', hint: '過去式 fed · 過去分詞 fed' },
+      { en: 'feel', zh: '感覺', hint: '過去式 felt · 過去分詞 felt' },
+      { en: 'fight', zh: '打架／戰鬥', hint: '過去式 fought · 過去分詞 fought' },
+      { en: 'find', zh: '找到', hint: '過去式 found · 過去分詞 found' },
+      { en: 'fit', zh: '適合', hint: '過去式 fit / fitted · 過去分詞 fit / fitted' },
+      { en: 'flee', zh: '逃離', hint: '過去式 fled · 過去分詞 fled' },
+      { en: 'fling', zh: '猛扔', hint: '過去式 flung · 過去分詞 flung' },
+      { en: 'floodlight', zh: '用泛光燈照明', hint: '過去式 floodlit / floodlighted · 過去分詞 floodlit / floodlighted' },
+      { en: 'fly', zh: '飛', hint: '過去式 flew · 過去分詞 flown' },
+      { en: 'forbear', zh: '克制', hint: '過去式 forbore · 過去分詞 forborne' },
+      { en: 'forbid', zh: '禁止', hint: '過去式 forbade · 過去分詞 forbidden' },
+      { en: 'forecast', zh: '預測', hint: '過去式 forecasted / forecast · 過去分詞 forecasted / forecast' },
+      { en: 'foresee', zh: '預見', hint: '過去式 foresaw · 過去分詞 foreseen' },
+      { en: 'foretell', zh: '預言', hint: '過去式 foretold · 過去分詞 foretold' },
+      { en: 'forget', zh: '忘記', hint: '過去式 forgot · 過去分詞 forgotten' },
+      { en: 'forego / forgo', zh: '放棄／先行', hint: '過去式 forewent · 過去分詞 foregone' },
+      { en: 'forgive', zh: '原諒', hint: '過去式 forgave · 過去分詞 forgiven' },
+      { en: 'forsake', zh: '拋棄／放棄', hint: '過去式 forsook · 過去分詞 forsaken' },
+      { en: 'forswear', zh: '發假誓／背棄', hint: '過去式 forswore · 過去分詞 forsworn' },
+      { en: 'freeze', zh: '結冰', hint: '過去式 froze · 過去分詞 frozen' },
+      { en: 'gainsay', zh: '否認／反駁', hint: '過去式 gainsaid · 過去分詞 gainsaid' },
+      { en: 'get', zh: '得到', hint: '過去式 got · 過去分詞 gotten / got' },
+      { en: 'give', zh: '給', hint: '過去式 gave · 過去分詞 given' },
+      { en: 'go', zh: '去', hint: '過去式 went · 過去分詞 gone' },
+      { en: 'grind', zh: '磨碎', hint: '過去式 ground · 過去分詞 ground' },
+      { en: 'grow', zh: '成長', hint: '過去式 grew · 過去分詞 grown' },
+      { en: 'hamstring', zh: '使殘廢／削弱', hint: '過去式 hamstrung · 過去分詞 hamstrung' },
+      { en: 'hang', zh: '懸掛', hint: '過去式 hung · 過去分詞 hung' },
+      { en: 'hang [Regular]', zh: '吊死', hint: '過去式 hanged · 過去分詞 hanged' },
+      { en: 'have', zh: '有', hint: '過去式 had · 過去分詞 had' },
+      { en: 'hear', zh: '聽見', hint: '過去式 heard · 過去分詞 heard' },
+      { en: 'heave', zh: '舉起／投擲', hint: '過去式 heaved / hove · 過去分詞 heaved / hove' },
+      { en: 'hew', zh: '砍／劈', hint: '過去式 hewed · 過去分詞 hewed / hewn' },
+      { en: 'hide', zh: '隱藏', hint: '過去式 hid · 過去分詞 hidden' },
+      { en: 'hit', zh: '打擊', hint: '過去式 hit · 過去分詞 hit' },
+      { en: 'hold', zh: '握住', hint: '過去式 held · 過去分詞 held' },
+      { en: 'hurt', zh: '傷害', hint: '過去式 hurt · 過去分詞 hurt' },
+      { en: 'inlay', zh: '鑲嵌', hint: '過去式 inlaid · 過去分詞 inlaid' },
+      { en: 'input', zh: '輸入', hint: '過去式 input / inputted · 過去分詞 input / inputted' },
+      { en: 'inset', zh: '插入', hint: '過去式 inset · 過去分詞 inset' },
+      { en: 'interweave', zh: '交織', hint: '過去式 interwove / interweaved · 過去分詞 interwoven / interweaved' },
+      { en: 'keep', zh: '保持', hint: '過去式 kept · 過去分詞 kept' },
+      { en: 'kneel', zh: '跪下', hint: '過去式 kneeled / knelt · 過去分詞 kneeled / knelt' },
+      { en: 'knit', zh: '編織', hint: '過去式 knit / knitted · 過去分詞 knit / knitted' },
+      { en: 'know', zh: '知道', hint: '過去式 knew · 過去分詞 known' },
+      { en: 'lay', zh: '放置', hint: '過去式 laid · 過去分詞 laid' },
+      { en: 'lead', zh: '帶領', hint: '過去式 led · 過去分詞 led' },
+      { en: 'lean', zh: '倚靠', hint: '過去式 leaned / leant · 過去分詞 leaned / leant' },
+      { en: 'leap', zh: '跳躍', hint: '過去式 leaped / leapt · 過去分詞 leaped / leapt' },
+      { en: 'learn', zh: '學習', hint: '過去式 learned / learnt · 過去分詞 learned / learnt' },
+      { en: 'leave', zh: '離開', hint: '過去式 left · 過去分詞 left' },
+      { en: 'lend', zh: '借出', hint: '過去式 lent · 過去分詞 lent' },
+      { en: 'let', zh: '讓', hint: '過去式 let · 過去分詞 let' },
+      { en: 'lie', zh: '躺', hint: '過去式 lay · 過去分詞 lain' },
+      { en: 'lie [Regular]', zh: '說謊', hint: '過去式 lied · 過去分詞 lied' },
+      { en: 'light', zh: '點亮', hint: '過去式 lit / lighted · 過去分詞 lit / lighted' },
+      { en: 'lip-read', zh: '讀唇語', hint: '過去式 lip-read · 過去分詞 lip-read' },
+      { en: 'lose', zh: '失去', hint: '過去式 lost · 過去分詞 lost' },
+      { en: 'make', zh: '製作', hint: '過去式 made · 過去分詞 made' },
+      { en: 'may', zh: '可以', hint: '過去式 might · 過去分詞 been allowed to' },
+      { en: 'mean', zh: '意思是', hint: '過去式 meant · 過去分詞 meant' },
+      { en: 'meet', zh: '遇見', hint: '過去式 met · 過去分詞 met' },
+      { en: 'miscast', zh: '角色分配不當', hint: '過去式 miscast · 過去分詞 miscast' },
+      { en: 'mishear', zh: '聽錯', hint: '過去式 misheard · 過去分詞 misheard' },
+      { en: 'mishit', zh: '打錯', hint: '過去式 mishit · 過去分詞 mishit' },
+      { en: 'mislay', zh: '放錯地方', hint: '過去式 mislaid · 過去分詞 mislaid' },
+      { en: 'mislead', zh: '誤導', hint: '過去式 misled · 過去分詞 misled' },
+      { en: 'misread', zh: '讀錯', hint: '過去式 misread · 過去分詞 misread' },
+      { en: 'misspeak', zh: '說錯話', hint: '過去式 misspoke · 過去分詞 misspoken' },
+      { en: 'misspell', zh: '拼錯', hint: '過去式 misspelled / misspelt · 過去分詞 misspelled / misspelt' },
+      { en: 'misspend', zh: '浪費', hint: '過去式 misspent · 過去分詞 misspent' },
+      { en: 'mistake', zh: '誤會', hint: '過去式 mistook · 過去分詞 mistaken' },
+      { en: 'misunderstand', zh: '誤解', hint: '過去式 misunderstood · 過去分詞 misunderstood' },
+      { en: 'miswrite', zh: '寫錯', hint: '過去式 miswrote · 過去分詞 miswritten' },
+      { en: 'mow', zh: '割草', hint: '過去式 mowed · 過去分詞 mowed / mown' },
+      { en: 'must', zh: '必須', hint: '過去式 must · 過去分詞 had to' },
+      { en: 'offset', zh: '抵消', hint: '過去式 offset · 過去分詞 offset' },
+      { en: 'ought to', zh: '應該', hint: '過去式 ---------------- · 過去分詞 ----------------' },
+      { en: 'outbid', zh: '出價高於', hint: '過去式 outbid · 過去分詞 outbid' },
+      { en: 'outbreed', zh: '繁殖力勝過', hint: '過去式 outbred · 過去分詞 outbred' },
+      { en: 'outdo', zh: '勝過', hint: '過去式 outdid · 過去分詞 outdone' },
+      { en: 'outdrink', zh: '喝得比…多', hint: '過去式 outdrank · 過去分詞 outdrunk' },
+      { en: 'outfight', zh: '打敗', hint: '過去式 outfought · 過去分詞 outfought' },
+      { en: 'outgrow', zh: '長得比…大', hint: '過去式 outgrew · 過去分詞 outgrown' },
+      { en: 'outlie', zh: '比…更會說謊', hint: '過去式 outlied · 過去分詞 outlied' },
+      { en: 'output', zh: '輸出', hint: '過去式 output · 過去分詞 output' },
+      { en: 'outrun', zh: '跑得比…快', hint: '過去式 outran · 過去分詞 outrun' },
+      { en: 'outsell', zh: '賣得比…多', hint: '過去式 outsold · 過去分詞 outsold' },
+      { en: 'outshine', zh: '比…更出色', hint: '過去式 outshined / outshone · 過去分詞 outshined / outshone' },
+      { en: 'outshoot', zh: '射得比…準', hint: '過去式 outshoot · 過去分詞 outshoot' },
+      { en: 'outspend', zh: '花費超過', hint: '過去式 outspent · 過去分詞 outspent' },
+      { en: 'outswear', zh: '罵得比…兇', hint: '過去式 outswore · 過去分詞 outsworn' },
+      { en: 'outswim', zh: '游得比…快', hint: '過去式 outswam · 過去分詞 outswum' },
+      { en: 'outthink', zh: '思考勝過', hint: '過去式 outthought · 過去分詞 outthought' },
+      { en: 'outthrow', zh: '扔得比…遠', hint: '過去式 outthrew · 過去分詞 outthrown' },
+      { en: 'outwrite', zh: '寫得比…好', hint: '過去式 outwrote · 過去分詞 outwritten' },
+      { en: 'overbid', zh: '出價過高', hint: '過去式 overbid · 過去分詞 overbid' },
+      { en: 'overbreed', zh: '過度繁殖', hint: '過去式 overbred · 過去分詞 overbred' },
+      { en: 'overbuild', zh: '過度建設', hint: '過去式 overbuilt · 過去分詞 overbuilt' },
+      { en: 'overcome', zh: '克服', hint: '過去式 overcame · 過去分詞 overdone' },
+      { en: 'overdo', zh: '做得過頭', hint: '過去式 overdid · 過去分詞 overdrawn' },
+      { en: 'overdraw', zh: '透支', hint: '過去式 overdrew · 過去分詞 overdrawn' },
+      { en: 'overeat', zh: '吃太多', hint: '過去式 overate · 過去分詞 overeaten' },
+      { en: 'overfeed', zh: '餵食過多', hint: '過去式 overfed · 過去分詞 overfed' },
+      { en: 'overfly', zh: '飛越', hint: '過去式 overflew · 過去分詞 overflown' },
+      { en: 'overhang', zh: '懸垂', hint: '過去式 overhung · 過去分詞 overhung' },
+      { en: 'overhear', zh: '無意中聽到', hint: '過去式 overheard · 過去分詞 overheard' },
+      { en: 'overlay', zh: '覆蓋', hint: '過去式 overlaid · 過去分詞 overlaid' },
+      { en: 'overpay', zh: '多付', hint: '過去式 overpaid · 過去分詞 overpaid' },
+      { en: 'override', zh: '凌駕', hint: '過去式 overrode · 過去分詞 overridden' },
+      { en: 'overrun', zh: '氾濫', hint: '過去式 overran · 過去分詞 overrun' },
+      { en: 'oversee', zh: '監督', hint: '過去式 oversaw · 過去分詞 overseen' },
+      { en: 'oversell', zh: '過度推銷', hint: '過去式 oversold · 過去分詞 oversold' },
+      { en: 'overshoot', zh: '超過', hint: '過去式 overshot · 過去分詞 overshot' },
+      { en: 'oversleep', zh: '睡過頭', hint: '過去式 overslept · 過去分詞 overslept' },
+      { en: 'overspend', zh: '花費過度', hint: '過去式 overspent · 過去分詞 overspent' },
+      { en: 'overtake', zh: '追上', hint: '過去式 overtook · 過去分詞 overtaken' },
+      { en: 'overthrow', zh: '推翻', hint: '過去式 overthrew · 過去分詞 overthrown' },
+      { en: 'overwind', zh: '發條轉太緊', hint: '過去式 overwound · 過去分詞 overwound' },
+      { en: 'overwrite', zh: '覆寫', hint: '過去式 overwrote · 過去分詞 overwritten' },
+      { en: 'partake', zh: '參與', hint: '過去式 partook · 過去分詞 partaken' },
+      { en: 'pay', zh: '付錢', hint: '過去式 paid · 過去分詞 paid' },
+      { en: 'plead', zh: '懇求', hint: '過去式 pled / pleaded · 過去分詞 pled / pleaded' },
+      { en: 'preset', zh: '預設', hint: '過去式 preset · 過去分詞 preset' },
+      { en: 'proofread', zh: '校對', hint: '過去式 proofread · 過去分詞 proofread' },
+      { en: 'prove', zh: '證明', hint: '過去式 proved · 過去分詞 proven / proved' },
+      { en: 'put', zh: '放', hint: '過去式 put · 過去分詞 put' },
+      { en: 'quit', zh: '放棄／辭職', hint: '過去式 quit · 過去分詞 quit' },
+      { en: 'read', zh: '閱讀', hint: '過去式 read · 過去分詞 read' },
+      { en: 'rebuild', zh: '重建', hint: '過去式 rebuilt · 過去分詞 rebuilt' },
+      { en: 'recast', zh: '重鑄', hint: '過去式 recast · 過去分詞 recast' },
+      { en: 'redo', zh: '重做', hint: '過去式 redid · 過去分詞 redone' },
+      { en: 'redraw', zh: '重新繪製', hint: '過去式 redrew · 過去分詞 redrawn' },
+      { en: 'rehear', zh: '再審理', hint: '過去式 reheard · 過去分詞 reheard' },
+      { en: 'relay', zh: '轉達', hint: '過去式 relayed · 過去分詞 relayed' },
+      { en: 'relay [Second]', zh: '接力傳送', hint: '過去式 relaid · 過去分詞 relaid' },
+      { en: 'remake', zh: '重製', hint: '過去式 remade · 過去分詞 remade' },
+      { en: 'rend', zh: '撕裂', hint: '過去式 rended / rent · 過去分詞 rended / rent' },
+      { en: 'rerun', zh: '重播', hint: '過去式 reran · 過去分詞 rerun' },
+      { en: 'resell', zh: '轉賣', hint: '過去式 resold · 過去分詞 resold' },
+      { en: 'reset', zh: '重置', hint: '過去式 reset · 過去分詞 reset' },
+      { en: 'resit', zh: '重考', hint: '過去式 resat · 過去分詞 resat' },
+      { en: 'retake', zh: '重拍／重考', hint: '過去式 retook · 過去分詞 retaken' },
+      { en: 'retell', zh: '重述', hint: '過去式 retold · 過去分詞 retold' },
+      { en: 'rethink', zh: '重新考慮', hint: '過去式 rethought · 過去分詞 rethought' },
+      { en: 'rewind', zh: '倒帶', hint: '過去式 rewound · 過去分詞 rewound' },
+      { en: 'rewrite', zh: '重寫', hint: '過去式 rewrote · 過去分詞 rewritten' },
+      { en: 'rid', zh: '擺脫', hint: '過去式 rid · 過去分詞 rid' },
+      { en: 'ride', zh: '騎', hint: '過去式 rode · 過去分詞 ridden' },
+      { en: 'ring', zh: '響／打電話', hint: '過去式 rang · 過去分詞 rung' },
+      { en: 'ring [Regular]', zh: '環繞／圈起來', hint: '過去式 ringed · 過去分詞 ringed' },
+      { en: 'rise', zh: '上升', hint: '過去式 rose · 過去分詞 risen' },
+      { en: 'run', zh: '跑', hint: '過去式 ran · 過去分詞 run' },
+      { en: 'saw', zh: '鋸', hint: '過去式 sawed · 過去分詞 sawn / sawed' },
+      { en: 'say', zh: '說', hint: '過去式 said · 過去分詞 said' },
+      { en: 'see', zh: '看見', hint: '過去式 saw · 過去分詞 seen' },
+      { en: 'seek', zh: '尋找', hint: '過去式 sought · 過去分詞 sought' },
+      { en: 'sell', zh: '賣', hint: '過去式 sold · 過去分詞 sold' },
+      { en: 'send', zh: '送', hint: '過去式 sent · 過去分詞 sent' },
+      { en: 'set', zh: '放置／設定', hint: '過去式 set · 過去分詞 set' },
+      { en: 'sew', zh: '縫', hint: '過去式 sewed · 過去分詞 sewn / sewed' },
+      { en: 'shake', zh: '搖晃', hint: '過去式 shook · 過去分詞 shaken' },
+      { en: 'shall', zh: '將要', hint: '過去式 should · 過去分詞 ----------------' },
+      { en: 'shear', zh: '剪羊毛', hint: '過去式 sheared · 過去分詞 shorn / sheared' },
+      { en: 'shed', zh: '脫落／流淚', hint: '過去式 shed · 過去分詞 shed' },
+      { en: 'shine', zh: '閃耀', hint: '過去式 shined / shone · 過去分詞 shined / shone' },
+      { en: 'shine [Regular]', zh: '擦亮', hint: '過去式 shined · 過去分詞 shined' },
+      { en: 'shit', zh: '大便', hint: '過去式 shit / shitted / shat · 過去分詞 shit / shitted / shat' },
+      { en: 'shoe', zh: '釘馬蹄鐵', hint: '過去式 shod / shoed · 過去分詞 shod / shoed' },
+      { en: 'shoo', zh: '發出噓聲趕走', hint: '過去式 shooed · 過去分詞 shooed' },
+      { en: 'shoot', zh: '射擊／拍攝', hint: '過去式 shot · 過去分詞 shot' },
+      { en: 'show', zh: '展示', hint: '過去式 showed · 過去分詞 shown / showed' },
+      { en: 'shred', zh: '撕碎', hint: '過去式 shredded / shred · 過去分詞 shredded / shred' },
+      { en: 'shrink', zh: '縮小', hint: '過去式 shrank / shrunk · 過去分詞 shrunk' },
+      { en: 'shut', zh: '關閉', hint: '過去式 shut · 過去分詞 shut' },
+      { en: 'simulcast', zh: '聯播', hint: '過去式 simulcast · 過去分詞 simulcast' },
+      { en: 'sing', zh: '唱歌', hint: '過去式 sang · 過去分詞 sung' },
+      { en: 'sink', zh: '下沉', hint: '過去式 sank / sunk · 過去分詞 sunk' },
+      { en: 'sit', zh: '坐', hint: '過去式 sat · 過去分詞 sat' },
+      { en: 'slay', zh: '殺死', hint: '過去式 slew · 過去分詞 slain' },
+      { en: 'sleep', zh: '睡覺', hint: '過去式 slept · 過去分詞 slept' },
+      { en: 'slide', zh: '滑動', hint: '過去式 slid · 過去分詞 slid' },
+      { en: 'sling', zh: '拋／吊', hint: '過去式 slung · 過去分詞 slung' },
+      { en: 'slink', zh: '潛行', hint: '過去式 slunk / slinked · 過去分詞 slunk / slinked' },
+      { en: 'slit', zh: '切開', hint: '過去式 slit · 過去分詞 slit' },
+      { en: 'smell', zh: '聞', hint: '過去式 smelled / smelt · 過去分詞 smelled / smelt' },
+      { en: 'smite', zh: '重擊', hint: '過去式 smote · 過去分詞 smitten' },
+      { en: 'sow', zh: '播種', hint: '過去式 sowed · 過去分詞 sown / sowed' },
+      { en: 'speak', zh: '說話', hint: '過去式 spoke · 過去分詞 spoken' },
+      { en: 'speed', zh: '加速', hint: '過去式 sped / speeded · 過去分詞 sped / speeded' },
+      { en: 'spell', zh: '拼字', hint: '過去式 spelt / spelled · 過去分詞 spelt / spelled' },
+      { en: 'spend', zh: '花費', hint: '過去式 spent · 過去分詞 spent' },
+      { en: 'spill', zh: '溢出', hint: '過去式 spilt / spilled · 過去分詞 spilt / spilled' },
+      { en: 'spin', zh: '旋轉', hint: '過去式 spun · 過去分詞 spun' },
+      { en: 'spit', zh: '吐口水', hint: '過去式 spat / spit · 過去分詞 spat / spit' },
+      { en: 'split', zh: '分裂', hint: '過去式 split · 過去分詞 split' },
+      { en: 'spoil', zh: '寵壞', hint: '過去式 spoilt / spoiled · 過去分詞 spoilt / spoiled' },
+      { en: 'spread', zh: '傳播／展開', hint: '過去式 spread · 過去分詞 spread' },
+      { en: 'spring', zh: '彈跳', hint: '過去式 sprang / sprung · 過去分詞 sprung' },
+      { en: 'stand', zh: '站', hint: '過去式 stood · 過去分詞 stood' },
+      { en: 'steal', zh: '偷', hint: '過去式 stole · 過去分詞 stolen' },
+      { en: 'stick', zh: '黏住／刺入', hint: '過去式 stuck · 過去分詞 stuck' },
+      { en: 'sting', zh: '刺／螫', hint: '過去式 stung · 過去分詞 stung' },
+      { en: 'stink', zh: '發臭', hint: '過去式 stank / stunk · 過去分詞 stunk' },
+      { en: 'stride', zh: '大步走', hint: '過去式 strode · 過去分詞 stridden' },
+      { en: 'strike', zh: '打擊', hint: '過去式 struck · 過去分詞 struck' },
+      { en: 'string', zh: '串起', hint: '過去式 strung · 過去分詞 strung' },
+      { en: 'strive', zh: '努力', hint: '過去式 strove · 過去分詞 striven' },
+      { en: 'swear', zh: '發誓', hint: '過去式 swore · 過去分詞 sworn' },
+      { en: 'sweat', zh: '流汗', hint: '過去式 sweat / sweated · 過去分詞 sweat / sweated' },
+      { en: 'sweep', zh: '掃地', hint: '過去式 swept · 過去分詞 swept' },
+      { en: 'swell', zh: '腫脹', hint: '過去式 swelled · 過去分詞 swollen / swelled' },
+      { en: 'swim', zh: '游泳', hint: '過去式 swam · 過去分詞 swum' },
+      { en: 'swing', zh: '搖擺', hint: '過去式 swung · 過去分詞 swung' },
+      { en: 'take', zh: '拿取', hint: '過去式 took · 過去分詞 taken' },
+      { en: 'teach', zh: '教', hint: '過去式 taught · 過去分詞 taught' },
+      { en: 'tear', zh: '撕破', hint: '過去式 tore · 過去分詞 torn' },
+      { en: 'telecast', zh: '電視廣播', hint: '過去式 telecast / telecasted · 過去分詞 telecast / telecasted' },
+      { en: 'tell', zh: '告訴', hint: '過去式 told · 過去分詞 told' },
+      { en: 'think', zh: '想', hint: '過去式 thought · 過去分詞 thought' },
+      { en: 'throw', zh: '丟', hint: '過去式 threw · 過去分詞 thrown' },
+      { en: 'thrust', zh: '猛推', hint: '過去式 thrust · 過去分詞 thrust' },
+      { en: 'tread', zh: '踩踏', hint: '過去式 trod · 過去分詞 trodden' },
+      { en: 'understand', zh: '了解', hint: '過去式 understood · 過去分詞 understood' },
+      { en: 'wake', zh: '醒來', hint: '過去式 woke / waked · 過去分詞 woken / waked' },
+      { en: 'wear', zh: '穿', hint: '過去式 wore · 過去分詞 worn' },
+      { en: 'weave', zh: '編織', hint: '過去式 wove · 過去分詞 woven' },
+      { en: 'wed', zh: '結婚', hint: '過去式 wed / wedded · 過去分詞 wed / wedded' },
+      { en: 'weep', zh: '哭泣', hint: '過去式 wept · 過去分詞 wept' },
+      { en: 'wet', zh: '弄濕', hint: '過去式 wet / wetted · 過去分詞 wet / wetted' },
+      { en: 'will', zh: '將會', hint: '過去式 would · 過去分詞 ----------------' },
+      { en: 'win', zh: '贏', hint: '過去式 won · 過去分詞 won' },
+      { en: 'wind', zh: '彎曲／纏繞', hint: '過去式 wound · 過去分詞 wound' },
+      { en: 'wring', zh: '擰', hint: '過去式 wrung · 過去分詞 wrung' },
+      { en: 'write', zh: '寫', hint: '過去式 wrote · 過去分詞 written' }
+    ],
+    /* -------- 🦁 奇獸飼育學（動物） -------- */
+    animals: [
+{ en: 'elephant', zh: '大象', hint: '非洲草原上最大的動物 🐘' },
+{ en: 'giraffe', zh: '長頸鹿', hint: '脖子最長的動物 🦒' },
+{ en: 'dolphin', zh: '海豚', hint: '聰明又友善的海洋動物 🐬' },
+{ en: 'penguin', zh: '企鵝', hint: '不會飛但會游泳的南極鳥類 🐧' },
+{ en: 'butterfly', zh: '蝴蝶', hint: '翅膀上有美麗花紋的昆蟲 🦋' },
+{ en: 'dragonfly', zh: '蜻蜓', hint: '長得像小直升機的昆蟲 🪰' },
+{ en: 'kangaroo', zh: '袋鼠', hint: '用袋子裝寶寶的澳洲動物 🦘' },
+{ en: 'chimpanzee', zh: '黑猩猩', hint: '最像人類的動物 🐵' },
+{ en: 'crocodile', zh: '鱷魚', hint: '河邊的危險爬蟲類 🐊' },
+{ en: 'squirrel', zh: '松鼠', hint: '最喜歡收集堅果 🐿️' },
+{ en: 'parrot', zh: '鸚鵡', hint: '會模仿人類說話的鳥 🦜' },
+{ en: 'panda', zh: '熊貓', hint: '黑白相間的圓胖可愛動物 🐼' },
+{ en: 'shark', zh: '鯊魚', hint: '海洋中最令人畏懼的魚 🦈' },
+{ en: 'octopus', zh: '章魚', hint: '有八隻觸手的海洋生物 🐙' },
+{ en: 'camel', zh: '駱駝', hint: '沙漠之舟，背上有駝峰 🐪' },
+{ en: 'eagle', zh: '老鷹', hint: '飛得又高又遠的猛禽 🦅' },
+{ en: 'turtle', zh: '烏龜', hint: '背著硬殼慢慢爬 🐢' },
+{ en: 'hamster', zh: '倉鼠', hint: '臉頰鼓鼓的小寵物 🐹' },
+{ en: 'polar bear', zh: '北極熊', hint: '住在北極的白色大熊 🐻‍❄️' },
+{ en: 'cheetah', zh: '獵豹', hint: '陸地上跑最快的動物 🐆' }
+    ],
+    /* -------- 🌈 變色咒語（顏色） -------- */
+    colors: [
+{ en: 'golden', zh: '金色的', hint: '像金探子一樣閃閃發亮 ✨' },
+{ en: 'silver', zh: '銀色的', hint: '銀色盔甲的顏色 🪞' },
+{ en: 'navy blue', zh: '深藍色', hint: '像深海一樣的藍色 🔵' },
+{ en: 'dark green', zh: '深綠色', hint: '禁林裡的深綠色 🟢' },
+{ en: 'light pink', zh: '淺粉紅色', hint: '像櫻花一樣的顏色 🌸' },
+{ en: 'sky blue', zh: '天藍色', hint: '像晴朗的天空一樣 ☀️' },
+{ en: 'purple', zh: '紫色', hint: '魔法藥水的顏色 🟣' },
+{ en: 'turquoise', zh: '青綠色', hint: '熱帶海洋的顏色 💎' },
+{ en: 'coral', zh: '珊瑚色', hint: '海底珊瑚的粉橘色 🪸' },
+{ en: 'scarlet', zh: '猩紅色', hint: '葛來分多領帶的顏色 🔴' },
+{ en: 'emerald', zh: '翡翠綠', hint: '史萊哲林的代表色 💚' },
+{ en: 'ivory', zh: '象牙白', hint: '溫潤的乳白色 🦷' },
+{ en: 'lavender', zh: '薰衣草紫', hint: '薰衣草田的紫色 🟪' },
+{ en: 'beige', zh: '米色', hint: '很百搭的淺棕色 🟫' },
+{ en: 'maroon', zh: '栗紅色', hint: '深紅帶一點棕 🟥' },
+{ en: 'violet', zh: '紫羅蘭色', hint: '比紫色更偏藍的顏色 🌇' },
+{ en: 'olive', zh: '橄欖綠', hint: '綠中帶黃的顏色 🫒' },
+{ en: 'indigo', zh: '靛藍色', hint: '彩虹的最後一層顏色 🔮' }
+    ],
+    /* -------- 🔢 數字占卜學（數字） -------- */
+    numbers: [
+{ en: 'thirteen', zh: '十三', hint: '13，西方認為不吉利的數字 ⚡' },
+{ en: 'fifteen', zh: '十五', hint: '15，榮恩的年齡 🧑' },
+{ en: 'twenty', zh: '二十', hint: '20，加一百二十分！ 🔢' },
+{ en: 'thirty', zh: '三十', hint: '30，一個月大約有30天 📅' },
+{ en: 'forty', zh: '四十', hint: '40，衛斯理家的號碼 🏠' },
+{ en: 'fifty', zh: '五十', hint: '50，半個一百 ✨' },
+{ en: 'sixty', zh: '六十', hint: '60，一分鐘有60秒 ⏰' },
+{ en: 'seventy', zh: '七十', hint: '70，快要一百了！ 📊' },
+{ en: 'eighty', zh: '八十', hint: '80，老佛地魔的年紀 👴' },
+{ en: 'ninety', zh: '九十', hint: '90，差十就一百了！ 🎯' },
+{ en: 'hundred', zh: '一百', hint: '100，葛來分多得100分！ 🏆' },
+{ en: 'thousand', zh: '一千', hint: '1,000，城堡裡有上千個窗戶 🏰' },
+{ en: 'million', zh: '一百萬', hint: '1,000,000，好大的數字！ 💰' },
+{ en: 'first', zh: '第一', hint: '1st，分類帽第一個叫誰？ 🎩' },
+{ en: 'second', zh: '第二', hint: '2nd，二年級要上什麼課？ 📚' },
+{ en: 'third', zh: '第三', hint: '3rd，第三個咒語是什麼？ 🪄' },
+{ en: 'fourth', zh: '第四', hint: '4th，第四學院的榮耀 🏅' },
+{ en: 'fifth', zh: '第五', hint: '5th，五年級要考普等巫測 📝' },
+{ en: 'twice', zh: '兩次', hint: '做了兩次才算熟練 🔄' },
+{ en: 'double', zh: '雙倍', hint: '雙倍的魔法力量 ✨✨' }
+    ],
+    /* -------- 🦴 人體現形術（身體部位） -------- */
+    body: [
+{ en: 'shoulder', zh: '肩膀', hint: '揹書包的位置 💪' },
+{ en: 'elbow', zh: '手肘', hint: '手彎曲的地方，小心不要撞到！ 💢' },
+{ en: 'wrist', zh: '手腕', hint: '戴手錶的地方 ⌚' },
+{ en: 'ankle', zh: '腳踝', hint: '腳和腿連接的地方 🦶' },
+{ en: 'thumb', zh: '大拇指', hint: '最粗最短的手指，比讚用的 👍' },
+{ en: 'pinky', zh: '小指', hint: '最細最小的手指 🤙' },
+{ en: 'palm', zh: '手掌', hint: '手心的那一面 🤲' },
+{ en: 'chin', zh: '下巴', hint: '嘴巴下面的骨頭 🧔' },
+{ en: 'cheek', zh: '臉頰', hint: '笑起來鼓鼓的地方 😊' },
+{ en: 'forehead', zh: '額頭', hint: '哈利波特閃電疤痕的位置 ⚡' },
+{ en: 'tongue', zh: '舌頭', hint: '念咒語要用舌頭 👅' },
+{ en: 'throat', zh: '喉嚨', hint: '吞嚥食物的地方 🗣️' },
+{ en: 'chest', zh: '胸膛', hint: '心臟在左邊喔 💓' },
+{ en: 'waist', zh: '腰', hint: '褲子皮帶的位置 👖' },
+{ en: 'hip', zh: '臀部', hint: '坐著的時候支撐身體 🪑' },
+{ en: 'heel', zh: '腳跟', hint: '腳的最後面，穿鞋子會碰到 👟' },
+{ en: 'knee', zh: '膝蓋', hint: '跪下或跑步要用到 🦵' },
+{ en: 'toe', zh: '腳趾', hint: '腳指頭，總共有十個 🦶' },
+{ en: 'knuckle', zh: '指關節', hint: '握拳頭時突出的骨頭 ✊' },
+{ en: 'eyebrow', zh: '眉毛', hint: '眼睛上面的毛髮，表達情緒 🤨' }
+    ],
+    /* -------- 🍺 蜂蜜公爵（食物 & 飲料） -------- */
+    food: [
+{ en: 'sandwich', zh: '三明治', hint: '兩片麵包夾著餡料 🥪' },
+{ en: 'hamburger', zh: '漢堡', hint: '中間夾著肉餅的麵包 🍔' },
+{ en: 'spaghetti', zh: '義大利麵', hint: '長長的麵條淋上醬汁 🍝' },
+{ en: 'pancake', zh: '鬆餅', hint: '早餐常吃的小圓餅，淋上蜂蜜 🥞' },
+{ en: 'doughnut', zh: '甜甜圈', hint: '中間有個洞的甜點 🍩' },
+{ en: 'popcorn', zh: '爆米花', hint: '看電影必備點心 🍿' },
+{ en: 'lemonade', zh: '檸檬汁', hint: '夏天喝的酸甜飲料 🍋' },
+{ en: 'smoothie', zh: '果昔', hint: '用水果和牛奶打成的飲料 🥤' },
+{ en: 'strawberry', zh: '草莓', hint: '紅色的心形水果 🍓' },
+{ en: 'watermelon', zh: '西瓜', hint: '夏天消暑的大水果 🍉' },
+{ en: 'pineapple', zh: '鳳梨', hint: '外皮像魚鱗的熱帶水果 🍍' },
+{ en: 'broccoli', zh: '花椰菜', hint: '綠色的蔬菜，像小樹一樣 🥦' },
+{ en: 'cucumber', zh: '小黃瓜', hint: '清爽的綠色蔬菜 🥒' },
+{ en: 'mushroom', zh: '蘑菇', hint: '有很多種，有些可以吃有些有毒 🍄' },
+{ en: 'salmon', zh: '鮭魚', hint: '粉紅色的魚肉，營養豐富 🐟' },
+{ en: 'noodle', zh: '麵條', hint: '東方人最常吃的主食 🍜' },
+{ en: 'dessert', zh: '甜點', hint: '飯後的甜蜜享受 🍰' },
+{ en: 'beverage', zh: '飲料', hint: '可以喝的液體總稱 🧃' },
+{ en: 'appetite', zh: '食慾', hint: '想吃的感覺，胃口大開 🤤' },
+{ en: 'recipe', zh: '食譜', hint: '教你怎麼做菜的說明 📝' }
+    ],
+    /* -------- 👨‍👩‍👧‍👦 家庭魔法（家人） -------- */
+    family: [
+{ en: 'cousin', zh: '堂／表兄弟姊妹', hint: '叔叔阿姨的小孩 👦👧' },
+{ en: 'nephew', zh: '姪子／外甥', hint: '兄弟姊妹的兒子 🧒' },
+{ en: 'niece', zh: '姪女／外甥女', hint: '兄弟姊妹的女兒 👧' },
+{ en: 'parent', zh: '父母', hint: '爸爸和媽媽的總稱 👨‍👩‍👧‍👦' },
+{ en: 'relative', zh: '親戚', hint: '有血緣關係的人 👪' },
+{ en: 'neighbor', zh: '鄰居', hint: '住在附近的人 🏘️' },
+{ en: 'classmate', zh: '同學', hint: '一起上課的夥伴 🎒' },
+{ en: 'principal', zh: '校長', hint: '學校裡最大的老師 👔' },
+{ en: 'librarian', zh: '圖書館員', hint: '管理圖書的人 📚' },
+{ en: 'stranger', zh: '陌生人', hint: '不認識的人 ⚠️' },
+{ en: 'guardian', zh: '監護人', hint: '照顧你健康長大的人 👨‍👩‍👧' },
+{ en: 'twin', zh: '雙胞胎', hint: '長得一模一樣的兄弟姊妹 👯' },
+{ en: 'adult', zh: '成年人', hint: '滿18歲以上的大人 🧑' },
+{ en: 'teenager', zh: '青少年', hint: '13到19歲的年輕人 🧑‍🎤' },
+{ en: 'ancestor', zh: '祖先', hint: '很久很久以前的家人 🏛️' },
+{ en: 'audience', zh: '觀眾', hint: '在台下看表演的人 👏' },
+{ en: 'captain', zh: '隊長', hint: '帶領團隊的領導者 ⚡' },
+{ en: 'enemy', zh: '敵人', hint: '和你作對的人 👿' }
+    ],
+    /* -------- 📚 霍格華茲日常（學校用品） -------- */
+    school: [
+{ en: 'subject', zh: '科目', hint: '在學校學的每一個課程 🎓' },
+{ en: 'geography', zh: '地理', hint: '學習世界各地的知識 🌍' },
+{ en: 'science', zh: '科學', hint: '做實驗、探索自然 🔬' },
+{ en: 'history', zh: '歷史', hint: '學習過去發生的事情 📜' },
+{ en: 'homework', zh: '家庭作業', hint: '放學後要完成的作業 📝' },
+{ en: 'examination', zh: '考試', hint: '測試你學會了多少 ✍️' },
+{ en: 'calendar', zh: '日曆', hint: '記錄日期與月份 📅' },
+{ en: 'calculator', zh: '計算機', hint: '算數學的好幫手 🔢' },
+{ en: 'dictionary', zh: '字典', hint: '查單字意思的工具書 📖' },
+{ en: 'sentence', zh: '句子', hint: '由單字組成的完整表達 📝' },
+{ en: 'paragraph', zh: '段落', hint: '好幾個句子組成一段 📄' },
+{ en: 'alphabet', zh: '字母表', hint: 'ABC...Z，英文的基礎 🔤' },
+{ en: 'vocabulary', zh: '字彙', hint: '你所認識的所有單字 📚' },
+{ en: 'curriculum', zh: '課程', hint: '學校安排的所有學習內容 📋' },
+{ en: 'scholarship', zh: '獎學金', hint: '給優秀學生的獎金 🏅' },
+{ en: 'knowledge', zh: '知識', hint: '你所學到的所有東西 🧠' },
+{ en: 'education', zh: '教育', hint: '學習與成長的過程 🎯' },
+{ en: 'university', zh: '大學', hint: '高中畢業後讀的學校 🏛️' },
+{ en: 'laboratory', zh: '實驗室', hint: '做科學實驗的地方 🧪' },
+{ en: 'graduation', zh: '畢業', hint: '完成學業的慶祝典禮 🎓' }
+    ],
+    /* -------- 🌤️ 天氣咒語（天氣 & 自然） -------- */
+    weather: [
+{ en: 'thunder', zh: '打雷', hint: '轟隆隆的巨大聲響 ⛈️' },
+{ en: 'lightning', zh: '閃電', hint: '天空中的閃亮電光 ⚡' },
+{ en: 'typhoon', zh: '颱風', hint: '台灣夏天常遇到的強烈風暴 🌀' },
+{ en: 'tornado', zh: '龍捲風', hint: '旋轉速度超快的風柱 🌪️' },
+{ en: 'earthquake', zh: '地震', hint: '地板搖搖晃晃的感覺 🌏' },
+{ en: 'foggy', zh: '有霧的', hint: '白茫茫一片看不清楚 🌫️' },
+{ en: 'storm', zh: '暴風雨', hint: '強風加上大雨的壞天氣 🌩️' },
+{ en: 'flood', zh: '洪水', hint: '雨水太多造成淹水 🌊' },
+{ en: 'drought', zh: '乾旱', hint: '很久不下雨，土地乾裂 🏜️' },
+{ en: 'sunrise', zh: '日出', hint: '太陽從東邊升起來 🌅' },
+{ en: 'sunset', zh: '日落', hint: '太陽從西邊落下去 🌇' },
+{ en: 'season', zh: '季節', hint: '春、夏、秋、冬 🍂❄️🌸☀️' },
+{ en: 'umbrella', zh: '雨傘', hint: '下雨天必備用品 ☂️' },
+{ en: 'icicle', zh: '冰柱', hint: '冬天屋簷下的尖尖冰塊 🧊' },
+{ en: 'avalanche', zh: '雪崩', hint: '大量積雪突然滑落 🏔️' },
+{ en: 'volcano', zh: '火山', hint: '會噴出岩漿的高山 🌋' },
+{ en: 'temperature', zh: '溫度', hint: '天氣冷熱的數字表示 🌡️' },
+{ en: 'climate', zh: '氣候', hint: '長期的天氣型態 🌍' }
+    ],
+    /* -------- 🏃 動態魔法（動作/動詞） -------- */
+    actions: [
+{ en: 'climb', zh: '爬', hint: '用手腳爬上樹或山 🧗' },
+{ en: 'crawl', zh: '爬行', hint: '用手肘和膝蓋在地上移動 🐛' },
+{ en: 'whisper', zh: '小聲說話', hint: '在別人耳邊輕輕地說 🤫' },
+{ en: 'shout', zh: '大喊', hint: '用大聲的聲音叫喊 🗣️' },
+{ en: 'collect', zh: '收集', hint: '把喜歡的東西蒐集起來 🪙' },
+{ en: 'measure', zh: '測量', hint: '用工具量長度或重量 📏' },
+{ en: 'compare', zh: '比較', hint: '看看哪裡不一樣 ⚖️' },
+{ en: 'imagine', zh: '想像', hint: '在腦海裡畫出畫面 🎨' },
+{ en: 'describe', zh: '描述', hint: '用語言把事物說清楚 📖' },
+{ en: 'explain', zh: '解釋', hint: '讓別人聽懂你的意思 💡' },
+{ en: 'discover', zh: '發現', hint: '找到以前不知道的東西 🔍' },
+{ en: 'invent', zh: '發明', hint: '做出全新的東西 💡' },
+{ en: 'celebrate', zh: '慶祝', hint: '為了好事而開心 🎉' },
+{ en: 'apologize', zh: '道歉', hint: '說對不起，請求原諒 🙏' },
+{ en: 'promise', zh: '承諾', hint: '答應一定會做到 🤝' },
+{ en: 'remember', zh: '記得', hint: '把東西記在腦袋裡 🧠' },
+{ en: 'forget', zh: '忘記', hint: '腦袋裡的東西不見了 😵' },
+{ en: 'prepare', zh: '準備', hint: '事先做好準備 📋' },
+{ en: 'protect', zh: '保護', hint: '守護不讓它受傷 🛡️' },
+{ en: 'separate', zh: '分開', hint: '把混在一起的分成兩邊 🔀' }
+    ],
+    /* -------- ✨ 形容魔法（形容詞） -------- */
+    adjectives: [
+{ en: 'gentle', zh: '溫柔的', hint: '輕輕柔柔的，很體貼 🕊️' },
+{ en: 'fierce', zh: '兇猛的', hint: '很兇、很有攻擊性 🦁' },
+{ en: 'curious', zh: '好奇的', hint: '很想知道的，一直問問題 🤔' },
+{ en: 'ancient', zh: '古老的', hint: '存在了很久很久的 🏛️' },
+{ en: 'modern', zh: '現代的', hint: '最新的款式設計 🏙️' },
+{ en: 'precious', zh: '珍貴的', hint: '非常非常重要、不能失去 💎' },
+{ en: 'popular', zh: '受歡迎的', hint: '很多人都喜歡 ⭐' },
+{ en: 'famous', zh: '有名的', hint: '很多人都知道 🤩' },
+{ en: 'dangerous', zh: '危險的', hint: '不安全、可能會受傷 ⚠️' },
+{ en: 'comfortable', zh: '舒服的', hint: '讓人感到放鬆安心 🛋️' },
+{ en: 'important', zh: '重要的', hint: '不可以忽視的 ❗' },
+{ en: 'possible', zh: '可能的', hint: '有機會發生的 ✅' },
+{ en: 'different', zh: '不同的', hint: '完全不一樣 🔄' },
+{ en: 'wonderful', zh: '精彩的', hint: '超級棒的體驗 🎆' },
+{ en: 'terrible', zh: '可怕的', hint: '非常糟糕的經驗 ☠️' },
+{ en: 'favorite', zh: '最喜歡的', hint: '在所有裡面最愛的 ❤️' },
+{ en: 'delicious', zh: '美味的', hint: '超級好吃的味道 😋' },
+{ en: 'interesting', zh: '有趣的', hint: '吸引人的、好玩的事 🤩' },
+{ en: 'difficult', zh: '困難的', hint: '不容易做到的事 🧗' },
+{ en: 'special', zh: '特別的', hint: '跟別人不一樣的 ✨' }
+    ]
+  };
+
+  // ===================================================================
+  //  第二部份：魔法應用程式狀態管理
+  // ===================================================================
+
+  /** 當前選中的單字分類名稱（對應 VOCABULARY 的 key） */
+  let currentCategory = 'irregular';
+
+  /** 當前分類的所有單字 */
+  let currentWords = [];
+
+  /**
+   * 學習狀態記錄。
+   * 結構：{ "英文單字": "known" 或 "unknown" }
+   *   - known   : 按下「學會了！」
+   *   - unknown : 按下「再練練」
+   * 不在物件中 = 還沒學過
+   */
+  let learningState = {};
+
+  /** 當前顯示的單字索引 */
+  let currentIndex = 0;
+
+  // ===== DOM 元素快取 =====
+  const dom = {
+    vocabSelect:       document.getElementById('vocabSelect'),
+    wordEn:            document.getElementById('wordEn'),
+    wordZh:            document.getElementById('wordZh'),
+    card:              document.getElementById('vocabCard'),
+    cardWrapper:       document.getElementById('cardWrapper'),
+    progressFill:      document.getElementById('progressFill'),
+    progressPercent:   document.getElementById('progressPercent'),
+    btnKnow:           document.getElementById('btnKnow'),
+    btnDontKnow:       document.getElementById('btnDontKnow'),
+    speakBtn:          document.getElementById('speakBtn'),
+    totalCount:        document.getElementById('totalCount'),
+    knownCount:        document.getElementById('knownCount'),
+    remainingCount:    document.getElementById('remainingCount'),
+    congratsMessage:   document.getElementById('congratsMessage'),
+    resetBtn:          document.getElementById('resetBtn'),
+  };
+
+  // ===================================================================
+  //  第三部份：核心魔法函式
+  // ===================================================================
+
+  /**
+   * 切換單字分類（像分類帽決定你今天要學哪一門課）
+   * @param {string} category - 分類名稱
+   */
+  function switchCategory(category) {
+    currentCategory = category;
+    // 複製單字陣列，避免修改到原始資料
+    currentWords = [...VOCABULARY[category]];
+    // 重置學習狀態
+    learningState = {};
+    currentIndex = 0;
+    // 隱藏恭喜畫面
+    dom.congratsMessage.style.display = 'none';
+    dom.card.style.display = '';
+    document.querySelector('.tap-hint').style.display = '';
+    document.querySelector('.action-buttons').style.display = '';
+    // 顯示第一個單字
+    showWord(currentIndex);
+    // 更新進度條與統計
+    updateProgress();
+  }
+
+  /**
+   * 顯示指定位置的第幾個單字
+   * @param {number} index - 單字的索引
+   */
+  function showWord(index) {
+    if (index < 0 || index >= currentWords.length) return;
+
+    const word = currentWords[index];
+    dom.wordEn.textContent = word.en;
+    dom.wordZh.textContent = word.zh;
+
+    // 卡片回到正面（英文面）
+    dom.card.classList.remove('flipped');
+  }
+
+  /**
+   * 施展翻轉咒 — 卡片 180 度翻轉，顯示另一面
+   * 這就像把單字從英文變成中文 ✨
+   */
+  function toggleCard() {
+    dom.card.classList.toggle('flipped');
+    // 翻轉時讓卡片外框發出微光
+    dom.cardWrapper.classList.add('glowing');
+    setTimeout(() => {
+      dom.cardWrapper.classList.remove('glowing');
+    }, 700);
+  }
+
+  /**
+   * 按下「學會了！」— 把這個咒語標記為已學會
+   * 就像妙麗把咒語記到腦海裡 📝
+   */
+  function handleKnow() {
+    const word = currentWords[currentIndex];
+    if (!word) return;
+
+    // 把這個單字標記為「學會了」
+    learningState[word.en] = 'known';
+    // 前進到下一個還沒學會的單字
+    advanceToNext();
+    // 更新進度條
+    updateProgress();
+  }
+
+  /**
+   * 按下「再練練」— 把這個單字放到待複習清單
+   * 就像奈威需要再多練習幾次咒語 🪄
+   */
+  function handleDontKnow() {
+    const word = currentWords[currentIndex];
+    if (!word) return;
+
+    // 如果之前標記為「學會了」，現在取消（表示其實還不太熟）
+    if (learningState[word.en] === 'known') {
+      delete learningState[word.en];
+    }
+    // 標記為「再練練」
+    learningState[word.en] = 'unknown';
+    // 前進到下一個單字
+    advanceToNext();
+    // 更新進度條
+    updateProgress();
+  }
+
+  /**
+   * 前進到下一個還沒學會的單字
+   * 如果全部學會了，就顯示慶祝畫面 🏆
+   */
+  function advanceToNext() {
+    let nextIndex = currentIndex + 1;
+
+    // 往後找第一個「還沒學會」的單字
+    while (nextIndex < currentWords.length) {
+      if (learningState[currentWords[nextIndex].en] !== 'known') {
+        break;
+      }
+      nextIndex++;
+    }
+
+    if (nextIndex < currentWords.length) {
+      currentIndex = nextIndex;
+      showWord(currentIndex);
+    } else {
+      // 檢查是不是真的全部學會了
+      const allLearned = currentWords.every(w => learningState[w.en] === 'known');
+      if (allLearned) {
+        showCongrats();
+      } else {
+        // 安全機制：如果還有沒學會的但沒找到，顯示最後一個
+        currentIndex = currentWords.length - 1;
+        showWord(currentIndex);
+      }
+    }
+  }
+
+  /**
+   * 太棒了！全部學會了，顯示慶祝畫面 🎉🏆🎉
+   */
+  function showCongrats() {
+    dom.congratsMessage.style.display = 'block';
+    dom.card.style.display = 'none';
+    document.querySelector('.tap-hint').style.display = 'none';
+    document.querySelector('.action-buttons').style.display = 'none';
+  }
+
+  /**
+   * 更新魔法進度條 + 統計數字
+   * 進度條會閃閃發光 ✨
+   */
+  function updateProgress() {
+    const total = currentWords.length;
+    const known = currentWords.filter(w => learningState[w.en] === 'known').length;
+    const remaining = currentWords.filter(w => learningState[w.en] === 'unknown').length;
+    const percent = total > 0 ? Math.floor((known / total) * 100) : 0;
+
+    dom.progressFill.style.width = `${percent}%`;
+    dom.progressPercent.textContent = `${percent}%`;
+
+    dom.totalCount.textContent = total;
+    dom.knownCount.textContent = known;
+    dom.remainingCount.textContent = remaining;
+  }
+
+  // ===================================================================
+  //  第四部份：🔊 語音朗讀 — 讓 Mac 用美式發音唸咒語
+  //  使用瀏覽器原生的 SpeechSynthesis API，不需要網路也不用抓音檔
+  // ===================================================================
+
+  /**
+   * 用標準美式發音朗讀指定的英文單字
+   *   - 語速調慢一點 (0.85) 讓小朋友聽得清楚
+   *   - 設定為美式英文 (en-US)
+   *
+   * @param {string} text - 要朗讀的英文單字
+   */
+  function speakText(text) {
+    // 檢查瀏覽器有沒有支援語音功能
+    if (!window.speechSynthesis) {
+      console.warn('⚠️ 這個瀏覽器不支援語音朗讀喔～');
+      return;
+    }
+
+    // 建立一個「朗讀任務」，告訴瀏覽器要唸什麼
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    // 設定成美式發音（en-US）
+    utterance.lang = 'en-US';
+
+    // 語速 0.85，比正常慢一點，小朋友更容易聽清楚
+    utterance.rate = 0.85;
+
+    // 音調保持正常
+    utterance.pitch = 1.0;
+
+    // 音量最大聲
+    utterance.volume = 1.0;
+
+    // 語音開始時，讓小喇叭按鈕亮起來動畫
+    utterance.onstart = () => {
+      dom.speakBtn.classList.add('speaking');
+    };
+
+    // 語音結束時，關閉動畫
+    utterance.onend = () => {
+      dom.speakBtn.classList.remove('speaking');
+    };
+
+    // 如果出錯了也要關閉動畫
+    utterance.onerror = () => {
+      dom.speakBtn.classList.remove('speaking');
+    };
+
+    // 開始朗讀！
+    window.speechSynthesis.speak(utterance);
+  }
+
+  // ===================================================================
+  //  第五部份：創造飄浮的魔法星星 ✨
+  //  這些小星星會在背景飄來飄去，像霍格華茲大廳的魔法天花板
+  // ===================================================================
+
+  /**
+   * 產生飄浮的星星粒子，讓畫面更有魔法感。
+   * 每個星星都會從底部慢慢飄到頂部。
+   */
+  function createMagicParticles() {
+    const container = document.getElementById('magicParticles');
+    const count = 30;  // 30 顆星星
+
+    for (let i = 0; i < count; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+
+      // 隨機設定每個星星的大小、位置、飄浮速度
+      const size = Math.random() * 3 + 2;        // 2~5 像素
+      const left = Math.random() * 100;           // 水平位置 0~100%
+      const duration = Math.random() * 10 + 15;   // 飄浮時間 15~25 秒
+      const delay = Math.random() * 20;           // 延遲開始 0~20 秒
+      const opacity = Math.random() * 0.5 + 0.2;  // 亮度 0.2~0.7
+
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${left}%`;
+      particle.style.animationDuration = `${duration}s`;
+      particle.style.animationDelay = `${delay}s`;
+      particle.style.opacity = opacity;
+
+      // 偶爾讓星星是金色或銀色
+      if (Math.random() > 0.7) {
+        particle.style.background = '#d4af37';
+        particle.style.boxShadow = '0 0 8px 3px rgba(212, 175, 55, 0.3)';
+      }
+
+      container.appendChild(particle);
+    }
+  }
+
+  // 一進頁面就開始飄星星 ✨
+  createMagicParticles();
+
+  // ===================================================================
+  //  第六部份：事件綁定 — 把按鈕跟功能連起來
+  // ===================================================================
+
+  /**
+   * 🎩 分類帽下拉選單：切換單字分類
+   */
+  dom.vocabSelect.addEventListener('change', function () {
+    switchCategory(this.value);
+  });
+
+  /**
+   * 🃏 點擊卡片施展翻轉咒
+   */
+  dom.card.addEventListener('click', function (e) {
+    // 如果點到的是語音按鈕，不要翻轉卡片
+    if (e.target.closest('.speak-btn')) return;
+    toggleCard();
+  });
+
+  /**
+   * 🔊 語音朗讀按鈕：唸出當前的英文單字
+   */
+  dom.speakBtn.addEventListener('click', function (e) {
+    // 防止同時觸發卡片翻轉
+    e.stopPropagation();
+
+    const word = currentWords[currentIndex];
+    if (word) {
+      speakText(word.en);
+    }
+  });
+
+  /**
+   * 🪄 學會了！按鈕
+   */
+  dom.btnKnow.addEventListener('click', handleKnow);
+
+  /**
+   * 📖 再練練按鈕
+   */
+  dom.btnDontKnow.addEventListener('click', handleDontKnow);
+
+  /**
+   * 🔄 重新學習按鈕（重置當前的分類）
+   */
+  dom.resetBtn.addEventListener('click', function () {
+    learningState = {};
+    currentIndex = 0;
+    dom.congratsMessage.style.display = 'none';
+    dom.card.style.display = '';
+    document.querySelector('.tap-hint').style.display = '';
+    document.querySelector('.action-buttons').style.display = '';
+    showWord(currentIndex);
+    updateProgress();
+  });
+
+  /**
+   * ⌨️ 鍵盤快捷鍵（方便大人幫小朋友操作）
+   *   空白鍵 / Enter : 翻轉卡片
+   *   A / a          : 學會了！
+   *   S / s          : 再練練
+   *   左 / 右方向鍵  : 上下一個單字（不影響學習狀態）
+   */
+  document.addEventListener('keydown', function (e) {
+    // 如果正在打字，不要觸發快捷鍵
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+
+    switch (e.key) {
+      case ' ':
+      case 'Enter':
+        e.preventDefault();
+        toggleCard();
+        break;
+      case 'a':
+      case 'A':
+        handleKnow();
+        break;
+      case 's':
+      case 'S':
+        handleDontKnow();
+        break;
+      case 'ArrowLeft':
+        if (currentIndex > 0) {
+          currentIndex--;
+          showWord(currentIndex);
+          updateProgress();
+        }
+        break;
+      case 'ArrowRight':
+        if (currentIndex < currentWords.length - 1) {
+          currentIndex++;
+          showWord(currentIndex);
+          updateProgress();
+        }
+        break;
+    }
+  });
+
+  // ===================================================================
+  //  第七部份：初始化 — 一打開頁面就開始魔法學習！
+  // ===================================================================
+
+  /**
+   * 頁面載入後，預設顯示「奇獸飼育學（動物）」分類。
+   * 就像新生入學第一年先學簡單的咒語一樣 🧙‍♂️
+   */
+  switchCategory('irregular');
+
+  /**
+   * 第一次點擊頁面時，預先載入語音系統。
+   * 這是因為有些瀏覽器需要使用者先點一下才能使用語音功能。
+   */
+  document.addEventListener('click', function initVoices() {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
+    }
+    document.removeEventListener('click', initVoices);
+  }, { once: true });
+  </script>
+
+</body>
+</html>
