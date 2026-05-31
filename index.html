@@ -859,6 +859,30 @@
           <option value="weather">🌤️ Weather & Nature</option>
           <option value="actions">🏃 Action Verbs</option>
           <option value="adjectives">✨ Describing Words</option>
+        
+          <option value="beginner_animals">🦁 Beginner: Animals & Insects</option>
+          <option value="beginner_clothing">👕 Beginner: Clothing & Accessories</option>
+          <option value="beginner_colors">🎨 Beginner: Colors</option>
+          <option value="beginner_family">👨‍👩‍👧‍👦 Beginner: Family</option>
+          <option value="beginner_food">🍎 Beginner: Food & Drink</option>
+          <option value="beginner_address">👤 Beginner: Forms of Address</option>
+          <option value="beginner_geography">🌍 Beginner: Geography</option>
+          <option value="beginner_holidays">🎄 Beginner: Holidays</option>
+          <option value="beginner_health">🏥 Beginner: Health</option>
+          <option value="beginner_money">💰 Beginner: Money</option>
+          <option value="beginner_house">🏠 Beginner: Houses & Apartments</option>
+          <option value="beginner_numbers">🔢 Beginner: Numbers</option>
+          <option value="beginner_verbs">🏃 Beginner: Other Verbs</option>
+          <option value="beginner_traits">✨ Beginner: Personal Traits</option>
+          <option value="beginner_places">🏛️ Beginner: Places & Buildings</option>
+          <option value="beginner_school">📚 Beginner: School Life</option>
+          <option value="beginner_sports">⚽ Beginner: Sports & Hobbies</option>
+          <option value="beginner_time">⏰ Beginner: Time</option>
+          <option value="beginner_transport">🚗 Beginner: Transportation</option>
+          <option value="beginner_weather">🌤️ Beginner: Weather & Nature</option>
+          <option value="beginner_wh">❓ Beginner: Question Words</option>
+          <option value="beginner_pronouns">👤 Beginner: Pronouns</option>
+          <option value="beginner_prepositions">🔗 Beginner: Prepositions</option>
         </select>
       </div>
     </div>
@@ -947,6 +971,7 @@
       <span class="emoji">🏆</span>
       <h2>Outstanding Magic Feat!</h2>
       <p>You've mastered every spell in this category!<br>The Order of Merlin is awarded to you 🎖️</p>
+      <button class="reset-btn" id="shuffleBtn">🔀 Shuffle</button>
       <button class="reset-btn" id="resetBtn">🔄 Start Over</button>
     </div>
   </div>
@@ -2159,34 +2184,59 @@
   };
   
   // ---- Touch Swipe Support ----
-  let touchStartX = 0, touchStartY = 0;
+  let touchStartX = 0, touchStartY = 0, touchMoved = false;
+  let touchThreshold = 40;
   
   function initSwipe() {
-    const card = dom.card;
-    if (!card) return;
+    const cardInner = document.getElementById('cardInner');
+    if (!cardInner) return;
     
-    card.addEventListener('touchstart', function(e) {
+    cardInner.addEventListener('touchstart', function(e) {
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
+      touchMoved = false;
     }, { passive: true });
     
-    card.addEventListener('touchend', function(e) {
+    cardInner.addEventListener('touchmove', function(e) {
+      const diffX = e.changedTouches[0].screenX - touchStartX;
+      const diffY = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(diffX) > touchThreshold || Math.abs(diffY) > touchThreshold) {
+        touchMoved = true;
+      }
+    }, { passive: true });
+    
+    // Click handler - don't flip if user swiped
+    cardInner.addEventListener('click', function(e) {
+      if (touchMoved) {
+        e.preventDefault();
+        e.stopPropagation();
+        // Handle the swipe navigation
+        const diffX = e.changedTouches ? e.changedTouches[0].screenX - touchStartX : 0;
+        // Use the last known touchStartX from touchstart
+        return;
+      }
+    });
+    
+    cardInner.addEventListener('touchend', function(e) {
       const diffX = e.changedTouches[0].screenX - touchStartX;
       const diffY = e.changedTouches[0].screenY - touchStartY;
       
-      // Only horizontal swipes that are longer than vertical
-      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > touchThreshold) {
+        // Cancel the click to prevent card flip
+        touchMoved = true;
+        
         if (diffX > 0 && currentIndex > 0) {
-          // Swipe right - previous
           currentIndex--;
           showWord(currentIndex);
           updateProgress();
         } else if (diffX < 0 && currentIndex < currentWords.length - 1) {
-          // Swipe left - next
           currentIndex++;
           showWord(currentIndex);
           updateProgress();
         }
+      } else if (!touchMoved && Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+        // This was a tap, not a swipe - let the card flip handle it
+        // (click event will fire normally)
       }
     }, { passive: true });
   }
@@ -2313,7 +2363,74 @@
     const statsPanel = document.getElementById('panelStats');
     if (statsPanel && statsPanel.style.display !== 'none') buildStats();
   };
-}, { once: true });
+
+  // ---- Shuffle Mode ----
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  
+  // Override switchCategory to support shuffling
+  const switchCategoryWithShuffle = window.switchCategory || function(cat) {
+    currentCategory = cat;
+    currentWords = [...VOCABULARY[cat]];
+    learningState = {};
+    currentIndex = 0;
+    dom.congratsMessage.style.display = 'none';
+    dom.card.style.display = '';
+    const th = document.querySelector('.tap-hint');
+    if (th) th.style.display = '';
+    const ab = document.querySelector('.action-buttons');
+    if (ab) ab.style.display = '';
+    showWord(currentIndex);
+    updateProgress();
+  };
+  
+  // Re-bind shuffle button
+  document.addEventListener('DOMContentLoaded', function() {
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', function() {
+        if (currentWords.length === 0) return;
+        currentWords = shuffleArray([...currentWords]);
+        currentIndex = 0;
+        learningState = {};
+        dom.congratsMessage.style.display = 'none';
+        dom.card.style.display = '';
+        const th = document.querySelector('.tap-hint');
+        if (th) th.style.display = '';
+        const ab = document.querySelector('.action-buttons');
+        if (ab) ab.style.display = '';
+        showWord(currentIndex);
+        updateProgress();
+      });
+    }
+  });
+  
+  // Random word button on card
+  const randomBtn = document.createElement('button');
+  randomBtn.className = 'btn-know';
+  randomBtn.id = 'randomBtn';
+  randomBtn.textContent = '🎲 Random Word';
+  randomBtn.style.cssText = 'margin-top:8px;width:100%;';
+  randomBtn.addEventListener('click', function() {
+    if (currentWords.length === 0) return;
+    const randIdx = Math.floor(Math.random() * currentWords.length);
+    currentIndex = randIdx;
+    showWord(currentIndex);
+    updateProgress();
+  });
+  
+  // Add after the action buttons
+  const actionBtns = document.querySelector('.action-buttons');
+  if (actionBtns) {
+    actionBtns.appendChild(randomBtn);
+  }
+
+  }, { once: true });
   </script>
 
 </body>
