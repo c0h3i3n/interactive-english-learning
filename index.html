@@ -2568,26 +2568,6 @@
     }
   });
   
-  // Random word button on card
-  const randomBtn = document.createElement('button');
-  randomBtn.className = 'btn-know';
-  randomBtn.id = 'randomBtn';
-  randomBtn.textContent = '🎲 Random Word';
-  randomBtn.style.cssText = 'margin-top:8px;width:100%;';
-  randomBtn.addEventListener('click', function() {
-    if (currentWords.length === 0) return;
-    const randIdx = Math.floor(Math.random() * currentWords.length);
-    currentIndex = randIdx;
-    showWord(currentIndex);
-    updateProgress();
-  });
-  
-  // Add after the action buttons
-  const actionBtns = document.querySelector('.action-buttons');
-  if (actionBtns) {
-    actionBtns.appendChild(randomBtn);
-  }
-  
   // ---- Shuffle Mode ----
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
