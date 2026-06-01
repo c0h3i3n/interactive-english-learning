@@ -842,15 +842,87 @@
   <div class="magic-particles" id="magicParticles"></div>
 
   <!-- ===== 左上角裝飾 ===== -->
-  <div class="corner-star">✦</div>
-    <div class="candle-glow"></div>
+  <div class="corner-star">✦
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+    <div class="candle-glow">
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
     <div class="candle-glow right"></div>
 
   <div class="container" id="app">
     <!-- ===== 頂部：魔法書標題 + 分類帽下拉選單 ===== -->
     <div class="header">
       <h1>🔮 Hogwarts Spellbook</h1>
-      <div class="streak-badge" id="streakBadge"><span class="streak-fire">🔥</span> <span id="streakCount">0</span> day streak</div>
+      <div class="streak-badge" id="streakBadge"><span class="streak-fire">🔥</span> <span id="streakCount">0</span> day streak
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
       <div class="vocab-selector">
         <select id="vocabSelect">
           <option value="irregular">🔮 Irregular Verbs</option>
@@ -912,8 +984,38 @@
           <option value="beginner_wh">❓ Beginner: Question Words</option>
           <option value="beginner_pronouns">👤 Beginner: Pronouns</option>
           <option value="beginner_prepositions">🔗 Beginner: Prepositions</option>
+        
+          <option value="magic_spells">🪄 Spells & Charms</option>
+          <option value="magic_creatures">🐲 Magical Creatures</option>
+          <option value="magic_places">🏚️ Hogwarts & Wizarding World</option>
+          <option value="magic_items">✨ Wizarding Items & Artifacts</option>
+          <option value="advanced_vocab">📚 Advanced: Academic & Professional</option>
         </select>
+      
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
     </div>
 
     <!-- ===== Progress Bar ===== -->
@@ -921,10 +1023,82 @@
       <div class="progress-header">
         <span class="progress-label">📜 Learning Progress</span>
         <span class="progress-percent" id="progressPercent">0%</span>
+      
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
       <div class="progress-track">
-        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-fill" id="progressFill">
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+      
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
     </div>
 
     <!-- ===== Vocabulary Card ===== -->
@@ -938,19 +1112,211 @@
           <!-- Front: English — The original spell -->
           <div class="card-face card-front">
             <span class="card-lang-tag">✨ Incantation</span>
-            <div class="card-word en" id="wordEn">Cat</div>
-            <div class="card-hint">👆 Tap to reveal</div>
+            <div class="card-word en" id="wordEn">Cat
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+            <div class="card-hint">👆 Tap to reveal
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
             <button class="speak-btn" id="speakBtn" title="Read aloud" aria-label="Read aloud">🔊</button>
           <button class="voice-toggle" id="voiceToggle" title="Toggle accent" style="position:absolute;bottom:8px;right:8px;background:none;border:1px solid rgba(212,175,55,0.2);border-radius:8px;color:#d4af37;font-size:11px;padding:2px 8px;cursor:pointer;z-index:2;">US</button>
-          </div>
+          
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
           <!-- Back: Definition — The meaning -->
           <div class="card-face card-back">
             <span class="card-lang-tag">🔮 Definition</span>
-            <div class="card-word zh" id="wordZh">a small furry pet that purrs</div>
-            <div class="card-hint">👆 Tap to flip back</div>
-          </div>
+            <div class="card-word zh" id="wordZh">a small furry pet that purrs
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
         </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+            <div class="card-hint">👆 Tap to flip back
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+          
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+        
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+      
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
     </div>
 
     <div class="tap-hint">✨ Tap the card to flip it ✨</div>
@@ -974,29 +1340,271 @@
       <div class="quiz-tabs" id="quizTabs">
         <button class="quiz-tab active" data-mode="flashcard">🃏 Flashcards</button>
         <button class="quiz-tab" data-mode="choice">🎯 Multiple Choice</button>
+        <button class="quiz-tab" data-mode="listening">🔊 Listening</button>
+        <button class="quiz-tab" data-mode="spelling">✏️ Spelling</button>
         <button class="quiz-tab" data-mode="stats">📊 Stats</button>
+      
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
       
       <!-- Flashcard Mode (default view) -->
       <div class="quiz-panel active" id="panelFlashcard">
         <!-- Normal flashcard content is shown above -->
+      
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
       
       <!-- Multiple Choice Mode -->
       <div class="quiz-panel" id="panelChoice" style="display:none;">
-        <div id="choiceQuestion"></div>
-        <div id="choiceOptions"></div>
-        <div id="choiceFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
-        <button class="btn-know" id="choiceNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+        <div id="choiceQuestion">
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+        <div id="choiceOptions">
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+        <div id="choiceFeedback" style="margin-top:12px;text-align:center;font-size:14px;">
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+        <button class="btn-know" id="choiceNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
       
       <!-- Stats Mode -->
       <div class="quiz-panel" id="panelStats" style="display:none;">
-        <div class="stats-grid" id="statsGrid"></div>
-        <div style="margin-top:16px;">
-          <div id="categoryChart" style="height:120px;display:flex;gap:6px;align-items:flex-end;padding-top:10px;"></div>
+        <div class="stats-grid" id="statsGrid">
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
         </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+        <div style="margin-top:16px;">
+          <div id="categoryChart" style="height:120px;display:flex;gap:6px;align-items:flex-end;padding-top:10px;">
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+        
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+      
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
     </div>
 
     <!-- ===== Celebration ===== -->
@@ -2107,7 +2715,121 @@
       { en: 'with', zh: 'together or in the company of', hint: '' }
     ],
     
-};
+
+    magic_spells: [
+      { en: 'Alohomora', zh: 'a spell that unlocks doors and locks', hint: '' },
+      { en: 'Expecto Patronum', zh: 'a charm that conjures a guardian spirit against Dementors', hint: '' },
+      { en: 'Wingardium Leviosa', zh: 'a levitation charm that makes objects float', hint: '' },
+      { en: 'Accio', zh: 'a summoning charm that brings objects to the caster', hint: '' },
+      { en: 'Lumos', zh: 'a charm that creates light at the tip of the wand', hint: '' },
+      { en: 'Nox', zh: 'a charm that extinguishes wand light', hint: '' },
+      { en: 'Expelliarmus', zh: 'a disarming charm that knocks weapons from the opponent\'s hand', hint: '' },
+      { en: 'Stupefy', zh: 'a stunning spell that renders the target unconscious', hint: '' },
+      { en: 'Petrificus Totalus', zh: 'a full body-bind curse that freezes the target', hint: '' },
+      { en: 'Obliviate', zh: 'a memory charm that erases or modifies memories', hint: '' },
+      { en: 'Protego', zh: 'a shield charm that deflects spells and physical objects', hint: '' },
+      { en: 'Riddikulus', zh: 'a charm used to defeat a Boggart by turning it into something funny', hint: '' },
+      { en: 'Finite Incantatem', zh: 'a spell that stops any ongoing magical effects', hint: '' },
+      { en: 'Revelio', zh: 'a revealing charm that makes hidden objects or messages appear', hint: '' },
+      { en: 'Legilimens', zh: 'a spell that allows the caster to enter the target\'s mind', hint: '' },
+      { en: 'Crucio', zh: 'the Cruciatus Curse, a torture spell - one of the Unforgivable Curses', hint: '' },
+      { en: 'Imperio', zh: 'the Imperius Curse, which gives total control over the victim', hint: '' },
+      { en: 'Avada Kedavra', zh: 'the Killing Curse, a deadly green flash - one of the Unforgivables', hint: '' },
+      { en: 'Aparecium', zh: 'a spell that reveals hidden writing or invisible ink', hint: '' },
+      { en: 'Sectumsempra', zh: 'a curse that causes deep, bleeding cuts on the target', hint: '' }
+    ],
+    magic_creatures: [
+      { en: 'Hippogriff', zh: 'a magical creature with the head of an eagle and body of a horse', hint: '' },
+      { en: 'Phoenix', zh: 'a immortal bird that bursts into flames and is reborn from its ashes', hint: '' },
+      { en: 'Basilisk', zh: 'a giant serpent whose gaze can kill, also known as the King of Serpents', hint: '' },
+      { en: 'Thestral', zh: 'a winged horse-like creature only visible to those who have witnessed death', hint: '' },
+      { en: 'Dragon', zh: 'a large, winged, fire-breathing magical reptile', hint: '' },
+      { en: 'House Elf', zh: 'a small magical creature bound to serve a wizard family', hint: '' },
+      { en: 'Goblin', zh: 'a clever, long-fingered creature that runs Gringotts bank', hint: '' },
+      { en: 'Centaur', zh: 'a wise creature with the upper body of a human and lower body of a horse', hint: '' },
+      { en: 'Unicorn', zh: 'a pure, horse-like creature with a single horn on its forehead', hint: '' },
+      { en: 'Werewolf', zh: 'a human who transforms into a wolf during the full moon', hint: '' },
+      { en: 'Acromantula', zh: 'a giant, eight-eyed spider that can speak human language', hint: '' },
+      { en: 'Boggart', zh: 'a shape-shifting creature that takes the form of the viewer\'s greatest fear', hint: '' },
+      { en: 'Dementor', zh: 'a dark, hooded creature that feeds on human happiness and souls', hint: '' },
+      { en: 'Kneazle', zh: 'a cat-like creature with spotted fur and a long, fluffy tail', hint: '' },
+      { en: 'Niffler', zh: 'a small, duck-billed creature obsessed with shiny objects and gold', hint: '' },
+      { en: 'Grindylow', zh: 'a green, horned water demon that lives in lakes and rivers', hint: '' },
+      { en: 'Merperson', zh: 'a creature with a human upper body and a fish tail, living underwater', hint: '' },
+      { en: 'Flobberworm', zh: 'a long, brown worm that lives in damp ditches and is very boring', hint: '' },
+      { en: 'Occamy', zh: 'a snake-like bird that can grow or shrink to fit available space', hint: '' }
+    ],
+    magic_places: [
+      { en: 'Gryffindor', zh: 'the Hogwarts house valuing bravery, daring, and chivalry', hint: '' },
+      { en: 'Hufflepuff', zh: 'the Hogwarts house valuing hard work, loyalty, and fairness', hint: '' },
+      { en: 'Ravenclaw', zh: 'the Hogwarts house valuing intelligence, wisdom, and creativity', hint: '' },
+      { en: 'Slytherin', zh: 'the Hogwarts house valuing ambition, cunning, and resourcefulness', hint: '' },
+      { en: 'Quidditch', zh: 'a fast, dangerous sport played on broomsticks with four balls', hint: '' },
+      { en: 'Sorting Hat', zh: 'a magical hat that assigns students to their Hogwarts house', hint: '' },
+      { en: 'Great Hall', zh: 'the main dining hall at Hogwarts with an enchanted ceiling', hint: '' },
+      { en: 'Forbidden Forest', zh: 'a dense, dangerous forest on Hogwarts grounds filled with magical creatures', hint: '' },
+      { en: 'Chamber of Secrets', zh: 'a hidden chamber in Hogwarts built by Salazar Slytherin', hint: '' },
+      { en: 'Room of Requirement', zh: 'a secret room in Hogwarts that transforms to meet the seeker\'s needs', hint: '' },
+      { en: 'Diagon Alley', zh: 'a hidden wizarding street in London full of magical shops', hint: '' },
+      { en: 'Hogsmeade', zh: 'the only entirely wizarding village in Britain, near Hogwarts', hint: '' },
+      { en: 'Gringotts', zh: 'the wizarding bank run by goblins, deep underground', hint: '' },
+      { en: 'Ollivanders', zh: 'a famous wand shop in Diagon Alley, owned by Mr. Ollivander', hint: '' },
+      { en: 'Ministry of Magic', zh: 'the governing body of the wizarding world in Britain', hint: '' },
+      { en: 'Azkaban', zh: 'a terrifying wizarding prison guarded by Dementors', hint: '' },
+      { en: 'Hogwarts Express', zh: 'the scarlet steam train that takes students to Hogwarts from Platform 9 3/4', hint: '' },
+      { en: 'Platform 9 3/4', zh: 'the hidden train platform at King\'s Cross Station for wizards', hint: '' }
+    ],
+    magic_items: [
+      { en: 'Wand', zh: 'a magical stick used by witches and wizards to cast spells', hint: '' },
+      { en: 'Broomstick', zh: 'a flying broom used by witches and wizards for travel and Quidditch', hint: '' },
+      { en: 'Cauldron', zh: 'a large metal pot used for brewing potions', hint: '' },
+      { en: 'Invisibility Cloak', zh: 'a cloak that makes the wearer completely invisible', hint: '' },
+      { en: "Marauder's Map", zh: "a magical map showing every person\'s location within Hogwarts", hint: "" },
+      { en: 'Time-Turner', zh: 'a small hourglass that allows the user to travel back in time', hint: '' },
+      { en: 'Pensieve', zh: 'a stone basin used to view and store memories', hint: '' },
+      { en: 'Portkey', zh: 'an enchanted object that instantly transports anyone touching it', hint: '' },
+      { en: 'Floo Powder', zh: 'a green powder used to travel through fireplaces and fire networks', hint: '' },
+      { en: 'Golden Snitch', zh: 'the small, fast, winged ball in Quidditch that ends the game when caught', hint: '' },
+      { en: 'Horcrux', zh: 'a dark magical object containing a piece of a dark wizard\'s soul', hint: '' },
+      { en: 'Philosopher's Stone', zh: 'a legendary stone that produces the Elixir of Life and turns metal to gold', hint: '' },
+      { en: 'Mirror of Erised', zh: 'a magical mirror that shows the deepest desire of the person looking into it', hint: '' },
+      { en: 'Deluminator', zh: 'a magical device that captures and releases light from street lamps', hint: '' },
+      { en: 'Howler', zh: 'a red magical letter that shouts its contents loudly when opened', hint: '' },
+      { en: 'Remembrall', zh: 'a small glass ball filled with smoke that turns red when something is forgotten', hint: '' }
+    ],
+    advanced_vocab: [
+      { en: 'analyze', zh: 'to examine something in detail to understand its parts or meaning', hint: '' },
+      { en: 'significant', zh: 'important or large enough to be noticed or have an effect', hint: '' },
+      { en: 'consequently', zh: 'as a result or effect of something that happened before', hint: '' },
+      { en: 'establish', zh: 'to set up, create, or prove something on a firm basis', hint: '' },
+      { en: 'implement', zh: 'to put a plan, decision, or system into effect', hint: '' },
+      { en: 'inevitable', zh: 'certain to happen and impossible to avoid', hint: '' },
+      { en: 'phenomenon', zh: 'a fact or event that can be observed and studied', hint: '' },
+      { en: 'hypothesis', zh: 'a proposed explanation that can be tested through investigation', hint: '' },
+      { en: 'methodology', zh: 'a system of methods used in a particular area of study or activity', hint: '' },
+      { en: 'perspective', zh: 'a particular way of viewing or thinking about something', hint: '' },
+      { en: 'contribute', zh: 'to give something, such as time, money, or ideas, to help achieve something', hint: '' },
+      { en: 'demonstrate', zh: 'to clearly show or prove something through evidence or action', hint: '' },
+      { en: 'emphasize', zh: 'to give special importance or attention to something', hint: '' },
+      { en: 'facilitate', zh: 'to make an action or process easier or smoother', hint: '' },
+      { en: 'implication', zh: 'a possible future effect or result of an action or decision', hint: '' },
+      { en: 'innovation', zh: 'a new method, idea, or product that improves something', hint: '' },
+      { en: 'maintain', zh: 'to keep something in good condition or at the same level', hint: '' },
+      { en: 'negotiate', zh: 'to discuss something in order to reach an agreement', hint: '' },
+      { en: 'participate', zh: 'to take part or become involved in an activity', hint: '' },
+      { en: 'phenomenon', zh: 'a remarkable event, fact, or person that can be observed', hint: '' },
+      { en: 'principle', zh: 'a fundamental truth or rule that guides behavior or reasoning', hint: '' },
+      { en: 'procedure', zh: 'an established or official way of doing something', hint: '' },
+      { en: 'resource', zh: 'a supply of something that can be used when needed', hint: '' },
+      { en: 'strategy', zh: 'a long-term plan designed to achieve a particular goal', hint: '' },
+      { en: 'sufficient', zh: 'enough to meet a need or purpose; adequate', hint: '' },
+      { en: 'tradition', zh: 'a long-established custom or belief passed through generations', hint: '' },
+      { en: 'ultimately', zh: 'finally or in the end, after everything else has been considered', hint: '' },
+      { en: 'vulnerable', zh: 'open to being hurt, attacked, or harmed physically or emotionally', hint: '' },
+      { en: 'widespread', zh: 'existing or happening over a large area or among many people', hint: '' },
+      { en: 'accumulate', zh: 'to gather or collect over time, bit by bit', hint: '' }
+    ],
+  };
 
   // ===================================================================
   //  第二部份：魔法應用程式狀態管理
@@ -2441,6 +3163,7 @@
   };
 
   createMagicParticles();
+  createTwinkleStars();
 
   // ===================================================================
   //  Part 6: Event Binding — Connect Buttons to Functions
@@ -2766,10 +3489,106 @@
     });
     
     grid.innerHTML = `
-      <div class="stat-card"><span class="stat-value">${totalLearned}</span><span class="stat-label">Words Learned</span></div>
-      <div class="stat-card"><span class="stat-value">${mastered}</span><span class="stat-label">Mastered</span></div>
-      <div class="stat-card"><span class="stat-value">${learning}</span><span class="stat-label">In Progress</span></div>
-      <div class="stat-card"><span class="stat-value">${currentStreak}</span><span class="stat-label">Day Streak</span></div>
+      <div class="stat-card"><span class="stat-value">${totalLearned}</span><span class="stat-label">Words Learned</span>
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+      <div class="stat-card"><span class="stat-value">${mastered}</span><span class="stat-label">Mastered</span>
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+      <div class="stat-card"><span class="stat-value">${learning}</span><span class="stat-label">In Progress</span>
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+      <div class="stat-card"><span class="stat-value">${currentStreak}</span><span class="stat-label">Day Streak</span>
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
     `;
     
     // Category breakdown
@@ -2796,8 +3615,56 @@
         const label = catLabels[cat] || cat;
         chartHtml += `<div style="flex:1;display:flex;flex-direction:column;align-items:center;">
           <div style="width:100%;background:rgba(60,40,80,0.2);border-radius:4px 4px 0 0;height:100px;display:flex;align-items:flex-end;">
-            <div style="width:100%;background:linear-gradient(180deg,#d4af37,#b8942e);border-radius:4px 4px 0 0;height:${pct}%;transition:height 0.5s;min-height:${count > 0 ? '4px' : '0'};"></div>
-          </div>
+            <div style="width:100%;background:linear-gradient(180deg,#d4af37,#b8942e);border-radius:4px 4px 0 0;height:${pct}%;transition:height 0.5s;min-height:${count > 0 ? '4px' : '0'};">
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
+          
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;font-family:'Inter',sans-serif;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+    </div>
           <span style="font-size:9px;color:#8880a8;margin-top:4px;white-space:nowrap;">${label}</span>
         </div>`;
       });
@@ -3092,6 +3959,35 @@
   initSwipe();
   setupNavButtons();
 
+  // ---- Listen play button ----
+  const listenPlayBtn = document.getElementById('listenPlayBtn');
+  if (listenPlayBtn) {
+    listenPlayBtn.addEventListener('click', function() {
+      if (currentListenWord && currentListenWord.en) {
+        speakText(currentListenWord.en);
+      }
+    });
+  }
+  
+  // Listen next button
+  document.getElementById('listenNextBtn')?.addEventListener('click', function() {
+    listenState.index++;
+    showListenQuestion();
+  });
+  
+  // Spelling submit
+  document.getElementById('spellingSubmitBtn')?.addEventListener('click', checkSpelling);
+  document.getElementById('spellingInput')?.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkSpelling();
+  });
+  
+  // Spelling next
+  document.getElementById('spellingNextBtn')?.addEventListener('click', function() {
+    spellState.index++;
+    showSpellQuestion();
+  });
+
+
   
   // Setup voice toggle
   const voiceBtn = document.getElementById('voiceToggle');
@@ -3195,6 +4091,127 @@
 
   // Initialize navigation
   setupNavButtons();
+
+  
+  // ---- Listening Quiz ----
+  let listenState = { words: [], index: 0, correct: 0, total: 0 };
+  let currentListenWord = null;
+  
+  function startListeningQuiz(category) {
+    const words = [...(VOCABULARY[category] || [])];
+    for (let i = words.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [words[i], words[j]] = [words[j], words[i]];
+    }
+    listenState = { words: words.slice(0, Math.min(10, words.length)), index: 0, correct: 0, total: 0 };
+    showListenQuestion();
+  }
+  
+  function showListenQuestion() {
+    if (listenState.index >= listenState.words.length) {
+      document.getElementById('listenPlayBtn').style.display = 'none';
+      document.getElementById('listenOptions').innerHTML = `<div style="text-align:center;font-size:24px;color:#d4af37;padding:20px;">\ud83c\udf89 Quiz complete! ${listenState.correct}/${listenState.total} correct</div>`;
+      document.getElementById('listenFeedback').textContent = '';
+      document.getElementById('listenNextBtn').style.display = 'none';
+      return;
+    }
+    
+    currentListenWord = listenState.words[listenState.index];
+    const correctDef = currentListenWord.zh;
+    
+    let wrong = listenState.words
+      .filter(w => w.en !== currentListenWord.en)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(w => w.zh);
+    
+    while (wrong.length < 3) {
+      const all = Object.values(VOCABULARY).flat();
+      const r = all[Math.floor(Math.random() * all.length)];
+      if (r.zh !== correctDef && !wrong.includes(r.zh)) wrong.push(r.zh);
+      else break;
+    }
+    
+    const options = [correctDef, ...wrong].sort(() => Math.random() - 0.5);
+    
+    document.getElementById('listenPlayBtn').style.display = 'block';
+    document.getElementById('listenOptions').innerHTML = options.map(o =>
+      `<button class="quiz-option" data-correct="${o === correctDef}">${o}</button>`
+    ).join('');
+    document.getElementById('listenFeedback').textContent = '';
+    document.getElementById('listenNextBtn').style.display = 'none';
+    
+    document.querySelectorAll('#listenOptions .quiz-option').forEach(btn => {
+      btn.addEventListener('click', function() {
+        if (this.disabled) return;
+        const isCorrect = this.dataset.correct === 'true';
+        document.querySelectorAll('#listenOptions .quiz-option').forEach(b => b.disabled = true);
+        
+        if (isCorrect) {
+          this.classList.add('correct');
+          document.getElementById('listenFeedback').innerHTML = '<span style="color:#2ecc71;">\u2705 Correct!</span>';
+          listenState.correct++;
+        } else {
+          this.classList.add('incorrect');
+          document.querySelector('#listenOptions [data-correct="true"]').classList.add('correct');
+          document.getElementById('listenFeedback').innerHTML = '<span style="color:#e74c3c;">\u274c Incorrect</span>';
+        }
+        listenState.total++;
+        document.getElementById('listenNextBtn').style.display = 'block';
+      });
+    });
+  }
+  
+  // ---- Spelling Quiz ----
+  let spellState = { words: [], index: 0, correct: 0, total: 0 };
+  
+  function startSpellingQuiz(category) {
+    const words = [...(VOCABULARY[category] || [])];
+    for (let i = words.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [words[i], words[j]] = [words[j], words[i]];
+    }
+    spellState = { words: words.slice(0, Math.min(10, words.length)), index: 0, correct: 0, total: 0 };
+    showSpellQuestion();
+  }
+  
+  function showSpellQuestion() {
+    if (spellState.index >= spellState.words.length) {
+      document.getElementById('spellingDef').innerHTML = `\ud83c\udf89 Quiz complete! ${spellState.correct}/${spellState.total} correct`;
+      document.getElementById('spellingInput').style.display = 'none';
+      document.getElementById('spellingSubmitBtn').style.display = 'none';
+      document.getElementById('spellingFeedback').textContent = '';
+      document.getElementById('spellingNextBtn').style.display = 'none';
+      return;
+    }
+    
+    const word = spellState.words[spellState.index];
+    document.getElementById('spellingDef').textContent = word.zh;
+    document.getElementById('spellingInput').value = '';
+    document.getElementById('spellingInput').style.display = 'block';
+    document.getElementById('spellingSubmitBtn').style.display = 'block';
+    document.getElementById('spellingFeedback').textContent = '';
+    document.getElementById('spellingNextBtn').style.display = 'none';
+    document.getElementById('spellingInput').focus();
+  }
+  
+  function checkSpelling() {
+    const word = spellState.words[spellState.index];
+    if (!word) return;
+    const answer = document.getElementById('spellingInput').value.trim().toLowerCase();
+    const correct = word.en.toLowerCase();
+    
+    if (answer === correct) {
+      document.getElementById('spellingFeedback').innerHTML = '<span style="color:#2ecc71;">\u2705 Correct! Well done!</span>';
+      spellState.correct++;
+    } else {
+      document.getElementById('spellingFeedback').innerHTML = `<span style="color:#e74c3c;">\u274c The answer is: ${word.en}</span>`;
+    }
+    spellState.total++;
+    document.getElementById('spellingSubmitBtn').style.display = 'none';
+    document.getElementById('spellingInput').style.display = 'none';
+    document.getElementById('spellingNextBtn').style.display = 'block';
+  }
 
   </script>
 
