@@ -2557,8 +2557,12 @@
     // 建立一個「朗讀任務」，告訴瀏覽器要唸什麼
     const utterance = new SpeechSynthesisUtterance(text);
 
-    //  Set to US English (en-US)
-    utterance.lang = 'en-US';
+    //  Use selected accent (US or UK)
+    const lang = voiceAccent === 'US' ? 'en-US' : 'en-GB';
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang.startsWith(lang));
+    if (voice) utterance.voice = voice;
+    utterance.lang = lang;
 
     // 語速 0.85，比正常慢一點，小朋友更容易聽清楚
     utterance.rate = 0.85;
@@ -2571,17 +2575,17 @@
 
     //  When speech starts, animate the speak button
     utterance.onstart = () => {
-      dom.speakBtn.classList.add('speaking');
+      if (dom.speakBtn) dom.speakBtn.classList.add('speaking');
     };
 
     //  When speech ends, stop the animation
     utterance.onend = () => {
-      dom.speakBtn.classList.remove('speaking');
+      if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
     };
 
     //  If error occurs, also stop animation
     utterance.onerror = () => {
-      dom.speakBtn.classList.remove('speaking');
+      if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
     };
 
     //  Start speaking!
@@ -3089,30 +3093,6 @@
     if (btn) btn.textContent = voiceAccent;
   }
   
-  // Override speakText to use selected accent
-  const originalSpeak = window.speakText;
-  window.speakText = function(text) {
-    if (!window.speechSynthesis) return;
-    const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const lang = voiceAccent === 'US' ? 'en-US' : 'en-GB';
-    const voice = voices.find(v => v.lang.startsWith(lang));
-    if (voice) utterance.voice = voice;
-    utterance.lang = lang;
-    utterance.rate = 0.85;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-    utterance.onstart = () => {
-      if (dom.speakBtn) dom.speakBtn.classList.add('speaking');
-    };
-    utterance.onend = () => {
-      if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
-    };
-    utterance.onerror = () => {
-      if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
-    };
-    window.speechSynthesis.speak(utterance);
-  };
   
   // ---- Touch Swipe & Tap Navigation ----
   let touchStartX = 0, touchStartY = 0, touchMoved = false;
