@@ -2531,23 +2531,7 @@
     return arr;
   }
   
-  // Override switchCategory to support shuffling
-  const switchCategoryWithShuffle = window.switchCategory || function(cat) {
-    currentCategory = cat;
-    currentWords = [...VOCABULARY[cat]];
-    learningState = {};
-    currentIndex = 0;
-    dom.congratsMessage.style.display = 'none';
-    dom.card.style.display = '';
-    const th = document.querySelector('.tap-hint');
-    if (th) th.style.display = '';
-    const ab = document.querySelector('.action-buttons');
-    if (ab) ab.style.display = '';
-    showWord(currentIndex);
-    updateProgress();
-  };
-  
-  // Re-bind shuffle button
+
   document.addEventListener('DOMContentLoaded', function() {
     const shuffleBtn = document.getElementById('shuffleBtn');
     if (shuffleBtn) {
