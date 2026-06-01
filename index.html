@@ -255,29 +255,23 @@
     .card-inner {
       position: absolute;
       inset: 0;
-      -webkit-transform-style: preserve-3d;
-      transform-style: preserve-3d;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
       border-radius: 24px;
     }
     
     .card-inner.flipped .card-front {
-      -webkit-transform: rotateY(180deg);
-      transform: rotateY(180deg);
+      opacity: 0;
+      pointer-events: none;
     }
     
     .card-inner.flipped .card-back {
-      -webkit-transform: rotateY(360deg);
-      transform: rotateY(360deg);
+      opacity: 1;
+      pointer-events: auto;
     }
 
     /* 卡片正反面共用樣式 — 羊皮紙魔法風格 */
     .card-face {
       position: absolute;
       inset: 0;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -285,6 +279,9 @@
       border-radius: 24px;
       padding: 28px 20px;
       overflow: hidden;
+      opacity: 1;
+      -webkit-transition: opacity 0.5s ease-in-out;
+      transition: opacity 0.5s ease-in-out;
       /* 像老舊羊皮紙 + 魔法氛圍 */
       background: linear-gradient(160deg, rgba(28, 24, 48, 0.95), rgba(20, 16, 36, 0.98));
       border: 1px solid rgba(200, 180, 140, 0.08);
@@ -308,10 +305,8 @@
     }
 
     .card-back {
-      -webkit-transform: rotateY(180deg);
-      transform: rotateY(180deg);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
     }
 
     /* 類別標籤（像課本分類） */
@@ -843,14 +838,9 @@
   <div class="magic-particles" id="magicParticles"></div>
 
   <!-- ===== 左上角裝飾 ===== -->
-  <div class="corner-star">✦
-      
-    <div class="candle-glow">
-      
-    <div class="candle-glow right"></div>
-
-  </div>
-</div>
+  <div class="corner-star">✦</div>
+  <div class="candle-glow"></div>
+  <div class="candle-glow right"></div>
 
   <div class="container" id="app">
     <!-- ===== 頂部：魔法書標題 + 分類帽下拉選單 ===== -->
