@@ -2550,7 +2550,12 @@
   function speakText(text) {
     //  Check if browser supports speech
     if (!window.speechSynthesis) {
-      console.warn('⚠️ 這個瀏覽器不支援語音朗讀喔～');
+      // LINE/FB等內建瀏覽器可能不支援語音，顯示提示
+      if (dom.speakBtn) {
+        dom.speakBtn.textContent = '⚠️';
+        dom.speakBtn.title = '此瀏覽器不支援語音朗讀，請用 Chrome/Safari 開啟';
+        dom.speakBtn.style.opacity = '0.5';
+      }
       return;
     }
 
@@ -2588,7 +2593,11 @@
 
     //  If error occurs, also stop animation
     utterance.onerror = () => {
-      if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
+      if (dom.speakBtn) {
+        dom.speakBtn.classList.remove('speaking');
+        dom.speakBtn.textContent = '⚠️';
+        dom.speakBtn.title = '語音朗讀失敗，請用 Chrome/Safari 開啟';
+      }
     };
 
     //  Start speaking!
@@ -2840,6 +2849,12 @@
     window.speechSynthesis.onvoiceschanged = function() {
       window.speechSynthesis.getVoices();
     };
+  } else {
+    // No speech support at all (LINE/FB in-app browser, etc.)
+    if (dom.speakBtn) {
+      dom.speakBtn.title = '此瀏覽器不支援語音朗讀，請用 Chrome/Safari 開啟';
+      dom.speakBtn.style.opacity = '0.4';
+    }
   }
 
   // ===================================================================
