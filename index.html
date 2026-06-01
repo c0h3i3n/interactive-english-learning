@@ -1032,6 +1032,29 @@
       
     </div>
 
+    
+      <!-- Listening Quiz -->
+      <div class="quiz-panel" id="panelListening" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:12px;">Listen and choose the correct definition</div>
+          <button class="btn-know" id="listenPlayBtn" style="width:auto;padding:12px 24px;margin:0 auto 16px;">🔊 Play Sound</button>
+        </div>
+        <div id="listenOptions"></div>
+        <div id="listenFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="listenNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
+      </div>
+      <!-- Spelling Quiz -->
+      <div class="quiz-panel" id="panelSpelling" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:13px;color:#8880a8;margin-bottom:8px;">Type the word for this definition</div>
+          <div id="spellingDef" style="font-size:18px;color:#d0c8e0;margin-bottom:20px;padding:16px;background:rgba(60,40,80,0.2);border-radius:12px;"></div>
+          <input type="text" id="spellingInput" placeholder="Type the word..." style="width:100%;padding:14px 18px;border:1px solid rgba(200,180,140,0.15);border-radius:14px;background:rgba(60,40,80,0.2);color:#e8e0f0;font-size:18px;text-align:center;outline:none;">
+        </div>
+        <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
+        <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
+        <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
     <!-- ===== Celebration ===== -->
     <div class="congrats-message" id="congratsMessage">
       <span class="emoji">🏆</span>
