@@ -2560,8 +2560,11 @@
     //  Use selected accent (US or UK)
     const lang = voiceAccent === 'US' ? 'en-US' : 'en-GB';
     const voices = window.speechSynthesis.getVoices();
-    const voice = voices.find(v => v.lang.startsWith(lang));
-    if (voice) utterance.voice = voice;
+    // Android Chrome may return empty voices on first call; try using lang directly
+    if (voices.length > 0) {
+      const voice = voices.find(v => v.lang && v.lang.startsWith(lang));
+      if (voice) utterance.voice = voice;
+    }
     utterance.lang = lang;
 
     // 語速 0.85，比正常慢一點，小朋友更容易聽清楚
@@ -2828,12 +2831,16 @@
    * 第一次點擊頁面時，預先載入語音系統。
    * 這是因為有些瀏覽器需要使用者先點一下才能使用語音功能。
    */
-  document.addEventListener('click', function initVoices() {
-    if (window.speechSynthesis) {
+  // Preload speech voices — needed for Android Chrome where getVoices()
+  // initially returns empty and fires 'voiceschanged' when ready.
+  if (window.speechSynthesis) {
+    // Try immediately (desktop usually has voices ready)
+    window.speechSynthesis.getVoices();
+    // Listen for async voice loading (Android Chrome, etc.)
+    window.speechSynthesis.onvoiceschanged = function() {
       window.speechSynthesis.getVoices();
-    }
-    document.removeEventListener('click', initVoices);
-  }, { once: true });
+    };
+  }
 
   // ===================================================================
   //  ENHANCED FEATURES
