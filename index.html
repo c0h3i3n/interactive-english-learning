@@ -2734,10 +2734,6 @@
   /**
    * 🔊 語音朗讀按鈕：唸出當前的英文單字
    */
-  dom.speakBtn.addEventListener('touchend', function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-  });
   dom.speakBtn.addEventListener('click', function (e) {
     //  Prevent triggering card flip at the same time
     e.stopPropagation();
