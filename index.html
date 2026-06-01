@@ -3173,6 +3173,8 @@
           const halfHeight = rect.height / 2;
           
           // Tap on top half = flip card, tap on bottom-left/right = navigate
+          // Skip navigation if tapping a button (speakBtn, voiceToggle, etc.)
+          if (e.target.closest('button')) return;
           if (tapY > halfHeight) {
             // Bottom half: left = prev, right = next
             if (tapX < halfWidth && currentIndex > 0) {
