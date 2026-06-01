@@ -2612,6 +2612,36 @@
   };
 
   createMagicParticles();
+
+  /**
+   * Create twinkling floating stars for the magical background.
+   */
+  function createTwinkleStars() {
+    const container = document.getElementById('magicParticles');
+    if (!container) return;
+    const count = 15;
+    for (let i = 0; i < count; i++) {
+      const star = document.createElement('div');
+      star.className = 'particle';
+      const size = Math.random() * 2 + 1;
+      const left = Math.random() * 100;
+      const duration = Math.random() * 5 + 3;
+      const delay = Math.random() * 15;
+      const opacity = Math.random() * 0.6 + 0.3;
+      star.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        left: ${left}%;
+        animation-duration: ${duration}s;
+        animation-delay: ${delay}s;
+        opacity: ${opacity};
+        background: #f0e6a0;
+        box-shadow: 0 0 6px 2px rgba(240, 230, 160, 0.3);
+      `;
+      container.appendChild(star);
+    }
+  }
+
   createTwinkleStars();
 
   // ===================================================================
@@ -3270,139 +3300,6 @@
   initSwipe();
   setupNavButtons();
 
-  // ---- Listen play button ----
-  const listenPlayBtn = document.getElementById('listenPlayBtn');
-  if (listenPlayBtn) {
-    listenPlayBtn.addEventListener('click', function() {
-      if (currentListenWord && currentListenWord.en) {
-        speakText(currentListenWord.en);
-      }
-    });
-  }
-  
-  // Listen next button
-  document.getElementById('listenNextBtn')?.addEventListener('click', function() {
-    listenState.index++;
-    showListenQuestion();
-  });
-  
-  // Spelling submit
-  document.getElementById('spellingSubmitBtn')?.addEventListener('click', checkSpelling);
-  document.getElementById('spellingInput')?.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkSpelling();
-  });
-  
-  // Spelling next
-  document.getElementById('spellingNextBtn')?.addEventListener('click', function() {
-    spellState.index++;
-    showSpellQuestion();
-  });
-
-
-  
-  // Setup voice toggle
-  const voiceBtn = document.getElementById('voiceToggle');
-  if (voiceBtn) {
-    voiceBtn.addEventListener('click', toggleAccent);
-  }
-  
-  // Setup choice next button
-  const choiceNext = document.getElementById('choiceNextBtn');
-  if (choiceNext) {
-    choiceNext.addEventListener('click', function() {
-      quizState.index++;
-      showChoiceQuestion();
-    });
-  }
-  
-  // Override switchCategory to start quiz when in quiz mode
-  const origSwitchCategory = window.switchCategory;
-  window.switchCategory = function(category) {
-    if (origSwitchCategory) origSwitchCategory(category);
-    // Rebuild stats if visible
-    const statsPanel = document.getElementById('panelStats');
-    if (statsPanel && statsPanel.style.display !== 'none') buildStats();
-  };
-
-  // ---- Shuffle Mode ----
-  function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-  
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const shuffleBtn = document.getElementById('shuffleBtn');
-    if (shuffleBtn) {
-      shuffleBtn.addEventListener('click', function() {
-        if (currentWords.length === 0) return;
-        currentWords = shuffleArray([...currentWords]);
-        currentIndex = 0;
-        learningState = {};
-        dom.congratsMessage.style.display = 'none';
-        dom.card.style.display = '';
-        const th = document.querySelector('.tap-hint');
-        if (th) th.style.display = '';
-        const ab = document.querySelector('.action-buttons');
-        if (ab) ab.style.display = '';
-        showWord(currentIndex);
-        updateProgress();
-      });
-    }
-  });
-  
-  // ---- Shuffle Mode ----
-  function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-  
-  // Shuffle button
-  const shuffleBtn = document.getElementById('shuffleBtn');
-  if (shuffleBtn) {
-    shuffleBtn.addEventListener('click', function() {
-      if (currentWords.length === 0) return;
-      currentWords = shuffleArray([...currentWords]);
-      currentIndex = 0;
-      learningState = {};
-      dom.congratsMessage.style.display = 'none';
-      dom.card.style.display = '';
-      const th = document.querySelector('.tap-hint');
-      if (th) th.style.display = '';
-      const ab = document.querySelector('.action-buttons');
-      if (ab) ab.style.display = '';
-      showWord(currentIndex);
-      updateProgress();
-    });
-  }
-  
-  // Random word button
-  (function() {
-    const randomBtn = document.createElement('button');
-    randomBtn.className = 'btn-know';
-    randomBtn.id = 'randomBtn';
-    randomBtn.textContent = '🎲 Random Word';
-    randomBtn.style.cssText = 'margin-top:8px;width:100%;';
-    randomBtn.addEventListener('click', function() {
-      if (currentWords.length === 0) return;
-      const randIdx = Math.floor(Math.random() * currentWords.length);
-      currentIndex = randIdx;
-      showWord(currentIndex);
-      updateProgress();
-    });
-    const actionBtns = document.querySelector('.action-buttons');
-    if (actionBtns) actionBtns.appendChild(randomBtn);
-  })();
-
-  // Initialize navigation
-  setupNavButtons();
-
   
   // ---- Listening Quiz ----
   let listenState = { words: [], index: 0, correct: 0, total: 0 };
@@ -3523,6 +3420,106 @@
     document.getElementById('spellingInput').style.display = 'none';
     document.getElementById('spellingNextBtn').style.display = 'block';
   }
+
+  // ---- Listen play button ----
+  const listenPlayBtn = document.getElementById('listenPlayBtn');
+  if (listenPlayBtn) {
+    listenPlayBtn.addEventListener('click', function() {
+      if (currentListenWord && currentListenWord.en) {
+        speakText(currentListenWord.en);
+      }
+    });
+  }
+  
+  // Listen next button
+  document.getElementById('listenNextBtn')?.addEventListener('click', function() {
+    listenState.index++;
+    showListenQuestion();
+  });
+  
+  // Spelling submit
+  document.getElementById('spellingSubmitBtn')?.addEventListener('click', checkSpelling);
+  document.getElementById('spellingInput')?.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkSpelling();
+  });
+  
+  // Spelling next
+  document.getElementById('spellingNextBtn')?.addEventListener('click', function() {
+    spellState.index++;
+    showSpellQuestion();
+  });
+
+  // Setup voice toggle
+  const voiceBtn = document.getElementById('voiceToggle');
+  if (voiceBtn) {
+    voiceBtn.addEventListener('click', toggleAccent);
+  }
+  
+  // Setup choice next button
+  const choiceNext = document.getElementById('choiceNextBtn');
+  if (choiceNext) {
+    choiceNext.addEventListener('click', function() {
+      quizState.index++;
+      showChoiceQuestion();
+    });
+  }
+  
+  // Override switchCategory to start quiz when in quiz mode
+  const origSwitchCategory = window.switchCategory;
+  window.switchCategory = function(category) {
+    if (origSwitchCategory) origSwitchCategory(category);
+    // Rebuild stats if visible
+    const statsPanel = document.getElementById('panelStats');
+    if (statsPanel && statsPanel.style.display !== 'none') buildStats();
+  };
+
+
+  // ---- Shuffle Mode ----
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // Shuffle button
+  const shuffleBtn = document.getElementById('shuffleBtn');
+  if (shuffleBtn) {
+    shuffleBtn.addEventListener('click', function() {
+      if (currentWords.length === 0) return;
+      currentWords = shuffleArray([...currentWords]);
+      currentIndex = 0;
+      learningState = {};
+      dom.congratsMessage.style.display = 'none';
+      dom.card.style.display = '';
+      const th = document.querySelector('.tap-hint');
+      if (th) th.style.display = '';
+      const ab = document.querySelector('.action-buttons');
+      if (ab) ab.style.display = '';
+      showWord(currentIndex);
+      updateProgress();
+    });
+  }
+
+  // Random word button
+  (function() {
+    const randomBtn = document.createElement('button');
+    randomBtn.className = 'btn-know';
+    randomBtn.id = 'randomBtn';
+    randomBtn.textContent = '🎲 Random Word';
+    randomBtn.style.cssText = 'margin-top:8px;width:100%;';
+    randomBtn.addEventListener('click', function() {
+      if (currentWords.length === 0) return;
+      const randIdx = Math.floor(Math.random() * currentWords.length);
+      currentIndex = randIdx;
+      showWord(currentIndex);
+      updateProgress();
+    });
+    const actionBtns = document.querySelector('.action-buttons');
+    if (actionBtns) actionBtns.appendChild(randomBtn);
+  })();
+
 
   </script>
 
