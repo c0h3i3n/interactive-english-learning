@@ -112,26 +112,49 @@
       z-index: 0;
     }
 
-    /* ===== Header: Magic Title + Sorting Hat (Dropdown) ===== */
+
+    /* ===== Header redesign — two rows ===== */
     .header {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 22px;
-      position: relative;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
     }
-
-    .header h1 {
+    .header-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .header-title-row h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      white-space: nowrap;
       background: linear-gradient(135deg, #f0e6a0, #d4af37, #b8942e);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
     }
+    .header-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-controls-row .vocab-selector {
+      flex: 1;
+    }
+    .header-controls-row .vocab-selector select {
+      width: 100%;
+    }
+    /* Compact streak badge */
+    .streak-badge {
+      white-space: nowrap;
+      font-size: 12px;
+      padding: 5px 12px;
+      flex-shrink: 0;
+    }
+
 
     /* ===== Custom Sorting Hat (Dropdown Select) ===== */
     .vocab-selector {
@@ -222,8 +245,6 @@
 
     /* ===== 單字卡片 — 像活米村的巫師卡片 ===== */
     .card-wrapper {
-      perspective: 1200px;
-      -webkit-perspective: 1200px;
       margin-bottom: 20px;
       position: relative;
     }
@@ -261,11 +282,14 @@
     .card-inner.flipped .card-front {
       opacity: 0;
       pointer-events: none;
+      transform: scale(0.97);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    
     .card-inner.flipped .card-back {
       opacity: 1;
       pointer-events: auto;
+      transform: scale(1);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     /* 卡片正反面共用樣式 — 羊皮紙魔法風格 */
@@ -307,6 +331,8 @@
     .card-back {
       opacity: 0;
       pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: scale(0.97);
     }
 
     /* 類別標籤（像課本分類） */
@@ -375,7 +401,7 @@
     .speak-btn {
       position: absolute;
       bottom: 16px;
-      right: 20px;
+      left: 16px;
       background: rgba(60, 40, 80, 0.5);
       border: 1px solid rgba(212, 175, 55, 0.12);
       color: rgba(212, 175, 55, 0.6);
@@ -587,21 +613,43 @@
 
     /* ===== 響應式調整 ===== */
     @media (max-width: 480px) {
+      body { padding: 12px; align-items: flex-start; padding-top: 16px; }
       .container {
-        padding: 24px 16px;
-        border-radius: 22px;
+        padding: 20px 14px;
+        border-radius: 20px;
       }
-      .header h1 {
-        font-size: 19px;
-      }
-      .action-buttons button {
-        font-size: 14px;
-        padding: 12px 0;
-      }
-      .stats {
-        gap: 18px;
-        font-size: 12px;
-      }
+      /* Header */
+      .header-title-row h1 { font-size: 20px; }
+      .streak-badge { font-size: 11px; padding: 4px 10px; }
+      .vocab-selector select { font-size: 13px; padding: 8px 32px 8px 12px; }
+
+      /* Card */
+      .card { min-height: 200px; }
+      .card-word.en { font-size: 26px !important; }
+      .card-word.zh { font-size: 18px !important; }
+      .card-hint-box { font-size: 11px; padding: 5px 10px; }
+      .speak-btn { width: 36px; height: 36px; font-size: 16px; }
+
+      /* Buttons */
+      .action-buttons { gap: 8px; }
+      .action-buttons button { font-size: 13px; padding: 11px 0; border-radius: 14px; }
+
+      /* Stats */
+      .stats { gap: 12px; font-size: 11px; flex-wrap: wrap; justify-content: center; }
+      .stats .stat-number { font-size: 13px; }
+
+      /* Quiz tabs */
+      .quiz-tabs { padding: 3px; gap: 3px; }
+      .quiz-tab { font-size: 11px; padding: 5px 6px; }
+
+      /* Progress */
+      .progress-section { margin-bottom: 18px; }
+    }
+
+    @media (max-width: 360px) {
+      .header-title-row h1 { font-size: 17px; }
+      .card-word.en { font-size: 22px !important; }
+      .action-buttons button { font-size: 12px; }
     }
   
     /* ===== Parchment Texture Overlay ===== */
@@ -723,7 +771,7 @@
 
     /* ===== Quiz Tabs ===== */
     .quiz-tabs {
-      display: none;
+      display: flex;
       gap: 4px;
       margin-bottom: 16px;
       background: rgba(60, 40, 80, 0.2);
@@ -751,8 +799,9 @@
     .quiz-tab:hover:not(.active) { color: #b8a8d8; }
     
     /* ===== Quiz Options ===== */
-    .quiz-panel { display: none; }
-    .quiz-panel.active { display: block; }
+    #quizPanel { display: block; }
+    #quizPanel .quiz-panel { display: none; }
+    #quizPanel .quiz-panel.active { display: block; }
     .quiz-option {
       display: block;
       width: 100%;
@@ -830,6 +879,57 @@
       display: block;
     }
 
+
+    /* ===== Nav buttons inside card ===== */
+    .card-nav-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      position: relative;
+      z-index: 10;
+    }
+    .nav-btn {
+      background: rgba(60, 40, 80, 0.5);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      color: rgba(212, 175, 55, 0.6);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.25s;
+      backdrop-filter: blur(4px);
+    }
+    .nav-btn:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: rgba(212, 175, 55, 0.3);
+      color: #f0e6a0;
+      transform: scale(1.1);
+    }
+    /* ===== Hint box on card back ===== */
+    .card-hint-box {
+      font-size: 12px;
+      color: rgba(180, 160, 220, 0.8);
+      background: rgba(212, 175, 55, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.12);
+      border-radius: 10px;
+      padding: 6px 14px;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+      max-width: 90%;
+      line-height: 1.5;
+      display: none;
+    }
+    /* ===== Quiz tab text ===== */
+    .quiz-tab {
+      line-height: 1.3;
+      font-size: 12px;
+      padding: 6px 8px;
+    }
   </style>
 </head>
 <body>
@@ -845,12 +945,16 @@
   <div class="container" id="app">
     <!-- ===== 頂部：魔法書標題 + 分類帽下拉選單 ===== -->
     <div class="header">
-      <h1>🔮 Hogwarts Spellbook</h1>
-      <div class="streak-badge" id="streakBadge"><span class="streak-fire">🔥</span> <span id="streakCount">0</span> day streak</div>
-      
-      <div class="vocab-selector">
-        <select id="vocabSelect">
-          <option value="irregular">🔮 Irregular Verbs</option>
+      <!-- Row 1: Title -->
+      <div class="header-title-row">
+        <h1>🔮 Hogwarts Spellbook</h1>
+        <div class="streak-badge" id="streakBadge"><span class="streak-fire">🔥</span> <span id="streakCount">0</span> streak</div>
+      </div>
+      <!-- Row 2: Category selector -->
+      <div class="header-controls-row">
+        <div class="vocab-selector">
+          <select id="vocabSelect">
+            <option value="irregular">🔮 Irregular Verbs</option>
           <option value="animals">🦁 Magical Creatures</option>
           <option value="colors">🌈 Colors</option>
           <option value="numbers">🔢 Numbers & Arithmetic</option>
@@ -862,7 +966,8 @@
           <option value="actions">🏃 Action Verbs</option>
           <option value="adjectives">✨ Describing Words</option>
         
-          <option value="beginner_animals">🦁 Beginner: Animals & Insects</option>
+        
+<option value="beginner_animals">🦁 Beginner: Animals & Insects</option>
           <option value="beginner_clothing">👕 Beginner: Clothing & Accessories</option>
           <option value="beginner_colors">🎨 Beginner: Colors</option>
           <option value="beginner_family">👨‍👩‍👧‍👦 Beginner: Family</option>
@@ -886,39 +991,15 @@
           <option value="beginner_pronouns">👤 Beginner: Pronouns</option>
           <option value="beginner_prepositions">🔗 Beginner: Prepositions</option>
         
-          <option value="beginner_animals">🦁 Beginner: Animals & Insects</option>
-          <option value="beginner_clothing">👕 Beginner: Clothing & Accessories</option>
-          <option value="beginner_colors">🎨 Beginner: Colors</option>
-          <option value="beginner_family">👨‍👩‍👧‍👦 Beginner: Family</option>
-          <option value="beginner_food">🍎 Beginner: Food & Drink</option>
-          <option value="beginner_address">👤 Beginner: Forms of Address</option>
-          <option value="beginner_geography">🌍 Beginner: Geography</option>
-          <option value="beginner_holidays">🎄 Beginner: Holidays</option>
-          <option value="beginner_health">🏥 Beginner: Health</option>
-          <option value="beginner_money">💰 Beginner: Money</option>
-          <option value="beginner_house">🏠 Beginner: Houses & Apartments</option>
-          <option value="beginner_numbers">🔢 Beginner: Numbers</option>
-          <option value="beginner_verbs2">🏃 Beginner: Other Verbs</option>
-          <option value="beginner_traits">✨ Beginner: Personal Traits</option>
-          <option value="beginner_places">🏛️ Beginner: Places & Buildings</option>
-          <option value="beginner_school">📚 Beginner: School Life</option>
-          <option value="beginner_sports">⚽ Beginner: Sports & Hobbies</option>
-          <option value="beginner_time">⏰ Beginner: Time</option>
-          <option value="beginner_transport">🚗 Beginner: Transportation</option>
-          <option value="beginner_weather2">🌤️ Beginner: Weather & Nature</option>
-          <option value="beginner_wh">❓ Beginner: Question Words</option>
-          <option value="beginner_pronouns">👤 Beginner: Pronouns</option>
-          <option value="beginner_prepositions">🔗 Beginner: Prepositions</option>
-        
-          <option value="magic_spells">🪄 Spells & Charms</option>
+                    <option value="magic_spells">🪄 Spells & Charms</option>
           <option value="magic_creatures">🐲 Magical Creatures</option>
           <option value="magic_places">🏚️ Hogwarts & Wizarding World</option>
           <option value="magic_items">✨ Wizarding Items & Artifacts</option>
           <option value="advanced_vocab">📚 Advanced: Academic & Professional</option>
-        </select>
-      
-      
-    </div>
+        
+          </select>
+        </div>
+      </div>
     </div>
 
     <!-- ===== Progress Bar ===== -->
@@ -939,10 +1020,6 @@
 
     <!-- ===== Vocabulary Card ===== -->
     <div class="card-wrapper" id="cardWrapper">
-    <!-- ===== Navigation Buttons ===== -->
-    <button class="nav-btn prev-btn" id="prevBtn" aria-label="Previous word">◀</button>
-    <button class="nav-btn next-btn" id="nextBtn" aria-label="Next word">▶</button>
-
       <div class="card" id="vocabCard">
         <div class="card-inner" id="cardInner">
           <!-- Front: English — The original spell -->
@@ -951,16 +1028,19 @@
             <div class="card-word en" id="wordEn">Cat</div>
       
             <div class="card-hint">👆 Tap to reveal</div>
-      
+            <div class="card-nav-row">
+              <button class="nav-btn" id="prevBtn" aria-label="Previous word" onclick="event.stopPropagation()">◀</button>
+              <button class="nav-btn" id="nextBtn" aria-label="Next word" onclick="event.stopPropagation()">▶</button>
+            </div>
             <button class="speak-btn" id="speakBtn" title="Read aloud" aria-label="Read aloud">🔊</button>
-          <button class="voice-toggle" id="voiceToggle" title="Toggle accent" style="position:absolute;bottom:8px;right:8px;background:none;border:1px solid rgba(212,175,55,0.2);border-radius:8px;color:#d4af37;font-size:11px;padding:2px 8px;cursor:pointer;z-index:2;">US</button>
+          <button class="voice-toggle" id="voiceToggle" title="Toggle accent" style="position:absolute;bottom:16px;right:16px;background:rgba(60,40,80,0.5);border:1px solid rgba(212,175,55,0.2);border-radius:10px;color:#d4af37;font-size:12px;font-weight:600;padding:5px 12px;cursor:pointer;z-index:2;backdrop-filter:blur(4px);">US</button>
           </div>
       
           <!-- Back: Definition — The meaning -->
           <div class="card-face card-back">
             <span class="card-lang-tag">🔮 Definition</span>
             <div class="card-word zh" id="wordZh">a small furry pet that purrs</div>
-      
+            <div class="card-hint-box" id="wordHint"></div>
             <div class="card-hint">👆 Tap to flip back</div>
       </div>
         </div>
@@ -986,11 +1066,11 @@
     <!-- ===== Quiz Mode Panel ===== -->
     <div class="quiz-panel" id="quizPanel">
       <div class="quiz-tabs" id="quizTabs">
-        <button class="quiz-tab active" data-mode="flashcard">🃏 Flashcards</button>
-        <button class="quiz-tab" data-mode="choice">🎯 Multiple Choice</button>
-        <button class="quiz-tab" data-mode="listening">🔊 Listening</button>
-        <button class="quiz-tab" data-mode="spelling">✏️ Spelling</button>
-        <button class="quiz-tab" data-mode="stats">📊 Stats</button>
+        <button class="quiz-tab active" data-mode="flashcard">🃏<br>Cards</button>
+        <button class="quiz-tab" data-mode="choice">🎯<br>Quiz</button>
+        <button class="quiz-tab" data-mode="listening">🔊<br>Listen</button>
+        <button class="quiz-tab" data-mode="spelling">✏️<br>Spell</button>
+        <button class="quiz-tab" data-mode="stats">📊<br>Stats</button>
       </div>
       
       <!-- Flashcard Mode (default view) -->
@@ -1000,25 +1080,17 @@
       
       <!-- Multiple Choice Mode -->
       <div class="quiz-panel" id="panelChoice" style="display:none;">
-        <div id="choiceQuestion">
-      
-        <div id="choiceOptions">
-      
+        <div id="choiceQuestion"></div>
+        <div id="choiceOptions"></div>
         <div id="choiceFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
         <button class="btn-know" id="choiceNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
       </div>
-      
-      
       <!-- Stats Mode -->
       <div class="quiz-panel" id="panelStats" style="display:none;">
-        <div class="stats-grid" id="statsGrid">
-      
+        <div class="stats-grid" id="statsGrid"></div>
         <div style="margin-top:16px;">
           <div id="categoryChart" style="height:120px;display:flex;gap:6px;align-items:flex-end;padding-top:10px;"></div>
         </div>
-      </div>
-      </div>
-      </div>
       </div>
 
     
@@ -2320,7 +2392,7 @@
   function switchCategory(category) {
     currentCategory = category;
     //  Copy array to avoid mutating original data
-    currentWords = [...VOCABULARY[category]];
+    currentWords = shuffleArray([...VOCABULARY[category]]);
     //  Reset learning state
     learningState = {};
     currentIndex = 0;
@@ -2345,6 +2417,11 @@
     const word = currentWords[index];
     dom.wordEn.textContent = word.en;
     dom.wordZh.textContent = word.zh;
+    const hintEl = document.getElementById('wordHint');
+    if (hintEl) {
+      hintEl.textContent = word.hint || '';
+      hintEl.style.display = word.hint ? 'block' : 'none';
+    }
 
     //  Return card to front (English side)
     dom.cardInner.classList.remove('flipped');
@@ -2447,7 +2524,7 @@
   function updateProgress() {
     const total = currentWords.length;
     const known = currentWords.filter(w => learningState[w.en] === 'known').length;
-    const remaining = currentWords.filter(w => learningState[w.en] === 'unknown').length;
+    const remaining = currentWords.filter(w => !learningState[w.en] || learningState[w.en] === 'unknown').length;
     const percent = total > 0 ? Math.floor((known / total) * 100) : 0;
 
     dom.progressFill.style.width = `${percent}%`;
@@ -3139,12 +3216,14 @@
         tabs.forEach(t => t.classList.remove('active'));
         this.classList.add('active');
         
-        document.querySelectorAll('.quiz-panel > .quiz-panel').forEach(p => p.style.display = 'none');
+        ['panelChoice','panelListening','panelSpelling','panelStats'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
         const mode = this.dataset.mode;
         const panel = document.getElementById('panel' + mode.charAt(0).toUpperCase() + mode.slice(1));
         if (panel) {
           panel.style.display = 'block';
           if (mode === 'choice') startChoiceQuiz(currentCategory);
+          if (mode === 'listening') startListeningQuiz(currentCategory);
+          if (mode === 'spelling') startSpellingQuiz(currentCategory);
           if (mode === 'stats') buildStats();
         }
         
@@ -3439,7 +3518,7 @@
   // Setup voice toggle
   const voiceBtn = document.getElementById('voiceToggle');
   if (voiceBtn) {
-    voiceBtn.addEventListener('click', toggleAccent);
+    voiceBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleAccent(); });
   }
   
   // Setup choice next button
