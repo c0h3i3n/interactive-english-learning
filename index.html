@@ -3507,7 +3507,7 @@
   const voiceBtn = document.getElementById('voiceToggle');
   if (voiceBtn) {
     voiceBtn.addEventListener('touchend', function(e) { e.stopPropagation(); e.preventDefault(); toggleAccent(); });
-  voiceBtn.addEventListener('click', function(e) { e.stopPropagation(); });
+  voiceBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleAccent(); });
   }
   
   // Setup choice next button
