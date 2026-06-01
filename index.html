@@ -2723,14 +2723,21 @@
    * 🃏 點擊卡片施展翻轉咒
    */
   dom.card.addEventListener('click', function (e) {
-    // 如果點到的是語音按鈕，不要Flip card
+    // 如果點到的是卡片內的互動元素，不要翻牌
     if (e.target.closest('.speak-btn')) return;
+    if (e.target.closest('.nav-btn')) return;
+    if (e.target.closest('.voice-toggle')) return;
+    if (e.target.closest('button')) return;
     toggleCard();
   });
 
   /**
    * 🔊 語音朗讀按鈕：唸出當前的英文單字
    */
+  dom.speakBtn.addEventListener('touchend', function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  });
   dom.speakBtn.addEventListener('click', function (e) {
     //  Prevent triggering card flip at the same time
     e.stopPropagation();
@@ -3518,7 +3525,8 @@
   // Setup voice toggle
   const voiceBtn = document.getElementById('voiceToggle');
   if (voiceBtn) {
-    voiceBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleAccent(); });
+    voiceBtn.addEventListener('touchend', function(e) { e.stopPropagation(); e.preventDefault(); toggleAccent(); });
+  voiceBtn.addEventListener('click', function(e) { e.stopPropagation(); });
   }
   
   // Setup choice next button
