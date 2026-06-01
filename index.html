@@ -3097,7 +3097,6 @@
   const originalSpeak = window.speakText;
   window.speakText = function(text) {
     if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
     const lang = voiceAccent === 'US' ? 'en-US' : 'en-GB';
@@ -3107,6 +3106,15 @@
     utterance.rate = 0.85;
     utterance.pitch = 1;
     utterance.volume = 1;
+    utterance.onstart = () => {
+      if (dom.speakBtn) dom.speakBtn.classList.add('speaking');
+    };
+    utterance.onend = () => {
+      if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
+    };
+    utterance.onerror = () => {
+      if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
+    };
     window.speechSynthesis.speak(utterance);
   };
   
@@ -3164,33 +3172,8 @@
           updateProgress();
         }
       } else if (!touchMoved && Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
-        // It's a tap on the card - check left/right half for navigation
-        const rect = cardWrapper.getBoundingClientRect();
-        if (rect) {
-          const tapX = e.changedTouches[0].clientX - rect.left;
-          const tapY = e.changedTouches[0].clientY - rect.top;
-          const halfWidth = rect.width / 2;
-          const halfHeight = rect.height / 2;
-          
-          // Tap on top half = flip card, tap on bottom-left/right = navigate
-          // Skip navigation if tapping a button (speakBtn, voiceToggle, etc.)
-          if (e.target.closest('button')) return;
-          if (tapY > halfHeight) {
-            // Bottom half: left = prev, right = next
-            if (tapX < halfWidth && currentIndex > 0) {
-              currentIndex--;
-              showWord(currentIndex);
-              updateProgress();
-              return;
-            } else if (tapX >= halfWidth && currentIndex < currentWords.length - 1) {
-              currentIndex++;
-              showWord(currentIndex);
-              updateProgress();
-              return;
-            }
-          }
-          // Top half or center: proceed with normal card flip via click
-        }
+        // Tap anywhere on the card = flip it. Navigation only via buttons/swipe.
+        // (Swipe navigation is handled in the block above.)
       }
     }, { passive: true });
     
