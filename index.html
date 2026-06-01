@@ -849,11 +849,14 @@
       
     <div class="candle-glow right"></div>
 
+  </div>
+</div>
+
   <div class="container" id="app">
     <!-- ===== 頂部：魔法書標題 + 分類帽下拉選單 ===== -->
     <div class="header">
       <h1>🔮 Hogwarts Spellbook</h1>
-      <div class="streak-badge" id="streakBadge"><span class="streak-fire">🔥</span> <span id="streakCount">0</span> day streak
+      <div class="streak-badge" id="streakBadge"><span class="streak-fire">🔥</span> <span id="streakCount">0</span> day streak</div>
       
       <div class="vocab-selector">
         <select id="vocabSelect">
@@ -926,19 +929,22 @@
       
       
     </div>
+    </div>
 
     <!-- ===== Progress Bar ===== -->
     <div class="progress-section">
       <div class="progress-header">
         <span class="progress-label">📜 Learning Progress</span>
         <span class="progress-percent" id="progressPercent">0%</span>
-      
+      </div>
       
       <div class="progress-track">
         <div class="progress-fill" id="progressFill">
       
       
       
+    </div>
+      </div>
     </div>
 
     <!-- ===== Vocabulary Card ===== -->
@@ -952,27 +958,23 @@
           <!-- Front: English — The original spell -->
           <div class="card-face card-front">
             <span class="card-lang-tag">✨ Incantation</span>
-            <div class="card-word en" id="wordEn">Cat
+            <div class="card-word en" id="wordEn">Cat</div>
       
-            <div class="card-hint">👆 Tap to reveal
+            <div class="card-hint">👆 Tap to reveal</div>
       
             <button class="speak-btn" id="speakBtn" title="Read aloud" aria-label="Read aloud">🔊</button>
           <button class="voice-toggle" id="voiceToggle" title="Toggle accent" style="position:absolute;bottom:8px;right:8px;background:none;border:1px solid rgba(212,175,55,0.2);border-radius:8px;color:#d4af37;font-size:11px;padding:2px 8px;cursor:pointer;z-index:2;">US</button>
-          
+          </div>
       
           <!-- Back: Definition — The meaning -->
           <div class="card-face card-back">
             <span class="card-lang-tag">🔮 Definition</span>
-            <div class="card-word zh" id="wordZh">a small furry pet that purrs
+            <div class="card-word zh" id="wordZh">a small furry pet that purrs</div>
       
-            <div class="card-hint">👆 Tap to flip back
-      
-          
-      
-        
-      
-      
-      
+            <div class="card-hint">👆 Tap to flip back</div>
+      </div>
+        </div>
+      </div>
     </div>
 
     <div class="tap-hint">✨ Tap the card to flip it ✨</div>
@@ -999,14 +1001,12 @@
         <button class="quiz-tab" data-mode="listening">🔊 Listening</button>
         <button class="quiz-tab" data-mode="spelling">✏️ Spelling</button>
         <button class="quiz-tab" data-mode="stats">📊 Stats</button>
-      
-      
+      </div>
       
       <!-- Flashcard Mode (default view) -->
       <div class="quiz-panel active" id="panelFlashcard">
         <!-- Normal flashcard content is shown above -->
-      
-      
+      </div>
       
       <!-- Multiple Choice Mode -->
       <div class="quiz-panel" id="panelChoice" style="display:none;">
@@ -1014,10 +1014,9 @@
       
         <div id="choiceOptions">
       
-        <div id="choiceFeedback" style="margin-top:12px;text-align:center;font-size:14px;">
-      
+        <div id="choiceFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
         <button class="btn-know" id="choiceNextBtn" style="display:none;margin-top:12px;width:100%;">➡️ Next</button>
-      
+      </div>
       
       
       <!-- Stats Mode -->
@@ -1025,13 +1024,12 @@
         <div class="stats-grid" id="statsGrid">
       
         <div style="margin-top:16px;">
-          <div id="categoryChart" style="height:120px;display:flex;gap:6px;align-items:flex-end;padding-top:10px;">
-      
-        
-      
-      
-      
-    </div>
+          <div id="categoryChart" style="height:120px;display:flex;gap:6px;align-items:flex-end;padding-top:10px;"></div>
+        </div>
+      </div>
+      </div>
+      </div>
+      </div>
 
     
       <!-- Listening Quiz -->
