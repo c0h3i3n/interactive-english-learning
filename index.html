@@ -879,7 +879,6 @@
       display: block;
     }
 
-
     /* ===== Nav buttons inside card ===== */
     .card-nav-row {
       display: flex;
@@ -929,6 +928,184 @@
       line-height: 1.3;
       font-size: 12px;
       padding: 6px 8px;
+    }
+
+    /* ===== Harry Potter Trivia ===== */
+    .trivia-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(60, 40, 80, 0.38), rgba(18, 16, 30, 0.72));
+      text-align: left;
+    }
+    .trivia-card::after {
+      content: '⚡';
+      position: absolute;
+      top: -18px;
+      right: 8px;
+      color: rgba(212, 175, 55, 0.07);
+      font-size: 112px;
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+    .trivia-counter {
+      position: relative;
+      z-index: 1;
+      color: #d4af37;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .trivia-en {
+      position: relative;
+      z-index: 1;
+      margin-top: 12px;
+      color: #f4edff;
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      line-height: 1.55;
+    }
+    .trivia-question-label {
+      position: relative;
+      z-index: 1;
+      color: #8880a8;
+      font-size: 12px;
+    }
+    .trivia-options {
+      position: relative;
+      z-index: 2;
+      margin-top: 16px;
+    }
+    .trivia-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 12px 14px;
+      border: 1px solid rgba(200, 180, 140, 0.12);
+      border-radius: 12px;
+      background: rgba(60, 40, 80, 0.2);
+      color: #d0c8e0;
+      font-size: 14px;
+      line-height: 1.35;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.25s;
+      font-family: 'Inter', sans-serif;
+    }
+    .trivia-option:hover:not(:disabled) {
+      border-color: rgba(212, 175, 55, 0.35);
+      background: rgba(212, 175, 55, 0.1);
+      transform: translateX(3px);
+    }
+    .trivia-option:disabled { cursor: default; }
+    .trivia-option.correct {
+      border-color: #2ecc71;
+      background: rgba(46, 204, 113, 0.15);
+      color: #9ff0bb;
+    }
+    .trivia-option.incorrect {
+      border-color: #e74c3c;
+      background: rgba(231, 76, 60, 0.15);
+      color: #ffaaa1;
+    }
+    .trivia-option-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 50%;
+      color: #d4af37;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .trivia-zh {
+      position: relative;
+      z-index: 1;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(212, 175, 55, 0.12);
+      color: #b8a8d8;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .trivia-word {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      gap: 6px;
+      margin-top: 16px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.1);
+      color: #f0e6a0;
+      font-size: 12px;
+    }
+    .trivia-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .trivia-feedback {
+      position: relative;
+      z-index: 1;
+      min-height: 24px;
+      margin-top: 14px;
+      color: #b8a8d8;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .trivia-feedback strong { color: #f0e6a0; }
+    .trivia-next {
+      display: none;
+      width: 100%;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .trivia-source {
+      display: block;
+      margin-top: 12px;
+      color: #8880a8;
+      font-size: 11px;
+      text-align: center;
+      text-decoration: none;
+    }
+    .trivia-source:hover { color: #d4af37; }
+
+    /* Portal home button */
+    .portal-home {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(18,16,30,0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(212,175,55,0.15);
+      color: rgba(212,175,55,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .portal-home:hover {
+      background: rgba(212,175,55,0.1);
+      border-color: rgba(212,175,55,0.4);
+      color: #d4af37;
+      box-shadow: 0 0 20px rgba(212,175,55,0.15);
     }
   </style>
 </head>
@@ -1070,6 +1247,7 @@
         <button class="quiz-tab" data-mode="choice">🎯<br>Quiz</button>
         <button class="quiz-tab" data-mode="listening">🔊<br>Listen</button>
         <button class="quiz-tab" data-mode="spelling">✏️<br>Spell</button>
+        <button class="quiz-tab" data-mode="trivia">⚡<br>Trivia</button>
         <button class="quiz-tab" data-mode="stats">📊<br>Stats</button>
       </div>
       
@@ -1114,6 +1292,23 @@
         <div id="spellingFeedback" style="margin-top:12px;text-align:center;font-size:14px;"></div>
         <button class="btn-know" id="spellingSubmitBtn">✅ Check</button>
         <button class="btn-know" id="spellingNextBtn" style="display:none;margin-top:8px;width:100%;">➡️ Next</button>
+      </div>
+
+      <!-- Harry Potter Trivia -->
+      <div class="quiz-panel" id="panelTrivia" style="display:none;">
+        <div class="trivia-card" aria-live="polite">
+          <div class="trivia-counter" id="triviaCounter"></div>
+          <div class="trivia-question-label">Choose the correct answer:</div>
+          <div class="trivia-en" id="triviaEn"></div>
+          <div class="trivia-options" id="triviaOptions"></div>
+          <div class="trivia-feedback" id="triviaFeedback"></div>
+          <div class="trivia-word" id="triviaWord"></div>
+        </div>
+        <div class="trivia-actions">
+          <button class="quiz-option" id="triviaSpeakBtn" style="margin:0;text-align:center;">🔊 Listen</button>
+          <button class="quiz-option trivia-next" id="triviaNextBtn" style="margin:0;text-align:center;">➡️ Next question</button>
+        </div>
+        <a class="trivia-source" href="https://www.harrypotter.com/features/10-cool-hogwarts-facts-to-impress-your-friends" target="_blank" rel="noopener noreferrer">Facts checked with the official Harry Potter site ↗</a>
       </div>
 
     <!-- ===== Celebration ===== -->
@@ -3206,7 +3401,7 @@
         tabs.forEach(t => t.classList.remove('active'));
         this.classList.add('active');
         
-        ['panelChoice','panelListening','panelSpelling','panelStats'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
+        ['panelChoice','panelListening','panelSpelling','panelTrivia','panelStats'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
         const mode = this.dataset.mode;
         const panel = document.getElementById('panel' + mode.charAt(0).toUpperCase() + mode.slice(1));
         if (panel) {
@@ -3214,6 +3409,7 @@
           if (mode === 'choice') startChoiceQuiz(currentCategory);
           if (mode === 'listening') startListeningQuiz(currentCategory);
           if (mode === 'spelling') startSpellingQuiz(currentCategory);
+          if (mode === 'trivia') showTrivia();
           if (mode === 'stats') buildStats();
         }
         
@@ -3348,6 +3544,218 @@
       nextBtn.disabled = index >= currentWords.length - 1;
     }
   };
+
+  // ---- Harry Potter trivia for English reading practice ----
+  const CORE_HARRY_POTTER_TRIVIA = [
+    {
+      question: 'How many staircases are there at Hogwarts?',
+      options: ['142', '42', '100', '365'],
+      answer: '142',
+      zh: '霍格華茲共有 142 座樓梯，其中有些還會改變通往的方向。',
+      word: 'staircase',
+      meaning: '樓梯'
+    },
+    {
+      question: 'What do Muggles see when they get close to Hogwarts?',
+      options: ['A magical castle', 'Ruins and warning signs', 'A train station', 'A giant forest'],
+      answer: 'Ruins and warning signs',
+      zh: '麻瓜接近霍格華茲時，看到的會是廢墟與警告標誌，而不是魔法城堡。',
+      word: 'approach',
+      meaning: '接近'
+    },
+    {
+      question: 'What does the Great Hall ceiling look like?',
+      options: ['A star map', 'The sky outside', 'A moving staircase', 'A lake'],
+      answer: 'The sky outside',
+      zh: '霍格華茲大禮堂的天花板被施了魔法，看起來會像外面的天空。',
+      word: 'enchanted',
+      meaning: '被施魔法的'
+    },
+    {
+      question: 'What must Ravenclaw students answer to enter their common room?',
+      options: ['A password', 'A riddle', 'A spell', 'A song'],
+      answer: 'A riddle',
+      zh: '雷文克勞學生必須答對謎語，才能進入交誼廳。',
+      word: 'riddle',
+      meaning: '謎語'
+    },
+    {
+      question: 'How do Hufflepuff students enter their common room?',
+      options: ['They tap a barrel in a special rhythm', 'They solve a riddle', 'They knock three times', 'They use Floo Powder'],
+      answer: 'They tap a barrel in a special rhythm',
+      zh: '赫夫帕夫學生要用特殊節奏敲擊木桶，才能進入交誼廳。',
+      word: 'rhythm',
+      meaning: '節奏'
+    },
+    {
+      question: 'What records the names of children who may attend Hogwarts?',
+      options: ['An enchanted quill and an ancient book', 'The Sorting Hat', 'A Hogwarts ghost', 'A golden clock'],
+      answer: 'An enchanted quill and an ancient book',
+      zh: '一支魔法羽毛筆與一本古老名冊，會記下可能入讀霍格華茲的孩子姓名。',
+      word: 'record',
+      meaning: '記錄'
+    },
+    {
+      question: 'What did Professor Binns become while continuing to teach?',
+      options: ['A ghost', 'A portrait', 'A house-elf', 'A centaur'],
+      answer: 'A ghost',
+      zh: '丙斯教授成為幽靈後，仍繼續教授魔法史。',
+      word: 'continued',
+      meaning: '繼續了'
+    },
+    {
+      question: 'What did Peeves escape from before a three-day standoff?',
+      options: ['A giant bell jar', 'The Forbidden Forest', 'A portrait', 'A locked classroom'],
+      answer: 'A giant bell jar',
+      zh: '皮皮鬼曾逃出巨大的玻璃鐘罩，並讓霍格華茲教職員陷入長達三天的對峙。',
+      word: 'standoff',
+      meaning: '僵持；對峙'
+    },
+    {
+      question: 'When did the four Hogwarts founders establish the school?',
+      options: ['In the tenth century', 'In the fifteenth century', 'In 1991', 'In the twenty-first century'],
+      answer: 'In the tenth century',
+      zh: '霍格華茲四位創辦人大約在十世紀建立了這所學校。',
+      word: 'established',
+      meaning: '建立了'
+    },
+    {
+      question: 'What did Dumbledore admit about Hogwarts?',
+      options: ['He knew every secret', 'He did not know every secret', 'He built the castle', 'He could move the castle'],
+      answer: 'He did not know every secret',
+      zh: '就連阿不思・鄧不利多也承認，他並不知道霍格華茲裡的每一個祕密。',
+      word: 'admitted',
+      meaning: '承認了'
+    }
+  ];
+
+  // Build a larger question bank from the Wizarding World vocabulary already
+  // in this app. Each item becomes a four-choice definition question.
+  function buildMagicTrivia(category, label) {
+    const pool = VOCABULARY[category] || [];
+    return pool.map(item => {
+      const distractors = pool
+        .filter(other => other.en !== item.en)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map(other => other.en);
+      return {
+        question: `Which ${label} matches this description: "${item.zh}"?`,
+        options: [item.en, ...distractors].sort(() => Math.random() - 0.5),
+        answer: item.en,
+        zh: `答案是「${item.en}」：${item.zh}`,
+        word: item.en,
+        meaning: item.zh
+      };
+    });
+  }
+
+  const EXTRA_HARRY_POTTER_TRIVIA = [
+    { question: "What is the name of Harry's owl?", options: ['Hedwig', 'Errol', 'Fawkes', 'Scabbers'], answer: 'Hedwig', zh: '哈利的貓頭鷹叫做嘿美。', word: 'owl', meaning: '貓頭鷹' },
+    { question: "What is the name of Hermione's cat?", options: ['Crookshanks', 'Trevor', 'Fang', 'Norbert'], answer: 'Crookshanks', zh: '妙麗的貓叫做歪腿。', word: 'cat', meaning: '貓' },
+    { question: "What was Ron's pet rat called?", options: ['Scabbers', 'Hedwig', 'Aragog', 'Dobby'], answer: 'Scabbers', zh: '榮恩的寵物老鼠叫做斑斑。', word: 'rat', meaning: '老鼠' },
+    { question: "What is the name of Dumbledore's phoenix?", options: ['Fawkes', 'Fang', 'Buckbeak', 'Norbert'], answer: 'Fawkes', zh: '鄧不利多的鳳凰叫做佛客使。', word: 'phoenix', meaning: '鳳凰' },
+    { question: "What is Hagrid's baby dragon called?", options: ['Norbert', 'Nagini', 'Aragog', 'Fluffy'], answer: 'Norbert', zh: '海格的小龍叫做諾伯。', word: 'dragon', meaning: '龍' },
+    { question: 'Which Hogwarts house is Draco Malfoy in?', options: ['Slytherin', 'Gryffindor', 'Ravenclaw', 'Hufflepuff'], answer: 'Slytherin', zh: '跩哥・馬份屬於史萊哲林。', word: 'house', meaning: '學院' },
+    { question: 'What is the name of the three-headed dog?', options: ['Fluffy', 'Fang', 'Norbert', 'Trevor'], answer: 'Fluffy', zh: '三頭犬的名字是毛毛。', word: 'three-headed', meaning: '三個頭的' },
+    { question: "Who is Harry's godfather?", options: ['Sirius Black', 'Remus Lupin', 'James Potter', 'Arthur Weasley'], answer: 'Sirius Black', zh: '哈利的教父是天狼星・布萊克。', word: 'godfather', meaning: '教父' },
+    { question: "What is the name of Voldemort's snake?", options: ['Nagini', 'Norbert', 'Aragog', 'Crookshanks'], answer: 'Nagini', zh: '佛地魔的蛇叫做娜吉妮。', word: 'snake', meaning: '蛇' },
+    { question: 'Who teaches Potions at Hogwarts in Harry’s first year?', options: ['Severus Snape', 'Minerva McGonagall', 'Filius Flitwick', 'Rubeus Hagrid'], answer: 'Severus Snape', zh: '哈利第一年在霍格華茲的魔藥學教授是賽佛勒斯・石內卜。', word: 'potions', meaning: '魔藥學' },
+    { question: 'What subject does Professor McGonagall teach?', options: ['Transfiguration', 'Potions', 'Divination', 'Herbology'], answer: 'Transfiguration', zh: '麥教授教授變形學。', word: 'Transfiguration', meaning: '變形學' },
+    { question: 'Who is the gamekeeper at Hogwarts?', options: ['Rubeus Hagrid', 'Argus Filch', 'Remus Lupin', 'Alastor Moody'], answer: 'Rubeus Hagrid', zh: '霍格華茲的獵場看守是魯霸・海格。', word: 'gamekeeper', meaning: '獵場看守' },
+    { question: "What is the name of Fred and George's shop?", options: ["Weasleys' Wizard Wheezes", 'Honeydukes', 'Zonko’s', 'Borgin and Burkes'], answer: "Weasleys' Wizard Wheezes", zh: '弗雷和喬治的店叫做衛氏巫師法寶店。', word: 'shop', meaning: '商店' },
+    { question: 'Which ghost is associated with Gryffindor?', options: ['Nearly Headless Nick', 'The Bloody Baron', 'The Grey Lady', 'The Fat Friar'], answer: 'Nearly Headless Nick', zh: '葛來分多的學院幽靈是差點沒頭的尼克。', word: 'ghost', meaning: '幽靈' },
+    { question: "What is Harry's scar shaped like?", options: ['A lightning bolt', 'A crescent moon', 'A star', 'A snake'], answer: 'A lightning bolt', zh: '哈利的傷疤是閃電形狀。', word: 'scar', meaning: '傷疤' },
+    { question: "What is Harry's cousin's first name?", options: ['Dudley', 'Neville', 'Cedric', 'Percy'], answer: 'Dudley', zh: '哈利的表哥名字是達力。', word: 'cousin', meaning: '表親；堂親' },
+    { question: 'How many points is the Golden Snitch worth in Quidditch?', options: ['150', '10', '50', '100'], answer: '150', zh: '在魁地奇中，抓到金探子可得 150 分。', word: 'worth', meaning: '價值；值得' }
+  ];
+
+  const GENERATED_MAGIC_TRIVIA = [
+    ...buildMagicTrivia('magic_spells', 'spell'),
+    ...buildMagicTrivia('magic_creatures', 'magical creature'),
+    ...buildMagicTrivia('magic_places', 'place or Hogwarts term'),
+    ...buildMagicTrivia('magic_items', 'magical item')
+  ];
+  // The bank has 100 reliable core questions. Expand each one into ten
+  // different English practice prompts, giving the learner 1,000 quiz items
+  // without pretending there are 1,000 unrelated canon facts.
+  const TRIVIA_QUESTION_FRAMES = [
+    question => question,
+    question => `Quick quiz: ${question}`,
+    question => `Wizarding challenge: ${question}`,
+    question => `Test your Hogwarts knowledge: ${question}`,
+    question => `Can you answer this? ${question}`,
+    question => `Choose the best answer: ${question}`,
+    question => `A Hogwarts student asks: ${question}`,
+    question => `According to wizarding lore, ${question.charAt(0).toLowerCase()}${question.slice(1)}`,
+    question => `One more magical challenge: ${question}`,
+    question => `Final-exam style: ${question}`
+  ];
+
+  function expandTriviaBank(baseQuestions) {
+    return TRIVIA_QUESTION_FRAMES.flatMap((frame, frameIndex) =>
+      baseQuestions.map((item, questionIndex) => ({
+        ...item,
+        question: frame(item.question),
+        options: [...item.options].sort(() => Math.random() - 0.5),
+        baseQuestion: questionIndex + 1,
+        promptStyle: frameIndex + 1
+      }))
+    );
+  }
+
+  const BASE_HARRY_POTTER_TRIVIA = [
+    ...CORE_HARRY_POTTER_TRIVIA,
+    ...GENERATED_MAGIC_TRIVIA,
+    ...EXTRA_HARRY_POTTER_TRIVIA
+  ].slice(0, 100);
+  const HARRY_POTTER_TRIVIA = expandTriviaBank(BASE_HARRY_POTTER_TRIVIA).slice(0, 1000);
+  let triviaIndex = -1;
+
+  function showTrivia() {
+    let nextIndex = triviaIndex;
+    if (HARRY_POTTER_TRIVIA.length > 1) {
+      while (nextIndex === triviaIndex) {
+        nextIndex = Math.floor(Math.random() * HARRY_POTTER_TRIVIA.length);
+      }
+    } else {
+      nextIndex = 0;
+    }
+    triviaIndex = nextIndex;
+    const question = HARRY_POTTER_TRIVIA[triviaIndex];
+    document.getElementById('triviaCounter').textContent = `Question ${triviaIndex + 1} / ${HARRY_POTTER_TRIVIA.length}`;
+    document.getElementById('triviaEn').textContent = question.question;
+    document.getElementById('triviaOptions').innerHTML = question.options.map((option, index) => `
+      <button class="trivia-option" data-answer="${option === question.answer}">
+        <span class="trivia-option-letter">${String.fromCharCode(65 + index)}</span>
+        <span>${option}</span>
+      </button>
+    `).join('');
+    document.getElementById('triviaFeedback').textContent = '';
+    document.getElementById('triviaWord').textContent = `Key word: ${question.word} — ${question.meaning}`;
+    document.getElementById('triviaNextBtn').style.display = 'none';
+    document.querySelectorAll('#triviaOptions .trivia-option').forEach(button => {
+      button.addEventListener('click', function() {
+        if (this.disabled) return;
+        const isCorrect = this.dataset.answer === 'true';
+        document.querySelectorAll('#triviaOptions .trivia-option').forEach(option => {
+          option.disabled = true;
+          if (option.dataset.answer === 'true') option.classList.add('correct');
+        });
+        if (!isCorrect) this.classList.add('incorrect');
+        document.getElementById('triviaFeedback').innerHTML = isCorrect
+          ? `<strong>✅ Correct!</strong> ${question.zh}`
+          : `<strong>❌ Not quite.</strong> The answer is <strong>${question.answer}</strong>. ${question.zh}`;
+        document.getElementById('triviaNextBtn').style.display = 'block';
+      });
+    });
+  }
+
+  document.getElementById('triviaNextBtn')?.addEventListener('click', showTrivia);
+  document.getElementById('triviaSpeakBtn')?.addEventListener('click', function() {
+    const question = HARRY_POTTER_TRIVIA[triviaIndex];
+    if (question) speakText(question.question);
+  });
 
   // ---- Initialize enhanced features ----
   loadSR();
@@ -3580,5 +3988,6 @@
 
   </script>
 
+<a href="https://c0h3i3n.github.io/" class="portal-home" title="Portal">◈</a>
 </body>
 </html>
