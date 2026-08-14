@@ -2774,7 +2774,7 @@
    *
    * @param {string} text - 要朗讀的英文單字
    */
-  function speakText(text) {
+  function speakText(text, onComplete) {
     //  Check if browser supports speech
     if (!window.speechSynthesis) {
       // LINE/FB等內建瀏覽器可能不支援語音，顯示提示
@@ -2788,6 +2788,12 @@
 
     // 建立一個「朗讀任務」，告訴瀏覽器要唸什麼
     const utterance = new SpeechSynthesisUtterance(text);
+    let speechFinished = false;
+    const finishSpeech = () => {
+      if (speechFinished) return;
+      speechFinished = true;
+      if (typeof onComplete === 'function') onComplete();
+    };
 
     //  Use selected accent (US or UK)
     const lang = voiceAccent === 'US' ? 'en-US' : 'en-GB';
@@ -2816,6 +2822,7 @@
     //  When speech ends, stop the animation
     utterance.onend = () => {
       if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
+      finishSpeech();
     };
 
     //  If error occurs, also stop animation
@@ -2825,6 +2832,7 @@
         dom.speakBtn.textContent = '⚠️';
         dom.speakBtn.title = '語音朗讀失敗，請用 Chrome/Safari 開啟';
       }
+      finishSpeech();
     };
 
     //  Start speaking!
@@ -3781,6 +3789,7 @@
     triviaHintBtn.style.display = 'inline-flex';
     triviaHintBtn.disabled = false;
     triviaHintBtn.textContent = '💡 Need a hint?';
+    document.getElementById('triviaSpeakBtn').textContent = '🔊 Listen all';
     document.getElementById('triviaNextBtn').style.display = 'none';
     document.querySelectorAll('#triviaOptions .trivia-option').forEach(button => {
       button.addEventListener('click', function() {
@@ -3796,6 +3805,7 @@
           : `<strong>❌ Not quite.</strong> The answer is <strong>${question.answer}</strong>. ${question.zh}`;
         triviaWord.classList.add('revealed');
         triviaHintBtn.style.display = 'none';
+        document.getElementById('triviaSpeakBtn').textContent = '🔊 Listen + answer';
         document.getElementById('triviaNextBtn').style.display = 'block';
       });
     });
@@ -3816,14 +3826,25 @@
   document.getElementById('triviaSpeakBtn')?.addEventListener('click', function() {
     const question = HARRY_POTTER_TRIVIA[triviaIndex];
     if (!question) return;
-    // Read the question and all four choices in one speech queue.
-    // Cancelling first prevents repeated clicks from stacking duplicate audio.
+    // Read each part only after the previous utterance ends. Some browsers
+    // drop later items when several speech requests are queued at once.
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     const parts = [
       question.question,
       ...question.options.map((option, index) => `Option ${String.fromCharCode(65 + index)}: ${option}`)
     ];
-    parts.forEach(part => speakText(part));
+    if (document.getElementById('triviaWord').classList.contains('revealed')) {
+      parts.push(`The correct answer is ${question.answer}.`);
+    }
+    let partIndex = 0;
+    const speakNextPart = () => {
+      if (partIndex >= parts.length) return;
+      speakText(parts[partIndex], () => {
+        partIndex++;
+        speakNextPart();
+      });
+    };
+    speakNextPart();
   });
 
   // ---- Initialize enhanced features ----
