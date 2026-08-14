@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade 2 Upgrade Exam Practice</title>
+  <style>
+    :root {
+      --ink: #233044;
+      --muted: #66758b;
+      --line: #d9e2ec;
+      --paper: #ffffff;
+      --bg: #f3f7f5;
+      --blue: #2563eb;
+      --green: #16845b;
+      --amber: #b56a12;
+      --soft-blue: #edf4ff;
+      --soft-green: #eaf8f1;
+      --soft-amber: #fff5df;
+      --danger: #b42318;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Arial, "Noto Sans TC", sans-serif;
+      line-height: 1.6;
+    }
+
+    button, input, textarea, select { font: inherit; }
+
+    button { cursor: pointer; }
+
+    .page {
+      width: min(1060px, calc(100% - 28px));
+      margin: 24px auto 40px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 16px 42px rgba(35, 48, 68, 0.1);
+      overflow: hidden;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.7fr);
+      gap: 22px;
+      align-items: center;
+      padding: 30px 34px;
+      border-bottom: 1px solid var(--line);
+      background: #f7fbff;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.25; }
+    h1 { margin-bottom: 10px; font-size: clamp(28px, 4vw, 44px); }
+    header p { margin-bottom: 0; color: var(--muted); }
+
+    .header-art {
+      min-height: 145px;
+      padding: 18px;
+      border: 1px solid #cce3d7;
+      border-radius: 8px;
+      background: var(--soft-green);
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .header-art strong {
+      display: block;
+      color: var(--green);
+      font-size: 28px;
+    }
+
+    .header-art span { color: #3d6d59; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 15px 34px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .btn {
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 1px solid #b8c5d6;
+      border-radius: 6px;
+      color: var(--ink);
+      background: #fff;
+      font-weight: 700;
+    }
+
+    .btn:hover { filter: brightness(0.97); }
+    .btn.primary { color: #fff; background: var(--blue); border-color: var(--blue); }
+    .btn.green { color: #fff; background: var(--green); border-color: var(--green); }
+
+    main { padding: 28px 34px 38px; }
+
+    .notice {
+      margin-bottom: 24px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--amber);
+      background: var(--soft-amber);
+    }
+
+    .notice p:last-child { margin-bottom: 0; }
+
+    .practice-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .tab {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .tab.active { color: #fff; background: var(--blue); border-color: var(--blue); }
+
+    .practice { display: none; }
+    .practice.active { display: block; }
+
+    section {
+      margin-top: 30px;
+      padding-top: 26px;
+      border-top: 2px solid var(--line);
+    }
+
+    section:first-of-type { margin-top: 0; padding-top: 0; border-top: 0; }
+
+    .section-title {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      display: inline-grid;
+      place-items: center;
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--green);
+      font-weight: 800;
+    }
+
+    .reading-box {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+
+    .reading-box h3 { margin-bottom: 12px; color: #0f172a; font-size: 24px; }
+    .reading-box p { font-size: 18px; }
+
+    .question-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .question {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .question > p { margin-bottom: 8px; font-weight: 700; }
+
+    .option-list {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .option-list label {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 4px 0;
+      font-weight: 400;
+    }
+
+    .answer-area, .writing-area {
+      width: 100%;
+      min-height: 82px;
+      padding: 10px 12px;
+      border: 1px solid #b8c5d6;
+      border-radius: 6px;
+      resize: vertical;
+      background: #fff;
+    }
+
+    .hint { margin: 7px 0 0; color: var(--muted); font-size: 14px; }
+
+    .grammar-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .grammar-item {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .grammar-item select {
+      width: 100%;
+      min-height: 38px;
+      padding: 6px 8px;
+      border: 1px solid #b8c5d6;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .writing-intro {
+      padding: 14px 16px;
+      border-left: 4px solid var(--blue);
+      background: var(--soft-blue);
+    }
+
+    .writing-list { display: grid; gap: 12px; margin-top: 16px; }
+
+    .writing-prompt {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: 14px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .writing-prompt strong { color: var(--ink); }
+    .tense-tag {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: #17603f;
+      background: var(--soft-green);
+      font-size: 12px;
+    }
+
+    .tense-tag.past { color: #8a4d0b; background: var(--soft-amber); }
+
+    .feedback {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 6px;
+      background: var(--soft-green);
+      color: #17603f;
+      font-weight: 700;
+    }
+
+    .feedback.show { display: block; }
+
+    .answers {
+      display: none;
+      margin-top: 24px;
+      padding: 16px;
+      border: 1px solid #f1d39b;
+      border-radius: 6px;
+      background: var(--soft-amber);
+    }
+
+    .answers.show { display: block; }
+    .answers h3 { margin-bottom: 8px; }
+    .answers p { margin: 5px 0; }
+
+    footer {
+      padding: 18px 34px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      background: #fbfdff;
+      font-size: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(100% - 16px, 1060px); margin: 8px auto 24px; }
+      header, main, footer { padding-left: 18px; padding-right: 18px; }
+      header { grid-template-columns: 1fr; padding-top: 22px; padding-bottom: 22px; }
+      .toolbar { padding-left: 18px; padding-right: 18px; }
+      .grammar-grid, .writing-prompt { grid-template-columns: 1fr; }
+      .reading-box p { font-size: 16px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; margin: 0; border: 0; box-shadow: none; }
+      .toolbar, .practice-tabs, .btn, .feedback, .answers { display: none !important; }
+      .practice { display: block !important; page-break-before: always; }
+      .practice:first-of-type { page-break-before: auto; }
+      textarea { border-color: #333; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <h1>Grade 2 Upgrade Exam</h1>
+        <p>Workbook 1 模擬練習：Reading Comprehension、Grammar、Writing</p>
+      </div>
+      <div class="header-art" aria-label="Grade 2 English practice">
+        <div><strong>Read · Think · Write</strong><span>Unit 1–11 + Appendix 範圍練習</span></div>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <button class="btn primary" type="button" id="checkBtn">檢查選擇題</button>
+      <button class="btn green" type="button" id="showAnswersBtn">顯示答案</button>
+      <button class="btn" type="button" id="resetBtn">重新作答</button>
+      <button class="btn" type="button" onclick="window.print()">列印</button>
+    </div>
+
+    <main>
+      <div class="notice">
+        <strong>給小朋友：</strong>先自己讀短文，再用完整句子回答。Writing 要自己想句子；每句要有大寫、主詞、動詞和句點。
+      </div>
+
+      <div class="practice-tabs" role="tablist" aria-label="Practice tests">
+        <button class="tab active" type="button" data-practice="1">Practice 1 · Lemonade</button>
+        <button class="tab" type="button" data-practice="2">Practice 2 · Snowy Island</button>
+        <button class="tab" type="button" data-practice="3">Practice 3 · The Clever Bird</button>
+      </div>
+
+      <div class="practice active" id="practice-1">
+        <section>
+          <div class="section-title"><span class="badge">1</span><h2>Reading Comprehension</h2></div>
+          <div class="reading-box">
+            <h3>The Lemonade Helpers</h3>
+            <p>On Saturday morning, Mia and her friends cleaned their clubhouse. The children wanted to buy new chairs, so they made a lemonade stand. Mia squeezed the lemons. Ben counted the cups, and Sara made a small sign. In the afternoon, many neighbors came by. The children sold twenty-four cups of lemonade. They were tired, but they felt proud because they worked together.</p>
+            <div class="question-list">
+              <div class="question"><p>1. Why did the children make a lemonade stand?</p><ul class="option-list"><li><label><input type="radio" name="p1r1" value="A"> A. They wanted to buy new chairs.</label></li><li><label><input type="radio" name="p1r1" value="B"> B. They wanted to find a new clubhouse.</label></li><li><label><input type="radio" name="p1r1" value="C"> C. They wanted to visit a farm.</label></li></ul></div>
+              <div class="question"><p>2. Who counted the cups?</p><ul class="option-list"><li><label><input type="radio" name="p1r2" value="A"> A. Mia</label></li><li><label><input type="radio" name="p1r2" value="B"> B. Sara</label></li><li><label><input type="radio" name="p1r2" value="C"> C. Ben</label></li></ul></div>
+              <div class="question"><p>3. How many cups did they sell?</p><ul class="option-list"><li><label><input type="radio" name="p1r3" value="A"> A. Twenty-four cups.</label></li><li><label><input type="radio" name="p1r3" value="B"> B. Forty-two cups.</label></li><li><label><input type="radio" name="p1r3" value="C"> C. Fourteen cups.</label></li></ul></div>
+              <div class="question"><p>4. How did the children feel?</p><ul class="option-list"><li><label><input type="radio" name="p1r4" value="A"> A. Angry</label></li><li><label><input type="radio" name="p1r4" value="B"> B. Proud</label></li><li><label><input type="radio" name="p1r4" value="C"> C. Scared</label></li></ul></div>
+              <div class="question"><p>5. What did Mia do? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Mia ... ."></textarea></div>
+              <div class="question"><p>6. Why were the children tired? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="They ... ."></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">2</span><h2>Past or Present?</h2></div>
+          <p>Choose the correct verb. Read the time words carefully.</p>
+          <div class="grammar-grid">
+            <div class="grammar-item"><span>1. Mia ___ lemons every Saturday.</span><select data-answer="squeezes"><option value="">Choose</option><option value="squeezes">squeezes</option><option value="squeezed">squeezed</option></select></div>
+            <div class="grammar-item"><span>2. Ben ___ the cups yesterday.</span><select data-answer="counted"><option value="">Choose</option><option value="counts">counts</option><option value="counted">counted</option></select></div>
+            <div class="grammar-item"><span>3. The neighbors ___ lemonade now.</span><select data-answer="drink"><option value="">Choose</option><option value="drink">drink</option><option value="drank">drank</option></select></div>
+            <div class="grammar-item"><span>4. Sara ___ a sign last night.</span><select data-answer="made"><option value="">Choose</option><option value="makes">makes</option><option value="made">made</option></select></div>
+            <div class="grammar-item"><span>5. The children ___ together every week.</span><select data-answer="work"><option value="">Choose</option><option value="work">work</option><option value="worked">worked</option></select></div>
+            <div class="grammar-item"><span>6. They ___ twenty-four cups yesterday.</span><select data-answer="sold"><option value="">Choose</option><option value="sell">sell</option><option value="sold">sold</option></select></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">3</span><h2>Write Ten Sentences</h2></div>
+          <div class="writing-intro">請依照提示自己造句。第 1–5 題用 <strong>present tense</strong>，第 6–10 題用 <strong>past tense</strong>。</div>
+          <div class="writing-list">
+            <div class="writing-prompt"><strong>1. something you do every morning <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>2. a friend who helps you <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>3. a food you like <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>4. what your family does on weekends <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>5. an animal you like <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>6. what you did yesterday <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>7. a place you visited <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>8. something you ate <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>9. a game you played <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>10. something you learned <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+          </div>
+          <p class="hint">完成後按「檢查選擇題」也會提醒你有沒有漏寫十句；句子的文法請和大人一起訂正。</p>
+        </section>
+      </div>
+
+      <div class="practice" id="practice-2">
+        <section>
+          <div class="section-title"><span class="badge">1</span><h2>Reading Comprehension</h2></div>
+          <div class="reading-box">
+            <h3>A Day on the Snowy Island</h3>
+            <p>Ed lived on a cold island with his friends. One morning, snow covered the road. Ed and Betty wanted to visit the penguins, but they could not walk far. They made a small sled from a box and a strong rope. Ed pulled the sled, and Betty carried warm food. At noon, they reached the penguin house. The penguins were hungry, so the children gave them fish. On the way home, Ed waved to his new friends.</p>
+            <div class="question-list">
+              <div class="question"><p>1. What covered the road?</p><ul class="option-list"><li><label><input type="radio" name="p2r1" value="A"> A. Rain</label></li><li><label><input type="radio" name="p2r1" value="B"> B. Snow</label></li><li><label><input type="radio" name="p2r1" value="C"> C. Sand</label></li></ul></div>
+              <div class="question"><p>2. What did Ed and Betty make?</p><ul class="option-list"><li><label><input type="radio" name="p2r2" value="A"> A. A small sled</label></li><li><label><input type="radio" name="p2r2" value="B"> B. A warm house</label></li><li><label><input type="radio" name="p2r2" value="C"> C. A fish tank</label></li></ul></div>
+              <div class="question"><p>3. What did Betty carry?</p><ul class="option-list"><li><label><input type="radio" name="p2r3" value="A"> A. A box</label></li><li><label><input type="radio" name="p2r3" value="B"> B. A rope</label></li><li><label><input type="radio" name="p2r3" value="C"> C. Warm food</label></li></ul></div>
+              <div class="question"><p>4. Why did the children give the penguins fish?</p><ul class="option-list"><li><label><input type="radio" name="p2r4" value="A"> A. The penguins were hungry.</label></li><li><label><input type="radio" name="p2r4" value="B"> B. The penguins could not swim.</label></li><li><label><input type="radio" name="p2r4" value="C"> C. The penguins made a sled.</label></li></ul></div>
+              <div class="question"><p>5. What did Ed do on the way home? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Ed ... ."></textarea></div>
+              <div class="question"><p>6. How did the children travel? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="They ... ."></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">2</span><h2>Past or Present?</h2></div>
+          <p>Choose the correct verb.</p>
+          <div class="grammar-grid">
+            <div class="grammar-item"><span>1. Penguins ___ in cold places.</span><select data-answer="live"><option value="">Choose</option><option value="live">live</option><option value="lived">lived</option></select></div>
+            <div class="grammar-item"><span>2. Ed ___ the sled yesterday.</span><select data-answer="pulled"><option value="">Choose</option><option value="pulls">pulls</option><option value="pulled">pulled</option></select></div>
+            <div class="grammar-item"><span>3. Betty ___ warm food now.</span><select data-answer="carries"><option value="">Choose</option><option value="carries">carries</option><option value="carried">carried</option></select></div>
+            <div class="grammar-item"><span>4. The children ___ the penguins last week.</span><select data-answer="visited"><option value="">Choose</option><option value="visit">visit</option><option value="visited">visited</option></select></div>
+            <div class="grammar-item"><span>5. Ed ___ to his friends every day.</span><select data-answer="waves"><option value="">Choose</option><option value="waves">waves</option><option value="waved">waved</option></select></div>
+            <div class="grammar-item"><span>6. They ___ fish to the penguins.</span><select data-answer="gave"><option value="">Choose</option><option value="give">give</option><option value="gave">gave</option></select></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">3</span><h2>Write Ten Sentences</h2></div>
+          <div class="writing-intro">第 1–5 題用 present tense，第 6–10 題用 past tense。請寫完整句子，不要只寫單字。</div>
+          <div class="writing-list">
+            <div class="writing-prompt"><strong>1. what penguins do <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>2. something that is cold <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>3. what you eat for breakfast <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>4. what you do with a friend <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>5. a place you want to visit <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>6. what you did last night <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>7. something you saw <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>8. a gift you received <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>9. a game you played last week <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>10. something you learned at school <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="practice" id="practice-3">
+        <section>
+          <div class="section-title"><span class="badge">1</span><h2>Reading Comprehension</h2></div>
+          <div class="reading-box">
+            <h3>The Clever Bird</h3>
+            <p>Bird lived near a green forest. She was small, but she remembered everything she saw. One day, Tiger asked Bird to find a quiet place for him to sleep. Bird flew over the forest and saw a dark cave. She did not tell Tiger about the cave. Instead, she made a plan. She sang a loud song near the cave. Tiger followed the song and fell asleep there. Bird flew back to her tree and helped the other animals stay safe.</p>
+            <div class="question-list">
+              <div class="question"><p>1. Where did Bird live?</p><ul class="option-list"><li><label><input type="radio" name="p3r1" value="A"> A. Near a city</label></li><li><label><input type="radio" name="p3r1" value="B"> B. Near a green forest</label></li><li><label><input type="radio" name="p3r1" value="C"> C. In a school</label></li></ul></div>
+              <div class="question"><p>2. What did Tiger ask Bird to find?</p><ul class="option-list"><li><label><input type="radio" name="p3r2" value="A"> A. A quiet place</label></li><li><label><input type="radio" name="p3r2" value="B"> B. A new song</label></li><li><label><input type="radio" name="p3r2" value="C"> C. A small tree</label></li></ul></div>
+              <div class="question"><p>3. What did Bird do near the cave?</p><ul class="option-list"><li><label><input type="radio" name="p3r3" value="A"> A. She ate lunch.</label></li><li><label><input type="radio" name="p3r3" value="B"> B. She built a house.</label></li><li><label><input type="radio" name="p3r3" value="C"> C. She sang a loud song.</label></li></ul></div>
+              <div class="question"><p>4. Why did Bird make a plan?</p><ul class="option-list"><li><label><input type="radio" name="p3r4" value="A"> A. She wanted to keep the animals safe.</label></li><li><label><input type="radio" name="p3r4" value="B"> B. She wanted to find a snack.</label></li><li><label><input type="radio" name="p3r4" value="C"> C. She wanted to wake Tiger.</label></li></ul></div>
+              <div class="question"><p>5. What happened to Tiger? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Tiger ... ."></textarea></div>
+              <div class="question"><p>6. How did Bird help the other animals? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Bird ... ."></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">2</span><h2>Past or Present?</h2></div>
+          <p>Choose the correct verb.</p>
+          <div class="grammar-grid">
+            <div class="grammar-item"><span>1. Birds ___ in trees.</span><select data-answer="live"><option value="">Choose</option><option value="live">live</option><option value="lived">lived</option></select></div>
+            <div class="grammar-item"><span>2. Bird ___ over the forest yesterday.</span><select data-answer="flew"><option value="">Choose</option><option value="flies">flies</option><option value="flew">flew</option></select></div>
+            <div class="grammar-item"><span>3. Tiger ___ loudly when he is angry.</span><select data-answer="roars"><option value="">Choose</option><option value="roars">roars</option><option value="roared">roared</option></select></div>
+            <div class="grammar-item"><span>4. Bird ___ a song last night.</span><select data-answer="sang"><option value="">Choose</option><option value="sings">sings</option><option value="sang">sang</option></select></div>
+            <div class="grammar-item"><span>5. The animals ___ safe now.</span><select data-answer="feel"><option value="">Choose</option><option value="feel">feel</option><option value="felt">felt</option></select></div>
+            <div class="grammar-item"><span>6. Tiger ___ asleep after the song.</span><select data-answer="fell"><option value="">Choose</option><option value="falls">falls</option><option value="fell">fell</option></select></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">3</span><h2>Write Ten Sentences</h2></div>
+          <div class="writing-intro">第 1–5 題用 present tense，第 6–10 題用 past tense。可以使用課本裡的動詞，但句子要自己想。</div>
+          <div class="writing-list">
+            <div class="writing-prompt"><strong>1. an animal that can fly <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>2. what a bird eats <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>3. what you remember <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>4. what you like to do <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>5. what makes you happy <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>6. where you went yesterday <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>7. what you saw last weekend <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>8. what you ate yesterday <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>9. a person who helped you <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>10. something you made <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="feedback" id="feedback" role="status"></div>
+      <div class="answers" id="answers">
+        <h3>答案 Key</h3>
+        <p>Practice 1：Reading 1 A、2 C、3 A、4 B；Grammar：squeezes、counted、drink、made、work、sold。</p>
+        <p>Practice 2：Reading 1 B、2 A、3 C、4 A；Grammar：live、pulled、carries、visited、waves、gave。</p>
+        <p>Practice 3：Reading 1 B、2 A、3 C、4 A；Grammar：live、flew、roars、sang、feel、fell。</p>
+        <p>Reading 第 5、6 題與 Writing 十句為開放題，請檢查是否為完整句子、大小寫、拼字、句點和時態。</p>
+      </div>
+    </main>
+
+    <footer>這份練習依照 CLC Grade 2 Workbook 1 常見題型設計：課文理解、完整句回答、現在式／過去式和自行造句。短文與題目為練習用新編內容。</footer>
+  </div>
+
+  <script>
+    const tabs = [...document.querySelectorAll('.tab')];
+    const practices = [...document.querySelectorAll('.practice')];
+    const feedback = document.getElementById('feedback');
+    const answers = document.getElementById('answers');
+
+    const answerSets = {
+      1: ['A', 'C', 'A', 'B'],
+      2: ['B', 'A', 'C', 'A'],
+      3: ['B', 'A', 'C', 'A']
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const id = tab.dataset.practice;
+        tabs.forEach((item) => item.classList.toggle('active', item === tab));
+        practices.forEach((practice) => practice.classList.toggle('active', practice.id === `practice-${id}`));
+        feedback.classList.remove('show');
+      });
+    });
+
+    function checkCurrentPractice() {
+      const current = document.querySelector('.practice.active');
+      const id = current.id.replace('practice-', '');
+      const expected = answerSets[id];
+      let correct = 0;
+      expected.forEach((answer, index) => {
+        const selected = current.querySelector(`input[name="p${id}r${index + 1}"]:checked`);
+        if (selected && selected.value === answer) correct += 1;
+      });
+      const selects = [...current.querySelectorAll('select[data-answer]')];
+      const grammarCorrect = selects.filter((select) => select.value === select.dataset.answer).length;
+      const writing = [...current.querySelectorAll('.writing-area')];
+      const filled = writing.filter((item) => item.value.trim().length > 0).length;
+      const complete = writing.filter((item) => /[.!?]\s*$/.test(item.value.trim())).length;
+      feedback.textContent = `目前是 Practice ${id}：Reading 選擇題 ${correct}/4，Grammar ${grammarCorrect}/${selects.length}。Writing 已填 ${filled}/10，當中 ${complete}/10 句有句點；開放題請再檢查時態和句子意思。`;
+      feedback.classList.add('show');
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', checkCurrentPractice);
+    document.getElementById('showAnswersBtn').addEventListener('click', () => answers.classList.toggle('show'));
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      document.querySelectorAll('input[type="radio"]').forEach((input) => { input.checked = false; });
+      document.querySelectorAll('select').forEach((select) => { select.value = ''; });
+      document.querySelectorAll('textarea').forEach((area) => { area.value = ''; });
+      feedback.classList.remove('show');
+      answers.classList.remove('show');
+    });
+  </script>
+</body>
+</html>
