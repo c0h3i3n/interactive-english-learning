@@ -1039,7 +1039,7 @@
     .trivia-word {
       position: relative;
       z-index: 1;
-      display: inline-flex;
+      display: none;
       gap: 6px;
       margin-top: 16px;
       padding: 7px 11px;
@@ -1048,6 +1048,36 @@
       color: #f0e6a0;
       font-size: 12px;
     }
+    .trivia-word.revealed { display: inline-flex; }
+    .trivia-hint-toggle {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      margin-top: 14px;
+      padding: 7px 11px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.06);
+      color: #d4af37;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .trivia-hint-toggle:hover {
+      background: rgba(212, 175, 55, 0.14);
+      border-color: rgba(212, 175, 55, 0.38);
+    }
+    .trivia-hint {
+      position: relative;
+      z-index: 1;
+      display: none;
+      margin-top: 10px;
+      color: #b8a8d8;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .trivia-hint.visible { display: block; }
     .trivia-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1300,6 +1330,8 @@
           <div class="trivia-counter" id="triviaCounter"></div>
           <div class="trivia-question-label">Choose the correct answer:</div>
           <div class="trivia-en" id="triviaEn"></div>
+          <button class="trivia-hint-toggle" id="triviaHintBtn" type="button">💡 Need a hint?</button>
+          <div class="trivia-hint" id="triviaHint" aria-live="polite"></div>
           <div class="trivia-options" id="triviaOptions"></div>
           <div class="trivia-feedback" id="triviaFeedback"></div>
           <div class="trivia-word" id="triviaWord"></div>
@@ -3645,7 +3677,14 @@
         answer: item.en,
         zh: `答案是「${item.en}」：${item.zh}`,
         word: item.en,
-        meaning: item.zh
+        meaning: item.zh,
+        hint: label === 'spell'
+          ? 'Think of a magical action performed with a wand.'
+          : label === 'magical creature'
+            ? 'Think of a living creature from the Wizarding World.'
+            : label === 'place or Hogwarts term'
+              ? 'Think of a location, school term, or wizarding group.'
+              : 'Think of a magical object or artifact.'
       };
     });
   }
@@ -3732,7 +3771,16 @@
       </button>
     `).join('');
     document.getElementById('triviaFeedback').textContent = '';
-    document.getElementById('triviaWord').textContent = `Key word: ${question.word} — ${question.meaning}`;
+    const triviaWord = document.getElementById('triviaWord');
+    triviaWord.textContent = `Key word: ${question.word} — ${question.meaning}`;
+    triviaWord.classList.remove('revealed');
+    const triviaHint = document.getElementById('triviaHint');
+    triviaHint.textContent = '';
+    triviaHint.classList.remove('visible');
+    const triviaHintBtn = document.getElementById('triviaHintBtn');
+    triviaHintBtn.style.display = 'inline-flex';
+    triviaHintBtn.disabled = false;
+    triviaHintBtn.textContent = '💡 Need a hint?';
     document.getElementById('triviaNextBtn').style.display = 'none';
     document.querySelectorAll('#triviaOptions .trivia-option').forEach(button => {
       button.addEventListener('click', function() {
@@ -3746,10 +3794,23 @@
         document.getElementById('triviaFeedback').innerHTML = isCorrect
           ? `<strong>✅ Correct!</strong> ${question.zh}`
           : `<strong>❌ Not quite.</strong> The answer is <strong>${question.answer}</strong>. ${question.zh}`;
+        triviaWord.classList.add('revealed');
+        triviaHintBtn.style.display = 'none';
         document.getElementById('triviaNextBtn').style.display = 'block';
       });
     });
   }
+
+  document.getElementById('triviaHintBtn')?.addEventListener('click', function() {
+    const question = HARRY_POTTER_TRIVIA[triviaIndex];
+    if (!question) return;
+    const hint = question.hint || 'Read the question carefully and compare the four choices.';
+    const triviaHint = document.getElementById('triviaHint');
+    triviaHint.textContent = `Hint: ${hint}`;
+    triviaHint.classList.add('visible');
+    this.disabled = true;
+    this.textContent = '💡 Hint shown';
+  });
 
   document.getElementById('triviaNextBtn')?.addEventListener('click', showTrivia);
   document.getElementById('triviaSpeakBtn')?.addEventListener('click', function() {
