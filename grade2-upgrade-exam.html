@@ -112,6 +112,23 @@
 
     .notice p:last-child { margin-bottom: 0; }
 
+    .scope-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .scope-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .scope-card h3 { margin-bottom: 6px; color: var(--blue); font-size: 17px; }
+    .scope-card p { margin: 0; color: var(--muted); font-size: 14px; }
+
     .practice-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -309,7 +326,7 @@
       header, main, footer { padding-left: 18px; padding-right: 18px; }
       header { grid-template-columns: 1fr; padding-top: 22px; padding-bottom: 22px; }
       .toolbar { padding-left: 18px; padding-right: 18px; }
-      .grammar-grid, .writing-prompt { grid-template-columns: 1fr; }
+      .scope-grid, .grammar-grid, .writing-prompt { grid-template-columns: 1fr; }
       .reading-box p { font-size: 16px; }
     }
 
@@ -328,10 +345,10 @@
     <header>
       <div>
         <h1>Grade 2 Upgrade Exam</h1>
-        <p>Workbook 1 模擬練習：Reading Comprehension、Grammar、Writing</p>
+        <p>McGraw-Hill Reading: Grade 2, Book 1 Units 1–3 + Workbook 1</p>
       </div>
       <div class="header-art" aria-label="Grade 2 English practice">
-        <div><strong>Read · Think · Write</strong><span>Unit 1–11 + Appendix 範圍練習</span></div>
+        <div><strong>Read · Think · Write</strong><span>Book 1 三個 Units 對照 Workbook</span></div>
       </div>
     </header>
 
@@ -344,26 +361,81 @@
 
     <main>
       <div class="notice">
-        <strong>給小朋友：</strong>先自己讀短文，再用完整句子回答。Writing 要自己想句子；每句要有大寫、主詞、動詞和句點。
+        <strong>給小朋友：</strong>先自己讀短文，再用完整句子回答。Writing 要自己想句子；每句要有大寫、主詞、動詞和句點。短文是依課本主題重新編寫，不是直接複製課文。
+      </div>
+
+      <div class="scope-grid" aria-label="Book 1 and Workbook scope">
+        <div class="scope-card"><h3>Book 1 Unit 1</h3><p>Workbook Units 1–4：Ann’s First Day、Henry and Mudge、Luka’s Quilt、The Roundup at Rio Ranch</p></div>
+        <div class="scope-card"><h3>Book 1 Unit 2</h3><p>Workbook Units 5–8：Lemonade for Sale、A Letter to Amy、The Best Friends Club、Sharks</p></div>
+        <div class="scope-card"><h3>Book 1 Unit 3</h3><p>Workbook Units 9–11：Arthur Writes a Story、Best Wishes, Ed、Nine-in-One, Grr! Grr!</p></div>
       </div>
 
       <div class="practice-tabs" role="tablist" aria-label="Practice tests">
-        <button class="tab active" type="button" data-practice="1">Practice 1 · Lemonade</button>
-        <button class="tab" type="button" data-practice="2">Practice 2 · Snowy Island</button>
-        <button class="tab" type="button" data-practice="3">Practice 3 · The Clever Bird</button>
+        <button class="tab active" type="button" data-practice="1">Practice 1 · Book 1 Unit 1</button>
+        <button class="tab" type="button" data-practice="2">Practice 2 · Book 1 Unit 2</button>
+        <button class="tab" type="button" data-practice="3">Practice 3 · Book 1 Unit 3</button>
       </div>
 
       <div class="practice active" id="practice-1">
         <section>
           <div class="section-title"><span class="badge">1</span><h2>Reading Comprehension</h2></div>
           <div class="reading-box">
+            <h3>A New Friend at School</h3>
+            <p>On Monday, Lily felt shy on her first day at a new school. She stood by the door and held her lunch bag. A girl named Emma smiled and showed her the reading corner. During art time, the children made a small quilt picture. Lily drew a bright sun, and Emma helped her choose blue and green cloth. At recess, they played together. Lily was still a little nervous, but she felt happy because she had a new friend.</p>
+            <div class="question-list">
+              <div class="question"><p>1. Why did Lily feel shy?</p><ul class="option-list"><li><label><input type="radio" name="p1r1" value="A"> A. It was her first day at a new school.</label></li><li><label><input type="radio" name="p1r1" value="B"> B. She did not like lunch.</label></li><li><label><input type="radio" name="p1r1" value="C"> C. She lost her pet.</label></li></ul></div>
+              <div class="question"><p>2. Who showed Lily the reading corner?</p><ul class="option-list"><li><label><input type="radio" name="p1r2" value="A"> A. Lily</label></li><li><label><input type="radio" name="p1r2" value="B"> B. Emma</label></li><li><label><input type="radio" name="p1r2" value="C"> C. The bus driver</label></li></ul></div>
+              <div class="question"><p>3. What did the children make?</p><ul class="option-list"><li><label><input type="radio" name="p1r3" value="A"> A. A quilt picture</label></li><li><label><input type="radio" name="p1r3" value="B"> B. A lemonade stand</label></li><li><label><input type="radio" name="p1r3" value="C"> C. A sled</label></li></ul></div>
+              <div class="question"><p>4. How did Lily feel at the end?</p><ul class="option-list"><li><label><input type="radio" name="p1r4" value="A"> A. Angry</label></li><li><label><input type="radio" name="p1r4" value="B"> B. Happy</label></li><li><label><input type="radio" name="p1r4" value="C"> C. Sleepy</label></li></ul></div>
+              <div class="question"><p>5. What did Emma do? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Emma ... ."></textarea></div>
+              <div class="question"><p>6. Why did Lily feel happy? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Lily ... ."></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">2</span><h2>Past or Present?</h2></div>
+          <p>Choose the correct verb. Read the time words carefully.</p>
+          <div class="grammar-grid">
+            <div class="grammar-item"><span>1. Lily ___ new friends every day.</span><select data-answer="meets"><option value="">Choose</option><option value="meets">meets</option><option value="met">met</option></select></div>
+            <div class="grammar-item"><span>2. She ___ by the door yesterday.</span><select data-answer="stood"><option value="">Choose</option><option value="stands">stands</option><option value="stood">stood</option></select></div>
+            <div class="grammar-item"><span>3. Emma ___ Lily now.</span><select data-answer="helps"><option value="">Choose</option><option value="helps">helps</option><option value="helped">helped</option></select></div>
+            <div class="grammar-item"><span>4. The children ___ a picture last week.</span><select data-answer="made"><option value="">Choose</option><option value="make">make</option><option value="made">made</option></select></div>
+            <div class="grammar-item"><span>5. Lily ___ colors carefully.</span><select data-answer="chooses"><option value="">Choose</option><option value="chooses">chooses</option><option value="chose">chose</option></select></div>
+            <div class="grammar-item"><span>6. They ___ together yesterday.</span><select data-answer="played"><option value="">Choose</option><option value="play">play</option><option value="played">played</option></select></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">3</span><h2>Write Ten Sentences</h2></div>
+          <div class="writing-intro">請依照提示自己造句。第 1–5 題用 <strong>present tense</strong>，第 6–10 題用 <strong>past tense</strong>。</div>
+          <div class="writing-list">
+            <div class="writing-prompt"><strong>1. what you do at school <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>2. a friend who helps you <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>3. a pet you like <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>4. something you explore <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>5. a color or fabric you like <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>6. what you did on your first school day <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>7. a game you played with a friend <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>8. a picture you made <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>9. a place you visited <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>10. something you shared <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+          </div>
+          <p class="hint">完成後按「檢查選擇題」也會提醒你有沒有漏寫十句；句子的文法請和大人一起訂正。</p>
+        </section>
+      </div>
+
+      <div class="practice" id="practice-2">
+        <section>
+          <div class="section-title"><span class="badge">1</span><h2>Reading Comprehension</h2></div>
+          <div class="reading-box">
             <h3>The Lemonade Helpers</h3>
             <p>On Saturday morning, Mia and her friends cleaned their clubhouse. The children wanted to buy new chairs, so they made a lemonade stand. Mia squeezed the lemons. Ben counted the cups, and Sara made a small sign. In the afternoon, many neighbors came by. The children sold twenty-four cups of lemonade. They were tired, but they felt proud because they worked together.</p>
             <div class="question-list">
-              <div class="question"><p>1. Why did the children make a lemonade stand?</p><ul class="option-list"><li><label><input type="radio" name="p1r1" value="A"> A. They wanted to buy new chairs.</label></li><li><label><input type="radio" name="p1r1" value="B"> B. They wanted to find a new clubhouse.</label></li><li><label><input type="radio" name="p1r1" value="C"> C. They wanted to visit a farm.</label></li></ul></div>
-              <div class="question"><p>2. Who counted the cups?</p><ul class="option-list"><li><label><input type="radio" name="p1r2" value="A"> A. Mia</label></li><li><label><input type="radio" name="p1r2" value="B"> B. Sara</label></li><li><label><input type="radio" name="p1r2" value="C"> C. Ben</label></li></ul></div>
-              <div class="question"><p>3. How many cups did they sell?</p><ul class="option-list"><li><label><input type="radio" name="p1r3" value="A"> A. Twenty-four cups.</label></li><li><label><input type="radio" name="p1r3" value="B"> B. Forty-two cups.</label></li><li><label><input type="radio" name="p1r3" value="C"> C. Fourteen cups.</label></li></ul></div>
-              <div class="question"><p>4. How did the children feel?</p><ul class="option-list"><li><label><input type="radio" name="p1r4" value="A"> A. Angry</label></li><li><label><input type="radio" name="p1r4" value="B"> B. Proud</label></li><li><label><input type="radio" name="p1r4" value="C"> C. Scared</label></li></ul></div>
+              <div class="question"><p>1. Why did the children make a lemonade stand?</p><ul class="option-list"><li><label><input type="radio" name="p2r1" value="A"> A. They wanted to buy new chairs.</label></li><li><label><input type="radio" name="p2r1" value="B"> B. They wanted to find a new clubhouse.</label></li><li><label><input type="radio" name="p2r1" value="C"> C. They wanted to visit a farm.</label></li></ul></div>
+              <div class="question"><p>2. Who counted the cups?</p><ul class="option-list"><li><label><input type="radio" name="p2r2" value="A"> A. Mia</label></li><li><label><input type="radio" name="p2r2" value="B"> B. Sara</label></li><li><label><input type="radio" name="p2r2" value="C"> C. Ben</label></li></ul></div>
+              <div class="question"><p>3. How many cups did they sell?</p><ul class="option-list"><li><label><input type="radio" name="p2r3" value="A"> A. Twenty-four cups.</label></li><li><label><input type="radio" name="p2r3" value="B"> B. Forty-two cups.</label></li><li><label><input type="radio" name="p2r3" value="C"> C. Fourteen cups.</label></li></ul></div>
+              <div class="question"><p>4. How did the children feel?</p><ul class="option-list"><li><label><input type="radio" name="p2r4" value="A"> A. Angry</label></li><li><label><input type="radio" name="p2r4" value="B"> B. Proud</label></li><li><label><input type="radio" name="p2r4" value="C"> C. Scared</label></li></ul></div>
               <div class="question"><p>5. What did Mia do? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Mia ... ."></textarea></div>
               <div class="question"><p>6. Why were the children tired? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="They ... ."></textarea></div>
             </div>
@@ -372,7 +444,7 @@
 
         <section>
           <div class="section-title"><span class="badge">2</span><h2>Past or Present?</h2></div>
-          <p>Choose the correct verb. Read the time words carefully.</p>
+          <p>Choose the correct verb.</p>
           <div class="grammar-grid">
             <div class="grammar-item"><span>1. Mia ___ lemons every Saturday.</span><select data-answer="squeezes"><option value="">Choose</option><option value="squeezes">squeezes</option><option value="squeezed">squeezed</option></select></div>
             <div class="grammar-item"><span>2. Ben ___ the cups yesterday.</span><select data-answer="counted"><option value="">Choose</option><option value="counts">counts</option><option value="counted">counted</option></select></div>
@@ -385,67 +457,18 @@
 
         <section>
           <div class="section-title"><span class="badge">3</span><h2>Write Ten Sentences</h2></div>
-          <div class="writing-intro">請依照提示自己造句。第 1–5 題用 <strong>present tense</strong>，第 6–10 題用 <strong>past tense</strong>。</div>
-          <div class="writing-list">
-            <div class="writing-prompt"><strong>1. something you do every morning <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>2. a friend who helps you <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>3. a food you like <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>4. what your family does on weekends <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>5. an animal you like <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>6. what you did yesterday <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>7. a place you visited <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>8. something you ate <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>9. a game you played <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>10. something you learned <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-          </div>
-          <p class="hint">完成後按「檢查選擇題」也會提醒你有沒有漏寫十句；句子的文法請和大人一起訂正。</p>
-        </section>
-      </div>
-
-      <div class="practice" id="practice-2">
-        <section>
-          <div class="section-title"><span class="badge">1</span><h2>Reading Comprehension</h2></div>
-          <div class="reading-box">
-            <h3>A Day on the Snowy Island</h3>
-            <p>Ed lived on a cold island with his friends. One morning, snow covered the road. Ed and Betty wanted to visit the penguins, but they could not walk far. They made a small sled from a box and a strong rope. Ed pulled the sled, and Betty carried warm food. At noon, they reached the penguin house. The penguins were hungry, so the children gave them fish. On the way home, Ed waved to his new friends.</p>
-            <div class="question-list">
-              <div class="question"><p>1. What covered the road?</p><ul class="option-list"><li><label><input type="radio" name="p2r1" value="A"> A. Rain</label></li><li><label><input type="radio" name="p2r1" value="B"> B. Snow</label></li><li><label><input type="radio" name="p2r1" value="C"> C. Sand</label></li></ul></div>
-              <div class="question"><p>2. What did Ed and Betty make?</p><ul class="option-list"><li><label><input type="radio" name="p2r2" value="A"> A. A small sled</label></li><li><label><input type="radio" name="p2r2" value="B"> B. A warm house</label></li><li><label><input type="radio" name="p2r2" value="C"> C. A fish tank</label></li></ul></div>
-              <div class="question"><p>3. What did Betty carry?</p><ul class="option-list"><li><label><input type="radio" name="p2r3" value="A"> A. A box</label></li><li><label><input type="radio" name="p2r3" value="B"> B. A rope</label></li><li><label><input type="radio" name="p2r3" value="C"> C. Warm food</label></li></ul></div>
-              <div class="question"><p>4. Why did the children give the penguins fish?</p><ul class="option-list"><li><label><input type="radio" name="p2r4" value="A"> A. The penguins were hungry.</label></li><li><label><input type="radio" name="p2r4" value="B"> B. The penguins could not swim.</label></li><li><label><input type="radio" name="p2r4" value="C"> C. The penguins made a sled.</label></li></ul></div>
-              <div class="question"><p>5. What did Ed do on the way home? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Ed ... ."></textarea></div>
-              <div class="question"><p>6. How did the children travel? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="They ... ."></textarea></div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="section-title"><span class="badge">2</span><h2>Past or Present?</h2></div>
-          <p>Choose the correct verb.</p>
-          <div class="grammar-grid">
-            <div class="grammar-item"><span>1. Penguins ___ in cold places.</span><select data-answer="live"><option value="">Choose</option><option value="live">live</option><option value="lived">lived</option></select></div>
-            <div class="grammar-item"><span>2. Ed ___ the sled yesterday.</span><select data-answer="pulled"><option value="">Choose</option><option value="pulls">pulls</option><option value="pulled">pulled</option></select></div>
-            <div class="grammar-item"><span>3. Betty ___ warm food now.</span><select data-answer="carries"><option value="">Choose</option><option value="carries">carries</option><option value="carried">carried</option></select></div>
-            <div class="grammar-item"><span>4. The children ___ the penguins last week.</span><select data-answer="visited"><option value="">Choose</option><option value="visit">visit</option><option value="visited">visited</option></select></div>
-            <div class="grammar-item"><span>5. Ed ___ to his friends every day.</span><select data-answer="waves"><option value="">Choose</option><option value="waves">waves</option><option value="waved">waved</option></select></div>
-            <div class="grammar-item"><span>6. They ___ fish to the penguins.</span><select data-answer="gave"><option value="">Choose</option><option value="give">give</option><option value="gave">gave</option></select></div>
-          </div>
-        </section>
-
-        <section>
-          <div class="section-title"><span class="badge">3</span><h2>Write Ten Sentences</h2></div>
           <div class="writing-intro">第 1–5 題用 present tense，第 6–10 題用 past tense。請寫完整句子，不要只寫單字。</div>
           <div class="writing-list">
-            <div class="writing-prompt"><strong>1. what penguins do <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>2. something that is cold <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>3. what you eat for breakfast <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>4. what you do with a friend <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>5. a place you want to visit <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>6. what you did last night <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>7. something you saw <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>8. a gift you received <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>9. a game you played last week <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>10. something you learned at school <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>1. something you do with a friend <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>2. a drink you like <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>3. a club or team you know <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>4. how you help your family <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>5. an animal you want to protect <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>6. what you did yesterday <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>7. something you sold or bought <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>8. a letter you wrote or received <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>9. a time you worked in a group <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>10. a time you helped someone <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
           </div>
         </section>
       </div>
@@ -454,15 +477,15 @@
         <section>
           <div class="section-title"><span class="badge">1</span><h2>Reading Comprehension</h2></div>
           <div class="reading-box">
-            <h3>The Clever Bird</h3>
-            <p>Bird lived near a green forest. She was small, but she remembered everything she saw. One day, Tiger asked Bird to find a quiet place for him to sleep. Bird flew over the forest and saw a dark cave. She did not tell Tiger about the cave. Instead, she made a plan. She sang a loud song near the cave. Tiger followed the song and fell asleep there. Bird flew back to her tree and helped the other animals stay safe.</p>
+            <h3>A Story With a Surprise</h3>
+            <p>Arthur wanted to write a story for his class. He chose a small bird and a hungry tiger as his characters. First, he read about animals in the library. Then he wrote a beginning in which the tiger looked for food. Arthur did not like his first ending, so he changed it. In the new ending, the bird used a clever plan and helped the other animals stay safe. Arthur read the story to his friends. They smiled and asked him to write another story.</p>
             <div class="question-list">
-              <div class="question"><p>1. Where did Bird live?</p><ul class="option-list"><li><label><input type="radio" name="p3r1" value="A"> A. Near a city</label></li><li><label><input type="radio" name="p3r1" value="B"> B. Near a green forest</label></li><li><label><input type="radio" name="p3r1" value="C"> C. In a school</label></li></ul></div>
-              <div class="question"><p>2. What did Tiger ask Bird to find?</p><ul class="option-list"><li><label><input type="radio" name="p3r2" value="A"> A. A quiet place</label></li><li><label><input type="radio" name="p3r2" value="B"> B. A new song</label></li><li><label><input type="radio" name="p3r2" value="C"> C. A small tree</label></li></ul></div>
-              <div class="question"><p>3. What did Bird do near the cave?</p><ul class="option-list"><li><label><input type="radio" name="p3r3" value="A"> A. She ate lunch.</label></li><li><label><input type="radio" name="p3r3" value="B"> B. She built a house.</label></li><li><label><input type="radio" name="p3r3" value="C"> C. She sang a loud song.</label></li></ul></div>
-              <div class="question"><p>4. Why did Bird make a plan?</p><ul class="option-list"><li><label><input type="radio" name="p3r4" value="A"> A. She wanted to keep the animals safe.</label></li><li><label><input type="radio" name="p3r4" value="B"> B. She wanted to find a snack.</label></li><li><label><input type="radio" name="p3r4" value="C"> C. She wanted to wake Tiger.</label></li></ul></div>
-              <div class="question"><p>5. What happened to Tiger? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Tiger ... ."></textarea></div>
-              <div class="question"><p>6. How did Bird help the other animals? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Bird ... ."></textarea></div>
+              <div class="question"><p>1. What did Arthur want to write?</p><ul class="option-list"><li><label><input type="radio" name="p3r1" value="A"> A. A story</label></li><li><label><input type="radio" name="p3r1" value="B"> B. A letter</label></li><li><label><input type="radio" name="p3r1" value="C"> C. A report about school</label></li></ul></div>
+              <div class="question"><p>2. Where did Arthur read about animals?</p><ul class="option-list"><li><label><input type="radio" name="p3r2" value="A"> A. In the library</label></li><li><label><input type="radio" name="p3r2" value="B"> B. At a lemonade stand</label></li><li><label><input type="radio" name="p3r2" value="C"> C. On a farm</label></li></ul></div>
+              <div class="question"><p>3. Why did Arthur change the ending?</p><ul class="option-list"><li><label><input type="radio" name="p3r3" value="A"> A. He did not like his first ending.</label></li><li><label><input type="radio" name="p3r3" value="B"> B. His teacher lost the story.</label></li><li><label><input type="radio" name="p3r3" value="C"> C. His friends wanted a new book.</label></li></ul></div>
+              <div class="question"><p>4. What did Arthur’s friends do?</p><ul class="option-list"><li><label><input type="radio" name="p3r4" value="A"> A. They asked him to write another story.</label></li><li><label><input type="radio" name="p3r4" value="B"> B. They made a new library.</label></li><li><label><input type="radio" name="p3r4" value="C"> C. They took the tiger home.</label></li></ul></div>
+              <div class="question"><p>5. What characters did Arthur choose? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="Arthur chose ... ."></textarea></div>
+              <div class="question"><p>6. What did Arthur do after he changed the ending? Answer with one complete sentence.</p><textarea class="answer-area" placeholder="He ... ."></textarea></div>
             </div>
           </div>
         </section>
@@ -471,12 +494,12 @@
           <div class="section-title"><span class="badge">2</span><h2>Past or Present?</h2></div>
           <p>Choose the correct verb.</p>
           <div class="grammar-grid">
-            <div class="grammar-item"><span>1. Birds ___ in trees.</span><select data-answer="live"><option value="">Choose</option><option value="live">live</option><option value="lived">lived</option></select></div>
-            <div class="grammar-item"><span>2. Bird ___ over the forest yesterday.</span><select data-answer="flew"><option value="">Choose</option><option value="flies">flies</option><option value="flew">flew</option></select></div>
-            <div class="grammar-item"><span>3. Tiger ___ loudly when he is angry.</span><select data-answer="roars"><option value="">Choose</option><option value="roars">roars</option><option value="roared">roared</option></select></div>
-            <div class="grammar-item"><span>4. Bird ___ a song last night.</span><select data-answer="sang"><option value="">Choose</option><option value="sings">sings</option><option value="sang">sang</option></select></div>
-            <div class="grammar-item"><span>5. The animals ___ safe now.</span><select data-answer="feel"><option value="">Choose</option><option value="feel">feel</option><option value="felt">felt</option></select></div>
-            <div class="grammar-item"><span>6. Tiger ___ asleep after the song.</span><select data-answer="fell"><option value="">Choose</option><option value="falls">falls</option><option value="fell">fell</option></select></div>
+            <div class="grammar-item"><span>1. Arthur ___ stories every week.</span><select data-answer="writes"><option value="">Choose</option><option value="writes">writes</option><option value="wrote">wrote</option></select></div>
+            <div class="grammar-item"><span>2. He ___ about animals last night.</span><select data-answer="researched"><option value="">Choose</option><option value="researches">researches</option><option value="researched">researched</option></select></div>
+            <div class="grammar-item"><span>3. Arthur’s teacher ___ his stories.</span><select data-answer="reads"><option value="">Choose</option><option value="reads">reads</option><option value="read">read</option></select></div>
+            <div class="grammar-item"><span>4. Arthur ___ the ending yesterday.</span><select data-answer="changed"><option value="">Choose</option><option value="changes">changes</option><option value="changed">changed</option></select></div>
+            <div class="grammar-item"><span>5. His friends ___ his stories.</span><select data-answer="like"><option value="">Choose</option><option value="like">like</option><option value="liked">liked</option></select></div>
+            <div class="grammar-item"><span>6. Arthur ___ proud after he read the story.</span><select data-answer="felt"><option value="">Choose</option><option value="feels">feels</option><option value="felt">felt</option></select></div>
           </div>
         </section>
 
@@ -484,16 +507,16 @@
           <div class="section-title"><span class="badge">3</span><h2>Write Ten Sentences</h2></div>
           <div class="writing-intro">第 1–5 題用 present tense，第 6–10 題用 past tense。可以使用課本裡的動詞，但句子要自己想。</div>
           <div class="writing-list">
-            <div class="writing-prompt"><strong>1. an animal that can fly <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>2. what a bird eats <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>3. what you remember <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>4. what you like to do <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>5. what makes you happy <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
-            <div class="writing-prompt"><strong>6. where you went yesterday <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>7. what you saw last weekend <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>8. what you ate yesterday <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>9. a person who helped you <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
-            <div class="writing-prompt"><strong>10. something you made <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>1. a story you like <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>2. what you imagine <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>3. what you do at the library <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>4. a person you respect <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>5. something you want to learn <span class="tense-tag">present</span></strong><textarea class="writing-area" data-tense="present"></textarea></div>
+            <div class="writing-prompt"><strong>6. a story you wrote <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>7. something you researched <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>8. a book you read <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>9. a time you changed your plan <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
+            <div class="writing-prompt"><strong>10. something your friends liked <span class="tense-tag past">past</span></strong><textarea class="writing-area" data-tense="past"></textarea></div>
           </div>
         </section>
       </div>
@@ -501,14 +524,14 @@
       <div class="feedback" id="feedback" role="status"></div>
       <div class="answers" id="answers">
         <h3>答案 Key</h3>
-        <p>Practice 1：Reading 1 A、2 C、3 A、4 B；Grammar：squeezes、counted、drink、made、work、sold。</p>
-        <p>Practice 2：Reading 1 B、2 A、3 C、4 A；Grammar：live、pulled、carries、visited、waves、gave。</p>
-        <p>Practice 3：Reading 1 B、2 A、3 C、4 A；Grammar：live、flew、roars、sang、feel、fell。</p>
+        <p>Practice 1：Reading 1 A、2 B、3 A、4 B；Grammar：meets、stood、helps、made、chooses、played。</p>
+        <p>Practice 2：Reading 1 A、2 C、3 A、4 B；Grammar：squeezes、counted、drink、made、work、sold。</p>
+        <p>Practice 3：Reading 1 A、2 A、3 A、4 A；Grammar：writes、researched、reads、changed、like、felt。</p>
         <p>Reading 第 5、6 題與 Writing 十句為開放題，請檢查是否為完整句子、大小寫、拼字、句點和時態。</p>
       </div>
     </main>
 
-    <footer>這份練習依照 CLC Grade 2 Workbook 1 常見題型設計：課文理解、完整句回答、現在式／過去式和自行造句。短文與題目為練習用新編內容。</footer>
+    <footer>這份練習整合 McGraw-Hill Reading: Grade 2, Book 1 Units 1–3 的課文主題與 CLC Grade 2 Workbook 1 的單字、摘要、文法和測驗題型。短文與題目為練習用新編內容。</footer>
   </div>
 
   <script>
@@ -518,9 +541,9 @@
     const answers = document.getElementById('answers');
 
     const answerSets = {
-      1: ['A', 'C', 'A', 'B'],
-      2: ['B', 'A', 'C', 'A'],
-      3: ['B', 'A', 'C', 'A']
+      1: ['A', 'B', 'A', 'B'],
+      2: ['A', 'C', 'A', 'B'],
+      3: ['A', 'A', 'A', 'A']
     };
 
     tabs.forEach((tab) => {
