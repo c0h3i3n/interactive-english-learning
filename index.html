@@ -1337,7 +1337,7 @@
           <div class="trivia-word" id="triviaWord"></div>
         </div>
         <div class="trivia-actions">
-          <button class="quiz-option" id="triviaSpeakBtn" style="margin:0;text-align:center;">🔊 Listen</button>
+          <button class="quiz-option" id="triviaSpeakBtn" style="margin:0;text-align:center;">🔊 Listen all</button>
           <button class="quiz-option trivia-next" id="triviaNextBtn" style="margin:0;text-align:center;">➡️ Next question</button>
         </div>
         <a class="trivia-source" href="https://www.harrypotter.com/features/10-cool-hogwarts-facts-to-impress-your-friends" target="_blank" rel="noopener noreferrer">Facts checked with the official Harry Potter site ↗</a>
@@ -3815,7 +3815,15 @@
   document.getElementById('triviaNextBtn')?.addEventListener('click', showTrivia);
   document.getElementById('triviaSpeakBtn')?.addEventListener('click', function() {
     const question = HARRY_POTTER_TRIVIA[triviaIndex];
-    if (question) speakText(question.question);
+    if (!question) return;
+    // Read the question and all four choices in one speech queue.
+    // Cancelling first prevents repeated clicks from stacking duplicate audio.
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    const parts = [
+      question.question,
+      ...question.options.map((option, index) => `Option ${String.fromCharCode(65 + index)}: ${option}`)
+    ];
+    parts.forEach(part => speakText(part));
   });
 
   // ---- Initialize enhanced features ----
