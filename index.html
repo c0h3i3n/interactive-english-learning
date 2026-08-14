@@ -1187,6 +1187,27 @@
       color: #d4af37;
       box-shadow: 0 0 20px rgba(212,175,55,0.15);
     }
+
+    /* ===== iPad / tablet layout =====
+       The original spellbook width is ideal for phones, but leaves large
+       empty margins on iPad. Let the spellbook use the tablet viewport. */
+    @media (min-width: 700px) and (max-width: 1400px) {
+      body {
+        padding: 0;
+        align-items: stretch;
+      }
+      .container {
+        width: 100%;
+        max-width: none;
+        min-height: 100vh;
+        min-height: 100dvh;
+        border-radius: 0;
+        padding: clamp(28px, 4vw, 48px) clamp(28px, 6vw, 72px);
+      }
+      .container::before {
+        border-radius: 0;
+      }
+    }
   </style>
 </head>
 <body>
