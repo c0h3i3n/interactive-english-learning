@@ -1084,6 +1084,18 @@
       gap: 8px;
       margin-top: 12px;
     }
+    .trivia-sound-toggle {
+      display: block;
+      margin: 10px auto 0;
+      padding: 5px 10px;
+      border: 1px solid rgba(212, 175, 55, 0.16);
+      border-radius: 999px;
+      background: transparent;
+      color: #8880a8;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .trivia-sound-toggle:hover { color: #d4af37; }
     .trivia-feedback {
       position: relative;
       z-index: 1;
@@ -1340,6 +1352,7 @@
           <button class="quiz-option" id="triviaSpeakBtn" style="margin:0;text-align:center;">🔊 Listen all</button>
           <button class="quiz-option trivia-next" id="triviaNextBtn" style="margin:0;text-align:center;">➡️ Next question</button>
         </div>
+        <button class="trivia-sound-toggle" id="triviaSoundToggle" type="button" aria-pressed="true">🔔 Sound on</button>
         <a class="trivia-source" href="https://www.harrypotter.com/features/10-cool-hogwarts-facts-to-impress-your-friends" target="_blank" rel="noopener noreferrer">Facts checked with the official Harry Potter site ↗</a>
       </div>
 
@@ -3758,6 +3771,44 @@
   ].slice(0, 100);
   const HARRY_POTTER_TRIVIA = expandTriviaBank(BASE_HARRY_POTTER_TRIVIA).slice(0, 1000);
   let triviaIndex = -1;
+  let triviaAudioContext = null;
+  let triviaSoundEnabled = true;
+
+  // Original Web Audio tones: a bright ascending chime for correct answers
+  // and a soft descending wobble for incorrect answers. No film audio is used.
+  function playTriviaFeedbackSound(isCorrect) {
+    if (!triviaSoundEnabled) return;
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    if (!triviaAudioContext) triviaAudioContext = new AudioContextClass();
+
+    const play = () => {
+      const ctx = triviaAudioContext;
+      const now = ctx.currentTime;
+      const notes = isCorrect ? [523.25, 659.25, 783.99, 1046.5] : [246.94, 196.0, 146.83];
+      notes.forEach((frequency, index) => {
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const start = now + index * (isCorrect ? 0.1 : 0.13);
+        const duration = isCorrect ? 0.3 : 0.34;
+        oscillator.type = isCorrect ? 'sine' : 'triangle';
+        oscillator.frequency.setValueAtTime(frequency, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(isCorrect ? 0.08 : 0.055, start + 0.018);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+        oscillator.start(start);
+        oscillator.stop(start + duration + 0.02);
+      });
+    };
+
+    if (triviaAudioContext.state === 'suspended') {
+      triviaAudioContext.resume().then(play).catch(() => {});
+    } else {
+      play();
+    }
+  }
 
   function showTrivia() {
     let nextIndex = triviaIndex;
@@ -3795,6 +3846,7 @@
       button.addEventListener('click', function() {
         if (this.disabled) return;
         const isCorrect = this.dataset.answer === 'true';
+        playTriviaFeedbackSound(isCorrect);
         document.querySelectorAll('#triviaOptions .trivia-option').forEach(option => {
           option.disabled = true;
           if (option.dataset.answer === 'true') option.classList.add('correct');
@@ -3820,6 +3872,12 @@
     triviaHint.classList.add('visible');
     this.disabled = true;
     this.textContent = '💡 Hint shown';
+  });
+
+  document.getElementById('triviaSoundToggle')?.addEventListener('click', function() {
+    triviaSoundEnabled = !triviaSoundEnabled;
+    this.textContent = triviaSoundEnabled ? '🔔 Sound on' : '🔕 Sound off';
+    this.setAttribute('aria-pressed', String(triviaSoundEnabled));
   });
 
   document.getElementById('triviaNextBtn')?.addEventListener('click', showTrivia);
