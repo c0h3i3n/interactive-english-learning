@@ -1113,6 +1113,9 @@
     }
     .trivia-chinese.visible { display: block; }
     .trivia-chinese strong { color: #f0e6a0; }
+    .trivia-chinese-question { margin-bottom: 8px; }
+    .trivia-chinese-options { display: grid; gap: 5px; }
+    .trivia-chinese-option { color: #d8cfee; }
     .trivia-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1379,8 +1382,11 @@
           <div class="trivia-en" id="triviaEn"></div>
           <button class="trivia-hint-toggle" id="triviaHintBtn" type="button">💡 Need a hint?</button>
           <div class="trivia-hint" id="triviaHint" aria-live="polite"></div>
-          <button class="trivia-chinese-toggle" id="triviaChineseBtn" type="button">🌏 中文問題＋答案</button>
-          <div class="trivia-chinese" id="triviaChinese" aria-live="polite"></div>
+          <button class="trivia-chinese-toggle" id="triviaChineseBtn" type="button">🌏 中文問題與選項</button>
+          <div class="trivia-chinese" id="triviaChinese" aria-live="polite">
+            <div class="trivia-chinese-question" id="triviaChineseQuestion"></div>
+            <div class="trivia-chinese-options" id="triviaChineseOptions"></div>
+          </div>
           <div class="trivia-options" id="triviaOptions"></div>
           <div class="trivia-feedback" id="triviaFeedback"></div>
           <div class="trivia-word" id="triviaWord"></div>
@@ -3636,12 +3642,173 @@
   };
 
   // ---- Harry Potter trivia for English reading practice ----
+  // Chinese labels are used only for the optional Chinese question panel.
+  // The panel intentionally never reveals which choice is correct.
+  const TRIVIA_OPTION_TRANSLATIONS = {
+    'A magical castle': '魔法城堡',
+    'Ruins and warning signs': '廢墟和警告標誌',
+    'A train station': '火車站',
+    'A giant forest': '巨大森林',
+    'A star map': '星圖',
+    'The sky outside': '外面的天空',
+    'A moving staircase': '會移動的樓梯',
+    'A lake': '湖泊',
+    'A password': '密碼',
+    'A riddle': '謎語',
+    'A spell': '咒語',
+    'A song': '歌曲',
+    'They tap a barrel in a special rhythm': '他們用特殊節奏敲木桶',
+    'They solve a riddle': '他們解謎語',
+    'They knock three times': '他們敲三下',
+    'They use Floo Powder': '他們使用呼嚕粉',
+    'An enchanted quill and an ancient book': '一支魔法羽毛筆和一本古老的書',
+    'The Sorting Hat': '分院帽',
+    'A Hogwarts ghost': '霍格華茲的幽靈',
+    'A golden clock': '金色時鐘',
+    'A ghost': '幽靈',
+    'A portrait': '畫像',
+    'A house-elf': '家庭小精靈',
+    'A centaur': '人馬',
+    'A giant bell jar': '巨大的玻璃鐘罩',
+    'The Forbidden Forest': '禁忌森林',
+    'A locked classroom': '上鎖的教室',
+    'In the tenth century': '十世紀',
+    'In the fifteenth century': '十五世紀',
+    'In 1991': '1991 年',
+    'In the twenty-first century': '二十一世紀',
+    'He knew every secret': '他知道每個祕密',
+    'He did not know every secret': '他不知道每個祕密',
+    'He built the castle': '他建造了城堡',
+    'He could move the castle': '他能移動城堡',
+    Alohomora: '阿拉霍洞開',
+    'Expecto Patronum': '護法咒',
+    'Wingardium Leviosa': '漂浮咒',
+    Accio: '召來咒',
+    Lumos: '螢光閃爍',
+    Nox: '諾克斯',
+    Expelliarmus: '去去武器走',
+    Stupefy: '昏昏倒地',
+    'Petrificus Totalus': '整整石化',
+    Obliviate: '一忘皆空',
+    Protego: '盔甲護身',
+    Riddikulus: '滑稽滑稽',
+    'Finite Incantatem': '咒立停',
+    Revelio: '現形咒',
+    Legilimens: '破心術',
+    Crucio: '酷刑咒',
+    Imperio: '蠻橫咒',
+    'Avada Kedavra': '索命咒',
+    Aparecium: '急急現形',
+    Sectumsempra: '神鋒無影',
+    Hippogriff: '鷹馬',
+    Phoenix: '鳳凰',
+    Basilisk: '蛇妖',
+    Thestral: '騎士墮鬼馬',
+    Dragon: '龍',
+    'House Elf': '家庭小精靈',
+    Goblin: '妖精',
+    Centaur: '人馬',
+    Unicorn: '獨角獸',
+    Werewolf: '狼人',
+    Acromantula: '八眼巨蛛',
+    Boggart: '騰食',
+    Dementor: '催狂魔',
+    Kneazle: '貓狸子',
+    Niffler: '小偷獸',
+    Grindylow: '格林迪洛',
+    Merperson: '人魚',
+    Flobberworm: '毛蠕蟲',
+    Occamy: '鳥蛇',
+    Gryffindor: '葛來分多',
+    Hufflepuff: '赫夫帕夫',
+    Ravenclaw: '雷文克勞',
+    Slytherin: '史萊哲林',
+    Quidditch: '魁地奇',
+    'Sorting Hat': '分院帽',
+    'Great Hall': '大禮堂',
+    'Forbidden Forest': '禁忌森林',
+    'Chamber of Secrets': '密室',
+    'Room of Requirement': '萬應室',
+    'Diagon Alley': '斜角巷',
+    Hogsmeade: '活米村',
+    Gringotts: '古靈閣',
+    Ollivanders: '奧利凡德',
+    'Ministry of Magic': '魔法部',
+    Azkaban: '阿茲卡班',
+    'Hogwarts Express': '霍格華茲特快車',
+    'Platform 9 3/4': '九又四分之三月台',
+    Wand: '魔杖',
+    Broomstick: '飛天掃帚',
+    Cauldron: '大釜',
+    'Invisibility Cloak': '隱形斗篷',
+    "Marauder's Map": '劫盜地圖',
+    'Time-Turner': '時光器',
+    Pensieve: '儲思盆',
+    Portkey: '港口鑰',
+    'Floo Powder': '呼嚕粉',
+    'Golden Snitch': '金探子',
+    Horcrux: '分靈體',
+    "Philosopher's Stone": '魔法石',
+    'Mirror of Erised': '意若思鏡',
+    Deluminator: '嗶嗶多功能',
+    Howler: '吼叫信',
+    Remembrall: '消失的提醒球',
+    Hedwig: '嘿美',
+    Errol: '厄爾',
+    Fawkes: '佛客使',
+    Scabbers: '斑斑',
+    Crookshanks: '歪腿',
+    Trevor: '特雷佛',
+    Fang: '牙牙',
+    Norbert: '諾伯',
+    Aragog: '阿辣哥',
+    Dobby: '多比',
+    Buckbeak: '巴嘴',
+    Fluffy: '毛毛',
+    Nagini: '娜吉妮',
+    'Sirius Black': '天狼星・布萊克',
+    'Remus Lupin': '雷木思・路平',
+    'James Potter': '詹姆・波特',
+    'Arthur Weasley': '亞瑟・衛斯理',
+    'Severus Snape': '賽佛勒斯・石內卜',
+    'Minerva McGonagall': '米奈娃・麥',
+    'Filius Flitwick': '菲力・孚立維',
+    'Rubeus Hagrid': '魯霸・海格',
+    'Argus Filch': '阿各・飛七',
+    'Alastor Moody': '阿拉特・穆敵',
+    Transfiguration: '變形學',
+    Potions: '魔藥學',
+    Divination: '占卜學',
+    Herbology: '藥草學',
+    "Weasleys' Wizard Wheezes": '衛氏巫師法寶店',
+    Honeydukes: '蜂蜜公爵',
+    'Zonko’s': '桑科的笑話店',
+    'Borgin and Burkes': '波金・博克',
+    'Nearly Headless Nick': '差點沒頭的尼克',
+    'The Bloody Baron': '血腥男爵',
+    'The Grey Lady': '灰女士',
+    'The Fat Friar': '胖修士',
+    'A lightning bolt': '閃電',
+    'A crescent moon': '新月',
+    'A star': '星星',
+    'A snake': '蛇',
+    Dudley: '達力',
+    Neville: '奈威',
+    Cedric: '西追',
+    Percy: '派西'
+  };
+
+  function translateTriviaOption(option) {
+    return TRIVIA_OPTION_TRANSLATIONS[option] || option;
+  }
+
   const CORE_HARRY_POTTER_TRIVIA = [
     {
       question: 'How many staircases are there at Hogwarts?',
       options: ['142', '42', '100', '365'],
       answer: '142',
       zh: '霍格華茲共有 142 座樓梯，其中有些還會改變通往的方向。',
+      zhQuestion: '霍格華茲有幾座樓梯？',
       word: 'staircase',
       meaning: '樓梯'
     },
@@ -3650,6 +3817,7 @@
       options: ['A magical castle', 'Ruins and warning signs', 'A train station', 'A giant forest'],
       answer: 'Ruins and warning signs',
       zh: '麻瓜接近霍格華茲時，看到的會是廢墟與警告標誌，而不是魔法城堡。',
+      zhQuestion: '麻瓜接近霍格華茲時會看到什麼？',
       word: 'approach',
       meaning: '接近'
     },
@@ -3658,6 +3826,7 @@
       options: ['A star map', 'The sky outside', 'A moving staircase', 'A lake'],
       answer: 'The sky outside',
       zh: '霍格華茲大禮堂的天花板被施了魔法，看起來會像外面的天空。',
+      zhQuestion: '大禮堂的天花板看起來像什麼？',
       word: 'enchanted',
       meaning: '被施魔法的'
     },
@@ -3666,6 +3835,7 @@
       options: ['A password', 'A riddle', 'A spell', 'A song'],
       answer: 'A riddle',
       zh: '雷文克勞學生必須答對謎語，才能進入交誼廳。',
+      zhQuestion: '雷文克勞學生進入交誼廳前必須回答什麼？',
       word: 'riddle',
       meaning: '謎語'
     },
@@ -3674,6 +3844,7 @@
       options: ['They tap a barrel in a special rhythm', 'They solve a riddle', 'They knock three times', 'They use Floo Powder'],
       answer: 'They tap a barrel in a special rhythm',
       zh: '赫夫帕夫學生要用特殊節奏敲擊木桶，才能進入交誼廳。',
+      zhQuestion: '赫夫帕夫學生如何進入交誼廳？',
       word: 'rhythm',
       meaning: '節奏'
     },
@@ -3682,6 +3853,7 @@
       options: ['An enchanted quill and an ancient book', 'The Sorting Hat', 'A Hogwarts ghost', 'A golden clock'],
       answer: 'An enchanted quill and an ancient book',
       zh: '一支魔法羽毛筆與一本古老名冊，會記下可能入讀霍格華茲的孩子姓名。',
+      zhQuestion: '什麼會記錄可能入讀霍格華茲的孩子姓名？',
       word: 'record',
       meaning: '記錄'
     },
@@ -3690,6 +3862,7 @@
       options: ['A ghost', 'A portrait', 'A house-elf', 'A centaur'],
       answer: 'A ghost',
       zh: '丙斯教授成為幽靈後，仍繼續教授魔法史。',
+      zhQuestion: '丙斯教授繼續教課時變成了什麼？',
       word: 'continued',
       meaning: '繼續了'
     },
@@ -3698,6 +3871,7 @@
       options: ['A giant bell jar', 'The Forbidden Forest', 'A portrait', 'A locked classroom'],
       answer: 'A giant bell jar',
       zh: '皮皮鬼曾逃出巨大的玻璃鐘罩，並讓霍格華茲教職員陷入長達三天的對峙。',
+      zhQuestion: '皮皮鬼在三天對峙前逃離了什麼？',
       word: 'standoff',
       meaning: '僵持；對峙'
     },
@@ -3706,6 +3880,7 @@
       options: ['In the tenth century', 'In the fifteenth century', 'In 1991', 'In the twenty-first century'],
       answer: 'In the tenth century',
       zh: '霍格華茲四位創辦人大約在十世紀建立了這所學校。',
+      zhQuestion: '霍格華茲四位創辦人何時建立學校？',
       word: 'established',
       meaning: '建立了'
     },
@@ -3714,6 +3889,7 @@
       options: ['He knew every secret', 'He did not know every secret', 'He built the castle', 'He could move the castle'],
       answer: 'He did not know every secret',
       zh: '就連阿不思・鄧不利多也承認，他並不知道霍格華茲裡的每一個祕密。',
+      zhQuestion: '鄧不利多承認關於霍格華茲的什麼事？',
       word: 'admitted',
       meaning: '承認了'
     }
@@ -3734,7 +3910,7 @@
         options: [item.en, ...distractors].sort(() => Math.random() - 0.5),
         answer: item.en,
         zh: `答案是「${item.en}」：${item.zh}`,
-        zhQuestion: `哪一個${label === 'spell' ? '咒語' : label === 'magical creature' ? '魔法生物' : label === 'place or Hogwarts term' ? '魔法地點或霍格華茲詞彙' : '魔法物品'}符合題目中的描述？`,
+        zhQuestion: `請選出符合這則冷知識的${label === 'spell' ? '咒語' : label === 'magical creature' ? '魔法生物' : label === 'place or Hogwarts term' ? '魔法地點或霍格華茲詞彙' : '魔法物品'}。`,
         word: item.en,
         meaning: item.zh,
         hint: label === 'spell'
@@ -3749,23 +3925,23 @@
   }
 
   const EXTRA_HARRY_POTTER_TRIVIA = [
-    { question: "What is the name of Harry's owl?", options: ['Hedwig', 'Errol', 'Fawkes', 'Scabbers'], answer: 'Hedwig', zh: '哈利的貓頭鷹叫做嘿美。', word: 'owl', meaning: '貓頭鷹' },
-    { question: "What is the name of Hermione's cat?", options: ['Crookshanks', 'Trevor', 'Fang', 'Norbert'], answer: 'Crookshanks', zh: '妙麗的貓叫做歪腿。', word: 'cat', meaning: '貓' },
-    { question: "What was Ron's pet rat called?", options: ['Scabbers', 'Hedwig', 'Aragog', 'Dobby'], answer: 'Scabbers', zh: '榮恩的寵物老鼠叫做斑斑。', word: 'rat', meaning: '老鼠' },
-    { question: "What is the name of Dumbledore's phoenix?", options: ['Fawkes', 'Fang', 'Buckbeak', 'Norbert'], answer: 'Fawkes', zh: '鄧不利多的鳳凰叫做佛客使。', word: 'phoenix', meaning: '鳳凰' },
-    { question: "What is Hagrid's baby dragon called?", options: ['Norbert', 'Nagini', 'Aragog', 'Fluffy'], answer: 'Norbert', zh: '海格的小龍叫做諾伯。', word: 'dragon', meaning: '龍' },
-    { question: 'Which Hogwarts house is Draco Malfoy in?', options: ['Slytherin', 'Gryffindor', 'Ravenclaw', 'Hufflepuff'], answer: 'Slytherin', zh: '跩哥・馬份屬於史萊哲林。', word: 'house', meaning: '學院' },
-    { question: 'What is the name of the three-headed dog?', options: ['Fluffy', 'Fang', 'Norbert', 'Trevor'], answer: 'Fluffy', zh: '三頭犬的名字是毛毛。', word: 'three-headed', meaning: '三個頭的' },
-    { question: "Who is Harry's godfather?", options: ['Sirius Black', 'Remus Lupin', 'James Potter', 'Arthur Weasley'], answer: 'Sirius Black', zh: '哈利的教父是天狼星・布萊克。', word: 'godfather', meaning: '教父' },
-    { question: "What is the name of Voldemort's snake?", options: ['Nagini', 'Norbert', 'Aragog', 'Crookshanks'], answer: 'Nagini', zh: '佛地魔的蛇叫做娜吉妮。', word: 'snake', meaning: '蛇' },
-    { question: 'Who teaches Potions at Hogwarts in Harry’s first year?', options: ['Severus Snape', 'Minerva McGonagall', 'Filius Flitwick', 'Rubeus Hagrid'], answer: 'Severus Snape', zh: '哈利第一年在霍格華茲的魔藥學教授是賽佛勒斯・石內卜。', word: 'potions', meaning: '魔藥學' },
-    { question: 'What subject does Professor McGonagall teach?', options: ['Transfiguration', 'Potions', 'Divination', 'Herbology'], answer: 'Transfiguration', zh: '麥教授教授變形學。', word: 'Transfiguration', meaning: '變形學' },
-    { question: 'Who is the gamekeeper at Hogwarts?', options: ['Rubeus Hagrid', 'Argus Filch', 'Remus Lupin', 'Alastor Moody'], answer: 'Rubeus Hagrid', zh: '霍格華茲的獵場看守是魯霸・海格。', word: 'gamekeeper', meaning: '獵場看守' },
-    { question: "What is the name of Fred and George's shop?", options: ["Weasleys' Wizard Wheezes", 'Honeydukes', 'Zonko’s', 'Borgin and Burkes'], answer: "Weasleys' Wizard Wheezes", zh: '弗雷和喬治的店叫做衛氏巫師法寶店。', word: 'shop', meaning: '商店' },
-    { question: 'Which ghost is associated with Gryffindor?', options: ['Nearly Headless Nick', 'The Bloody Baron', 'The Grey Lady', 'The Fat Friar'], answer: 'Nearly Headless Nick', zh: '葛來分多的學院幽靈是差點沒頭的尼克。', word: 'ghost', meaning: '幽靈' },
-    { question: "What is Harry's scar shaped like?", options: ['A lightning bolt', 'A crescent moon', 'A star', 'A snake'], answer: 'A lightning bolt', zh: '哈利的傷疤是閃電形狀。', word: 'scar', meaning: '傷疤' },
-    { question: "What is Harry's cousin's first name?", options: ['Dudley', 'Neville', 'Cedric', 'Percy'], answer: 'Dudley', zh: '哈利的表哥名字是達力。', word: 'cousin', meaning: '表親；堂親' },
-    { question: 'How many points is the Golden Snitch worth in Quidditch?', options: ['150', '10', '50', '100'], answer: '150', zh: '在魁地奇中，抓到金探子可得 150 分。', word: 'worth', meaning: '價值；值得' }
+    { question: "What is the name of Harry's owl?", options: ['Hedwig', 'Errol', 'Fawkes', 'Scabbers'], answer: 'Hedwig', zh: '哈利的貓頭鷹叫做嘿美。', zhQuestion: '哈利的貓頭鷹叫什麼名字？', word: 'owl', meaning: '貓頭鷹' },
+    { question: "What is the name of Hermione's cat?", options: ['Crookshanks', 'Trevor', 'Fang', 'Norbert'], answer: 'Crookshanks', zh: '妙麗的貓叫做歪腿。', zhQuestion: '妙麗的貓叫什麼名字？', word: 'cat', meaning: '貓' },
+    { question: "What was Ron's pet rat called?", options: ['Scabbers', 'Hedwig', 'Aragog', 'Dobby'], answer: 'Scabbers', zh: '榮恩的寵物老鼠叫做斑斑。', zhQuestion: '榮恩的寵物老鼠叫什麼？', word: 'rat', meaning: '老鼠' },
+    { question: "What is the name of Dumbledore's phoenix?", options: ['Fawkes', 'Fang', 'Buckbeak', 'Norbert'], answer: 'Fawkes', zh: '鄧不利多的鳳凰叫做佛客使。', zhQuestion: '鄧不利多的鳳凰叫什麼名字？', word: 'phoenix', meaning: '鳳凰' },
+    { question: "What is Hagrid's baby dragon called?", options: ['Norbert', 'Nagini', 'Aragog', 'Fluffy'], answer: 'Norbert', zh: '海格的小龍叫做諾伯。', zhQuestion: '海格的小龍叫什麼？', word: 'dragon', meaning: '龍' },
+    { question: 'Which Hogwarts house is Draco Malfoy in?', options: ['Slytherin', 'Gryffindor', 'Ravenclaw', 'Hufflepuff'], answer: 'Slytherin', zh: '跩哥・馬份屬於史萊哲林。', zhQuestion: '跩哥・馬份屬於哪個霍格華茲學院？', word: 'house', meaning: '學院' },
+    { question: 'What is the name of the three-headed dog?', options: ['Fluffy', 'Fang', 'Norbert', 'Trevor'], answer: 'Fluffy', zh: '三頭犬的名字是毛毛。', zhQuestion: '三頭犬的名字是什麼？', word: 'three-headed', meaning: '三個頭的' },
+    { question: "Who is Harry's godfather?", options: ['Sirius Black', 'Remus Lupin', 'James Potter', 'Arthur Weasley'], answer: 'Sirius Black', zh: '哈利的教父是天狼星・布萊克。', zhQuestion: '誰是哈利的教父？', word: 'godfather', meaning: '教父' },
+    { question: "What is the name of Voldemort's snake?", options: ['Nagini', 'Norbert', 'Aragog', 'Crookshanks'], answer: 'Nagini', zh: '佛地魔的蛇叫做娜吉妮。', zhQuestion: '佛地魔的蛇叫什麼名字？', word: 'snake', meaning: '蛇' },
+    { question: 'Who teaches Potions at Hogwarts in Harry’s first year?', options: ['Severus Snape', 'Minerva McGonagall', 'Filius Flitwick', 'Rubeus Hagrid'], answer: 'Severus Snape', zh: '哈利第一年在霍格華茲的魔藥學教授是賽佛勒斯・石內卜。', zhQuestion: '哈利第一年在霍格華茲的魔藥學教授是誰？', word: 'potions', meaning: '魔藥學' },
+    { question: 'What subject does Professor McGonagall teach?', options: ['Transfiguration', 'Potions', 'Divination', 'Herbology'], answer: 'Transfiguration', zh: '麥教授教授變形學。', zhQuestion: '麥教授教什麼科目？', word: 'Transfiguration', meaning: '變形學' },
+    { question: 'Who is the gamekeeper at Hogwarts?', options: ['Rubeus Hagrid', 'Argus Filch', 'Remus Lupin', 'Alastor Moody'], answer: 'Rubeus Hagrid', zh: '霍格華茲的獵場看守是魯霸・海格。', zhQuestion: '誰是霍格華茲的獵場看守？', word: 'gamekeeper', meaning: '獵場看守' },
+    { question: "What is the name of Fred and George's shop?", options: ["Weasleys' Wizard Wheezes", 'Honeydukes', 'Zonko’s', 'Borgin and Burkes'], answer: "Weasleys' Wizard Wheezes", zh: '弗雷和喬治的店叫做衛氏巫師法寶店。', zhQuestion: '弗雷和喬治的商店叫什麼？', word: 'shop', meaning: '商店' },
+    { question: 'Which ghost is associated with Gryffindor?', options: ['Nearly Headless Nick', 'The Bloody Baron', 'The Grey Lady', 'The Fat Friar'], answer: 'Nearly Headless Nick', zh: '葛來分多的學院幽靈是差點沒頭的尼克。', zhQuestion: '哪一位幽靈與葛來分多有關？', word: 'ghost', meaning: '幽靈' },
+    { question: "What is Harry's scar shaped like?", options: ['A lightning bolt', 'A crescent moon', 'A star', 'A snake'], answer: 'A lightning bolt', zh: '哈利的傷疤是閃電形狀。', zhQuestion: '哈利的傷疤是什麼形狀？', word: 'scar', meaning: '傷疤' },
+    { question: "What is Harry's cousin's first name?", options: ['Dudley', 'Neville', 'Cedric', 'Percy'], answer: 'Dudley', zh: '哈利的表哥名字是達力。', zhQuestion: '哈利的表哥名字是什麼？', word: 'cousin', meaning: '表親；堂親' },
+    { question: 'How many points is the Golden Snitch worth in Quidditch?', options: ['150', '10', '50', '100'], answer: '150', zh: '在魁地奇中，抓到金探子可得 150 分。', zhQuestion: '魁地奇的金探子值多少分？', word: 'worth', meaning: '價值；值得' }
   ];
 
   const GENERATED_MAGIC_TRIVIA = [
@@ -3792,13 +3968,17 @@
 
   function expandTriviaBank(baseQuestions) {
     return TRIVIA_QUESTION_FRAMES.flatMap((frame, frameIndex) =>
-      baseQuestions.map((item, questionIndex) => ({
-        ...item,
-        question: frame(item.question),
-        options: [...item.options].sort(() => Math.random() - 0.5),
-        baseQuestion: questionIndex + 1,
-        promptStyle: frameIndex + 1
-      }))
+      baseQuestions.map((item, questionIndex) => {
+        const options = [...item.options].sort(() => Math.random() - 0.5);
+        return {
+          ...item,
+          question: frame(item.question),
+          options,
+          zhOptions: options.map(translateTriviaOption),
+          baseQuestion: questionIndex + 1,
+          promptStyle: frameIndex + 1
+        };
+      })
     );
   }
 
@@ -3879,11 +4059,12 @@
     triviaHintBtn.disabled = false;
     triviaHintBtn.textContent = '💡 Need a hint?';
     const triviaChinese = document.getElementById('triviaChinese');
-    triviaChinese.textContent = '';
+    document.getElementById('triviaChineseQuestion').textContent = '';
+    document.getElementById('triviaChineseOptions').textContent = '';
     triviaChinese.classList.remove('visible');
     const triviaChineseBtn = document.getElementById('triviaChineseBtn');
     triviaChineseBtn.disabled = false;
-    triviaChineseBtn.textContent = '🌏 中文問題＋答案';
+    triviaChineseBtn.textContent = '🌏 中文問題與選項';
     document.getElementById('triviaSpeakBtn').textContent = '🔊 Listen all';
     document.getElementById('triviaNextBtn').style.display = 'none';
     document.querySelectorAll('#triviaOptions .trivia-option').forEach(button => {
@@ -3921,12 +4102,16 @@
   document.getElementById('triviaChineseBtn')?.addEventListener('click', function() {
     const question = HARRY_POTTER_TRIVIA[triviaIndex];
     if (!question) return;
-    const chineseQuestion = question.zhQuestion || '請根據上方英文問題選出正確答案。';
+    const chineseQuestion = question.zhQuestion || '請根據這則冷知識選出正確答案。';
     const chineseBox = document.getElementById('triviaChinese');
-    chineseBox.innerHTML = `<div><strong>中文問題：</strong>${chineseQuestion}</div><div><strong>答案：</strong>${question.answer}</div><div><strong>中文解說：</strong>${question.zh}</div>`;
+    document.getElementById('triviaChineseQuestion').innerHTML = `<strong>問題：</strong>${chineseQuestion}`;
+    const chineseOptions = question.zhOptions || question.options.map(translateTriviaOption);
+    document.getElementById('triviaChineseOptions').innerHTML = chineseOptions.map((option, index) => `
+      <div class="trivia-chinese-option"><strong>${String.fromCharCode(65 + index)}.</strong> ${option}</div>
+    `).join('');
     chineseBox.classList.add('visible');
     this.disabled = true;
-    this.textContent = '🌏 中文內容已顯示';
+    this.textContent = '🌏 中文題目已顯示';
   });
 
   document.getElementById('triviaSoundToggle')?.addEventListener('click', function() {
