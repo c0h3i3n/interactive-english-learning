@@ -184,7 +184,9 @@
       background: #fbfdff;
     }
 
-    .reading-box h3 { margin-bottom: 12px; color: #0f172a; font-size: 24px; }
+    .reading-list { display: grid; gap: 18px; }
+
+    .reading-box h3 { margin-bottom: 12px; color: #0f172a; font-size: 22px; }
     .reading-box p { font-size: 18px; }
 
     .question-list {
@@ -345,10 +347,10 @@
     <header>
       <div>
         <h1>Grade 2 Upgrade Exam</h1>
-        <p>McGraw-Hill Reading: Grade 2, Book 1 Units 1–3 + Workbook 1</p>
+        <p>McGraw-Hill Reading: Grade 2, Book 1 Units 1–3 + Workbook 1 · 4 Reading Passages</p>
       </div>
       <div class="header-art" aria-label="Grade 2 English practice">
-        <div><strong>Read · Think · Write</strong><span>Book 1 三個 Units 對照 Workbook</span></div>
+        <div><strong>Read · Think · Write</strong><span>Book 1 三個 Units · 每份四篇文章</span></div>
       </div>
     </header>
 
@@ -361,7 +363,7 @@
 
     <main>
       <div class="notice">
-        <strong>考試形式：</strong>第 1 部分是選擇題（閱讀 4 題＋文法 6 題），第 2 部分是自己寫 10 句英文。每句要有大寫、主詞、動詞和句點。短文是依課本主題重新編寫，不是直接複製課文。
+        <strong>考試形式：</strong>第 1 部分是選擇題（4 篇閱讀文章、每篇 6 題，加上 6 題文法，共 30 題），第 2 部分是自己寫 10 句英文。閱讀題會考主旨、細節、順序、推論、詞義和原因結果。短文是依課本主題重新編寫，不是直接複製課文。
       </div>
 
       <div class="scope-grid" aria-label="Book 1 and Workbook scope">
@@ -371,24 +373,16 @@
       </div>
 
       <div class="practice-tabs" role="tablist" aria-label="Practice tests">
-        <button class="tab active" type="button" data-practice="1">Practice 1 · Book 1 Unit 1</button>
-        <button class="tab" type="button" data-practice="2">Practice 2 · Book 1 Unit 2</button>
-        <button class="tab" type="button" data-practice="3">Practice 3 · Book 1 Unit 3</button>
+        <button class="tab active" type="button" data-practice="1">Practice 1 · Unit 1 · 4 passages</button>
+        <button class="tab" type="button" data-practice="2">Practice 2 · Unit 2 · 4 passages</button>
+        <button class="tab" type="button" data-practice="3">Practice 3 · Unit 3 · 4 passages</button>
       </div>
 
       <div class="practice active" id="practice-1">
         <section>
           <div class="section-title"><span class="badge">1</span><h2>Part 1 · Reading Multiple Choice</h2></div>
-          <div class="reading-box">
-            <h3>A New Friend at School</h3>
-            <p>On Monday, Lily felt shy on her first day at a new school. She stood by the door and held her lunch bag. A girl named Emma smiled and showed her the reading corner. During art time, the children made a small quilt picture. Lily drew a bright sun, and Emma helped her choose blue and green cloth. At recess, they played together. Lily was still a little nervous, but she felt happy because she had a new friend.</p>
-            <div class="question-list">
-              <div class="question"><p>1. Why did Lily feel shy?</p><ul class="option-list"><li><label><input type="radio" name="p1r1" value="A"> A. It was her first day at a new school.</label></li><li><label><input type="radio" name="p1r1" value="B"> B. She did not like lunch.</label></li><li><label><input type="radio" name="p1r1" value="C"> C. She lost her pet.</label></li></ul></div>
-              <div class="question"><p>2. Who showed Lily the reading corner?</p><ul class="option-list"><li><label><input type="radio" name="p1r2" value="A"> A. Lily</label></li><li><label><input type="radio" name="p1r2" value="B"> B. Emma</label></li><li><label><input type="radio" name="p1r2" value="C"> C. The bus driver</label></li></ul></div>
-              <div class="question"><p>3. What did the children make?</p><ul class="option-list"><li><label><input type="radio" name="p1r3" value="A"> A. A quilt picture</label></li><li><label><input type="radio" name="p1r3" value="B"> B. A lemonade stand</label></li><li><label><input type="radio" name="p1r3" value="C"> C. A sled</label></li></ul></div>
-              <div class="question"><p>4. How did Lily feel at the end?</p><ul class="option-list"><li><label><input type="radio" name="p1r4" value="A"> A. Angry</label></li><li><label><input type="radio" name="p1r4" value="B"> B. Happy</label></li><li><label><input type="radio" name="p1r4" value="C"> C. Sleepy</label></li></ul></div>
-            </div>
-          </div>
+          <p class="hint">本份有 4 篇文章，共 24 題閱讀理解選擇題。</p>
+          <div class="reading-list" id="p1-readings"></div>
         </section>
 
         <section>
@@ -427,16 +421,8 @@
       <div class="practice" id="practice-2">
         <section>
           <div class="section-title"><span class="badge">1</span><h2>Part 1 · Reading Multiple Choice</h2></div>
-          <div class="reading-box">
-            <h3>The Lemonade Helpers</h3>
-            <p>On Saturday morning, Mia and her friends cleaned their clubhouse. The children wanted to buy new chairs, so they made a lemonade stand. Mia squeezed the lemons. Ben counted the cups, and Sara made a small sign. In the afternoon, many neighbors came by. The children sold twenty-four cups of lemonade. They were tired, but they felt proud because they worked together.</p>
-            <div class="question-list">
-              <div class="question"><p>1. Why did the children make a lemonade stand?</p><ul class="option-list"><li><label><input type="radio" name="p2r1" value="A"> A. They wanted to buy new chairs.</label></li><li><label><input type="radio" name="p2r1" value="B"> B. They wanted to find a new clubhouse.</label></li><li><label><input type="radio" name="p2r1" value="C"> C. They wanted to visit a farm.</label></li></ul></div>
-              <div class="question"><p>2. Who counted the cups?</p><ul class="option-list"><li><label><input type="radio" name="p2r2" value="A"> A. Mia</label></li><li><label><input type="radio" name="p2r2" value="B"> B. Sara</label></li><li><label><input type="radio" name="p2r2" value="C"> C. Ben</label></li></ul></div>
-              <div class="question"><p>3. How many cups did they sell?</p><ul class="option-list"><li><label><input type="radio" name="p2r3" value="A"> A. Twenty-four cups.</label></li><li><label><input type="radio" name="p2r3" value="B"> B. Forty-two cups.</label></li><li><label><input type="radio" name="p2r3" value="C"> C. Fourteen cups.</label></li></ul></div>
-              <div class="question"><p>4. How did the children feel?</p><ul class="option-list"><li><label><input type="radio" name="p2r4" value="A"> A. Angry</label></li><li><label><input type="radio" name="p2r4" value="B"> B. Proud</label></li><li><label><input type="radio" name="p2r4" value="C"> C. Scared</label></li></ul></div>
-            </div>
-          </div>
+          <p class="hint">本份有 4 篇文章，共 24 題閱讀理解選擇題。</p>
+          <div class="reading-list" id="p2-readings"></div>
         </section>
 
         <section>
@@ -474,16 +460,8 @@
       <div class="practice" id="practice-3">
         <section>
           <div class="section-title"><span class="badge">1</span><h2>Part 1 · Reading Multiple Choice</h2></div>
-          <div class="reading-box">
-            <h3>A Story With a Surprise</h3>
-            <p>Arthur wanted to write a story for his class. He chose a small bird and a hungry tiger as his characters. First, he read about animals in the library. Then he wrote a beginning in which the tiger looked for food. Arthur did not like his first ending, so he changed it. In the new ending, the bird used a clever plan and helped the other animals stay safe. Arthur read the story to his friends. They smiled and asked him to write another story.</p>
-            <div class="question-list">
-              <div class="question"><p>1. What did Arthur want to write?</p><ul class="option-list"><li><label><input type="radio" name="p3r1" value="A"> A. A story</label></li><li><label><input type="radio" name="p3r1" value="B"> B. A letter</label></li><li><label><input type="radio" name="p3r1" value="C"> C. A report about school</label></li></ul></div>
-              <div class="question"><p>2. Where did Arthur read about animals?</p><ul class="option-list"><li><label><input type="radio" name="p3r2" value="A"> A. In the library</label></li><li><label><input type="radio" name="p3r2" value="B"> B. At a lemonade stand</label></li><li><label><input type="radio" name="p3r2" value="C"> C. On a farm</label></li></ul></div>
-              <div class="question"><p>3. Why did Arthur change the ending?</p><ul class="option-list"><li><label><input type="radio" name="p3r3" value="A"> A. He did not like his first ending.</label></li><li><label><input type="radio" name="p3r3" value="B"> B. His teacher lost the story.</label></li><li><label><input type="radio" name="p3r3" value="C"> C. His friends wanted a new book.</label></li></ul></div>
-              <div class="question"><p>4. What did Arthur’s friends do?</p><ul class="option-list"><li><label><input type="radio" name="p3r4" value="A"> A. They asked him to write another story.</label></li><li><label><input type="radio" name="p3r4" value="B"> B. They made a new library.</label></li><li><label><input type="radio" name="p3r4" value="C"> C. They took the tiger home.</label></li></ul></div>
-            </div>
-          </div>
+          <p class="hint">本份有 4 篇文章，共 24 題閱讀理解選擇題。</p>
+          <div class="reading-list" id="p3-readings"></div>
         </section>
 
         <section>
@@ -521,27 +499,209 @@
       <div class="feedback" id="feedback" role="status"></div>
       <div class="answers" id="answers">
         <h3>答案 Key</h3>
-        <p>Practice 1：Reading 1 A、2 B、3 A、4 B；Grammar：meets、stood、helps、made、chooses、played。</p>
-        <p>Practice 2：Reading 1 A、2 C、3 A、4 B；Grammar：squeezes、counted、drink、made、work、sold。</p>
-        <p>Practice 3：Reading 1 A、2 A、3 A、4 A；Grammar：writes、researched、reads、changed、like、felt。</p>
+        <div id="answer-key-list"></div>
         <p>Writing 十句為開放題，請檢查是否為完整句子、大小寫、拼字、句點，以及 past tense 和 present tense 的使用。</p>
       </div>
     </main>
 
-    <footer>這份練習整合 McGraw-Hill Reading: Grade 2, Book 1 Units 1–3 的課文主題與 CLC Grade 2 Workbook 1 的單字、摘要、文法和測驗題型。短文與題目為練習用新編內容。</footer>
+    <footer>這份加長版練習整合 McGraw-Hill Reading: Grade 2, Book 1 Units 1–3 的課文主題與 CLC Grade 2 Workbook 1 的單字、摘要、文法和測驗題型。每份包含 4 篇閱讀文章、24 題閱讀理解、6 題文法和 10 句寫作；短文與題目為練習用新編內容。</footer>
   </div>
 
   <script>
+    const readingSets = {
+      1: [
+        {
+          title: "Ann's First Day: Asking for Help",
+          text: "Ann woke up before her alarm on the first day at Willow School. She checked her backpack twice, but she still worried that she had forgotten something important. When she reached the building, the hallway looked like a maze. Ann stood near the office and held the paper with her room number. She followed a group of children, but they turned into the music room instead of Room 12. Mrs. Ortiz, a teacher, noticed Ann's confused face and helped her find the right classroom. During morning meeting, Ann's partner, Maya, showed her where to put her folder. They discovered that both girls enjoyed animal books. At recess, Maya could not find the red ball, so Ann looked under a bench and found it. By lunchtime, Ann understood that her first day did not have to be perfect. Asking for help had made the new school feel less frightening, and helping Maya had given her a friend.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["Ann learns that asking for help can make a new school feel easier.", "Ann decides that school books are too difficult.", "Ann spends the whole day looking for a red ball.", "Ann wants to move to a different school."], answer: "A" },
+            { prompt: "Why did Ann stand near the office?", options: ["She was waiting for her lunch.", "She was holding her room number and did not know where to go.", "She wanted to talk to the music teacher.", "She was looking for Maya."], answer: "B" },
+            { prompt: "What happened before Mrs. Ortiz helped Ann?", options: ["Ann found a red ball.", "Maya showed Ann where to put her folder.", "Ann followed children into the music room.", "Ann read an animal book."], answer: "C" },
+            { prompt: "What can the reader infer about Ann by lunchtime?", options: ["She still refuses to talk to anyone.", "She has forgotten why she came to school.", "She is angry that Maya found the ball.", "She is becoming more confident in the new school."], answer: "D" },
+            { prompt: "What does the word maze mean in the passage?", options: ["A place with many confusing paths", "A quiet place for reading", "A room filled with musical instruments", "A playground with many balls"], answer: "A" },
+            { prompt: "What lesson does Ann learn?", options: ["The fastest student always wins.", "A first day should be perfect.", "A new place can become easier when people ask for and offer help.", "Animal books are better than all other books."], answer: "C" }
+          ]
+        },
+        {
+          title: "Henry and Mudge: A Careful Walk",
+          text: "Henry planned to walk Mudge to the creek before lunch. Mudge was a kind dog, but he stopped at every tree to sniff. Henry checked the sun and grew impatient because the shadows were getting longer. At last, Henry hurried ahead. Mudge followed a smell behind a tall hedge, and Henry could no longer see him. Henry almost shouted, but he noticed pawprints beside a muddy path. He followed them and found Mudge's collar caught on a thin branch. Mudge wagged his tail, yet he could not pull free. Henry spoke softly so the dog would stay calm. Then he used a short stick to lift the branch while Mudge backed away. On the way to the creek, Henry made a sign that said, 'Good walks need patient friends.' They arrived late and had only a little time to play. Henry was not angry anymore. He had learned that reaching a place quickly was less important than making sure a friend was safe.",
+          questions: [
+            { prompt: "What is the passage mostly about?", options: ["Henry learns to care for Mudge when a walk does not go as planned.", "Mudge teaches Henry how to swim in the creek.", "Henry and Mudge race to the creek before lunch.", "A farmer asks Henry to build a fence."], answer: "A" },
+            { prompt: "Why did Henry grow impatient?", options: ["Mudge was afraid of the creek.", "Mudge kept stopping, and Henry wanted to reach the creek before lunch.", "Henry did not like walking with his dog.", "The sun had disappeared behind a cloud."], answer: "B" },
+            { prompt: "What did Henry notice beside the muddy path?", options: ["A red ball", "A broken sign", "Pawprints", "A bucket of feed"], answer: "C" },
+            { prompt: "Why did Henry speak softly to Mudge?", options: ["He wanted to hide from the dog.", "He was practicing a song.", "He wanted Mudge to run faster.", "He wanted Mudge to stay calm while he helped him."], answer: "D" },
+            { prompt: "How did Henry free Mudge?", options: ["He used a stick to lift the branch.", "He pulled Mudge by the tail.", "He called a farmer to move the dog.", "He left to get his lunch."], answer: "A" },
+            { prompt: "What does Henry learn at the end?", options: ["Dogs should never stop to sniff.", "Keeping a friend safe is more important than reaching a place quickly.", "A creek is not a good place to visit.", "Signs can make a walk go faster."], answer: "B" }
+          ]
+        },
+        {
+          title: "Luka's Quilt: Stories in the Cloth",
+          text: "Every Saturday, Luka's grandmother opened a wooden box filled with cloth squares. Some were bright, and some were faded, but Grandma remembered a story for each one. A yellow square came from a curtain in the first house she shared with Grandpa. A green square came from a shirt Luka wore when he planted tomatoes. Luka wanted to sew the squares together quickly. Grandma told him a quilt was not only a blanket; it was also a way to keep memories close. While they worked, Luka found a blue square with a torn corner. He suggested throwing it away, but Grandma showed him how to mend it with small stitches. The repaired square was not perfect. Its thread made a little line across the cloth, like a road on a map. Luka decided that the line made the quilt more special because it showed that old things could be cared for. Before dinner, he added a small piece of red cloth from his own favorite shirt. Now the quilt held memories from three generations, and Luka wanted to hear every story again.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["Luka wants to buy a new blanket.", "A quilt can hold family memories as well as keep someone warm.", "Grandma does not like bright colors.", "Luka learns that sewing is always easy."], answer: "B" },
+            { prompt: "Why did Grandma keep the cloth squares?", options: ["Each square was connected to a memory.", "She planned to sell them at a market.", "She wanted Luka to make a flag.", "The squares were all new and expensive."], answer: "A" },
+            { prompt: "What did Luka first suggest when he saw the torn blue square?", options: ["He wanted to paint it yellow.", "He wanted to give it to Grandpa.", "He suggested throwing it away.", "He wanted to hide it in the box."], answer: "C" },
+            { prompt: "What does the word mend mean in the passage?", options: ["To cut into small pieces", "To choose a different color", "To tell a story", "To repair something that is damaged"], answer: "D" },
+            { prompt: "Why did Luka think the line of thread made the quilt special?", options: ["It made the quilt much heavier.", "It showed that an old thing had been cared for.", "It covered every color in the quilt.", "It helped him finish before breakfast."], answer: "B" },
+            { prompt: "Why did Luka add cloth from his own shirt?", options: ["He wanted to add his own memory to the family quilt.", "He did not like the other colors.", "He needed to make the quilt smaller.", "He wanted to hide the repaired square."], answer: "A" }
+          ]
+        },
+        {
+          title: "The Roundup at Rio Ranch: One Small Calf",
+          text: "Each autumn, Rio Ranch moved its cattle from the high pasture to a warmer field near the barn. The roundup looked noisy, but every worker had a job. Mr. Rio rode at the front, while Maya and her brother checked the gates. Maya carried a list of the calves that needed extra care. Halfway down the trail, she noticed that one small calf was missing. The other cattle kept moving, and her brother wanted to race after it. Maya stopped him. She saw fresh hoofprints beside a quiet side path, so she walked slowly and listened. The calf was standing near a fallen fence, too frightened to cross the trail. Maya opened a nearby gate and placed a bucket of feed on the safe side. She and her brother waited without shouting. After a few minutes, the calf followed the smell and joined the herd. The roundup finished before dark. Mr. Rio thanked Maya for paying attention. She learned that good ranch work was not always about moving fast; sometimes it meant noticing one small problem before it became a bigger one.",
+          questions: [
+            { prompt: "What is the passage mostly about?", options: ["Maya carefully helps a lost calf return to the herd.", "Maya learns how to ride a horse for the first time.", "The cattle refuse to leave the high pasture.", "Mr. Rio teaches everyone to build a barn."], answer: "A" },
+            { prompt: "Why did Maya carry a list?", options: ["She wanted to write a story about the ranch.", "She needed to remember which calves needed extra care.", "She was counting the number of gates.", "She planned to buy feed after the roundup."], answer: "B" },
+            { prompt: "What problem did Maya notice?", options: ["A gate was painted the wrong color.", "The barn was too far away.", "A small calf was missing from the herd.", "Her brother had lost his horse."], answer: "C" },
+            { prompt: "Why did Maya stop her brother from racing after the calf?", options: ["She wanted him to go back to the barn.", "She thought the calf was already safe.", "She did not know where the herd was.", "She did not want to frighten the calf into running farther away."], answer: "D" },
+            { prompt: "How did Maya help the calf?", options: ["She opened a quiet gate and used feed to guide it.", "She carried it all the way to the barn.", "She shouted until it crossed the trail.", "She sent it back to the high pasture alone."], answer: "A" },
+            { prompt: "What lesson does Maya learn?", options: ["Ranch work should always be noisy.", "The biggest animal is always the most important.", "Paying attention can prevent a small problem from becoming bigger.", "Moving quickly is the only way to finish work."], answer: "C" }
+          ]
+        }
+      ],
+      2: [
+        {
+          title: "The Lemonade Helpers: A Plan That Changed",
+          text: "The children at the Best Friends Clubhouse wanted to replace a shelf that had begun to lean. They did not have enough money, so they planned a lemonade sale. Mia squeezed lemons, Ben counted cups, and Sara made a sign. They decided to charge two cups for one dollar and wrote the plan in a notebook. At first, the stand was busy. Then dark clouds appeared, and rain began to fall. The children moved the cups under the clubhouse roof and covered the lemons with a clean towel. Sara noticed that neighbors could not see the small sign from the sidewalk, so she made a larger one. When the rain stopped, more people came. Ben kept counting carefully, and Mia thanked each customer. By the end of the afternoon, they had sold thirty-two cups. The money was enough for a new shelf, but not enough to buy paint too. The children decided to repair the old shelf themselves and save the extra money for another project. Their first plan had changed, but their teamwork had made it work.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["The children solve a clubhouse problem by planning and working together.", "The children decide that rain is too dangerous for a sale.", "Mia wants to keep all the lemonade for herself.", "The clubhouse is moved to a different building."], answer: "A" },
+            { prompt: "Why did Ben count the cups?", options: ["He wanted to drink the most lemonade.", "He needed to keep track of how many cups they sold.", "He was learning how to squeeze lemons.", "He wanted to choose a new shelf."], answer: "B" },
+            { prompt: "What problem did the rain cause?", options: ["It used all of the lemons.", "It made the children forget the price.", "The children had to move and cover the supplies.", "The neighbors went inside the clubhouse."], answer: "C" },
+            { prompt: "Why did Sara make a larger sign?", options: ["She wanted to decorate the clubhouse.", "She wanted to write a letter to the neighbors.", "She wanted the sign to match the cups.", "She noticed people could not see the small sign."], answer: "D" },
+            { prompt: "What can the reader infer about the children?", options: ["They can adjust their plan when a problem happens.", "They do not care about their clubhouse.", "They believe only one person should do all the work.", "They give up as soon as it begins to rain."], answer: "A" },
+            { prompt: "What does save the extra money mean in the passage?", options: ["Spend all the money immediately", "Hide the money from the customers", "Keep the money for a later project", "Give the money back to the rain"], answer: "C" }
+          ]
+        },
+        {
+          title: "A Letter to Amy: More Than a Page",
+          text: "After Amy moved to a town two hours away, Nia wanted to tell her about the class garden. Nia began a letter during study time, but her first draft had only one sentence: 'We planted things.' She read it again and decided Amy would want to know more. Nia added the names of the vegetables, the day a tiny green shoot appeared, and the funny way Ben wore a flowerpot like a hat. Before sealing the envelope, Nia pressed a dry leaf from the garden between two pieces of paper. She wrote Amy's address carefully and asked her mother to check the stamp. Nia wondered if Amy would answer. A week later, an envelope arrived. Amy wrote about her new school and said she missed working in the garden. She asked Nia to send the class's tomato recipe. Nia realized that a letter could carry small details that made a faraway friend feel close. It was not exactly the same as a visit, but it gave both friends something to read, remember, and answer.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["Nia decides that gardens are too much work.", "Writing a letter helps Nia and Amy continue their friendship.", "Amy does not want to hear about Nia's class.", "Nia sends a recipe before she writes a letter."], answer: "B" },
+            { prompt: "Why did Nia add more details to her first draft?", options: ["She wanted the letter to be the shortest one.", "She wanted to use up all of her paper.", "She wanted Amy to learn more about the garden.", "She wanted her mother to write the letter."], answer: "C" },
+            { prompt: "Why did Nia put a dry leaf in the envelope?", options: ["It was a small reminder of the garden.", "She wanted Amy to plant it in water.", "It was part of the stamp.", "She did not have enough paper."], answer: "A" },
+            { prompt: "What does Amy's reply show?", options: ["Amy has forgotten Nia completely.", "Amy wants Nia to stop writing letters.", "Amy plans to move back the next day.", "Amy also wants to stay connected with Nia."], answer: "D" },
+            { prompt: "What did Nia do after she finished adding details?", options: ["She went to the garden to plant a new tree.", "She added a leaf, wrote the address, and checked the stamp.", "She threw the letter away.", "She asked Ben to deliver the letter by bicycle."], answer: "B" },
+            { prompt: "What does the word reply mean?", options: ["A type of garden plant", "A stamp on an envelope", "An answer to a letter", "A trip to another town"], answer: "C" }
+          ]
+        },
+        {
+          title: "The Best Friends Club: Making Room",
+          text: "On Tuesday, Jo, Lina, and Marcus started the Best Friends Club. They wanted a club where every child could belong, so they wrote two rules: listen before choosing and make room for someone new. Their first project caused an argument. Lina wanted to grow vegetables in a small garden, but Marcus wanted to build a puzzle table inside the clubhouse. Jo thought both ideas were useful, yet the friends kept interrupting one another. Instead of voting right away, Jo asked each person to explain the reason for the idea. Marcus said the puzzle table would give children something to do on rainy days. Lina said the garden would give everyone a job outside. Jo suggested using the garden one week and the puzzle table the next week. They made a calendar and agreed to try it. The next day, Sam, a new student, stood near the doorway. The friends invited Sam inside, and Sam offered to make signs for both projects. Jo noticed that their rules did not make every decision easy, but they helped the group solve disagreements respectfully.",
+          questions: [
+            { prompt: "What is the passage mostly about?", options: ["The club decides that only one child can join.", "The club learns to solve a disagreement and include a new student.", "The children stop all projects because the clubhouse is too small.", "Sam teaches the group how to grow vegetables."], answer: "B" },
+            { prompt: "Why did the friends write rules?", options: ["They wanted every child to be heard and included.", "They wanted to finish the garden in one day.", "They wanted to keep Sam outside.", "They needed rules for a science test."], answer: "A" },
+            { prompt: "What caused the disagreement?", options: ["Sam wanted to change the club's name.", "Jo lost the club's notebook.", "Lina and Marcus wanted different first projects.", "The children could not find the clubhouse."], answer: "C" },
+            { prompt: "How did Jo help solve the disagreement?", options: ["She chose Marcus's idea without listening.", "She told everyone to leave.", "She asked the teacher to do all the work.", "She suggested using the two ideas on different weeks."], answer: "D" },
+            { prompt: "What can the reader infer about Sam?", options: ["Sam does not like working with other children.", "Sam has a skill that can help the club.", "Sam has already been in the club for a year.", "Sam wants to cancel both projects."], answer: "B" },
+            { prompt: "What does belong mean in the passage?", options: ["To feel welcome as part of a group", "To carry something heavy", "To finish a race first", "To find a lost object"], answer: "A" }
+          ]
+        },
+        {
+          title: "Sharks: Important Ocean Neighbors",
+          text: "Many people learn about sharks from dramatic stories, so they may imagine that every shark is waiting to attack. Scientists see a more complete picture. Most sharks do not hunt people. They use smell, sight, movement, and special senses to find food in the ocean. Some sharks can notice tiny electrical signals made by moving animals. Sharks also help keep ocean communities balanced. They often eat weak or sick fish, which leaves more healthy fish in the group. Scientists tag some sharks and follow their movements to learn where the animals travel and where they find food. This information can help people protect safe places for sharks and other sea life. Sharks are not harmless, but treating them as monsters makes it harder to understand them. When people learn how sharks really behave, they can respect the animals and make wiser choices near the water. A healthy ocean needs many different animals, including animals that people sometimes fear.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["Sharks are important ocean animals that people should understand and respect.", "Sharks spend most of their time looking for people.", "Scientists have stopped studying the ocean.", "All fish use exactly the same senses."], answer: "A" },
+            { prompt: "What special ability helps some sharks find moving animals?", options: ["They can read signs under the water.", "They can hear people talking on land.", "They can notice tiny electrical signals.", "They can see through every rock."], answer: "C" },
+            { prompt: "Why do scientists tag some sharks?", options: ["To teach sharks to swim faster", "To learn where sharks travel and find food", "To make sharks easier for people to catch", "To change the color of the ocean"], answer: "B" },
+            { prompt: "Why does the passage say dramatic stories can cause a problem?", options: ["Stories make the ocean warmer.", "Stories help every shark find food.", "Stories teach sharks how to avoid scientists.", "Stories may make people believe sharks are only monsters."], answer: "D" },
+            { prompt: "What might happen if sharks disappeared from an ocean area?", options: ["There might be too many weak or sick fish.", "Every fish would immediately leave the water.", "The ocean would have no moving animals.", "People would no longer need to study sea life."], answer: "A" },
+            { prompt: "Which title would fit the passage best?", options: ["Why All Ocean Animals Are Dangerous", "A Day at the Lemonade Stand", "Sharks: Important Ocean Neighbors", "How to Build a Fish Tank"], answer: "C" }
+          ]
+        }
+      ],
+      3: [
+        {
+          title: "Arthur Writes a Story: Revise and Improve",
+          text: "Arthur's teacher asked the class to write a story with an animal character. Arthur chose a small bird and a hungry tiger, but he did not begin writing immediately. First, he read about how birds find food and how tigers live. He made a short list of facts so the story would sound believable. In his first draft, the tiger caught the bird at the end. When Arthur read the draft aloud, the ending felt unfair and too sudden. He changed the ending so the bird noticed a hidden path and led the tiger toward a basket of fruit instead. Then Arthur read the new draft to two classmates. They liked the clever plan, but one classmate pointed out that Arthur had used the word small four times. Arthur replaced two of those words with tiny and young. His final story was not exactly the same as his first idea. Arthur learned that writers do more than put words on a page; they think, listen, and make changes so readers can understand and enjoy the story.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["Arthur improves a story by researching, revising, and listening to readers.", "Arthur decides that animal stories are impossible to write.", "Arthur copies a story from a library book.", "Arthur changes the characters because his teacher dislikes birds."], answer: "A" },
+            { prompt: "Why did Arthur read about birds and tigers?", options: ["He wanted to avoid writing a beginning.", "He wanted the story details to sound believable.", "He wanted to find a new teacher.", "He wanted to learn how to feed a tiger."], answer: "B" },
+            { prompt: "Why did Arthur change the first ending?", options: ["He lost the last page.", "His classmates wanted a story about a farm.", "The ending felt unfair and too sudden.", "The tiger could not be a character."], answer: "C" },
+            { prompt: "What does the word draft mean in the passage?", options: ["A kind of animal", "A finished book in a store", "A place to hide a basket", "An early version of a piece of writing"], answer: "D" },
+            { prompt: "What did Arthur do after he wrote the first draft?", options: ["He read it aloud and then changed the ending.", "He gave it to the tiger.", "He put it away without reading it.", "He asked the class to write it for him."], answer: "A" },
+            { prompt: "What can the reader infer about Arthur?", options: ["He never wants advice.", "He thinks every first idea must stay the same.", "He is willing to revise his work to make it better.", "He prefers not to share stories with anyone."], answer: "C" }
+          ]
+        },
+        {
+          title: "Best Wishes, Ed: A Message from Class",
+          text: "Ed hurt his ankle during a weekend game and had to stay home for several days. On Monday, his class was preparing a science display about shadows. Ed had helped build the cardboard screen, so everyone noticed that his place at the table was empty. Their teacher suggested writing him a class letter. Rosa volunteered to begin it, but she did not want to write only, 'Get well soon.' She asked each student to add one detail. Marcus described the shadow puppet he had practiced. Lina drew a small picture of the screen. Rosa wrote that the group would save Ed a space when he came back. At the bottom, everyone signed a name or a short message. The class mailed the letter after school. Ed read it beside his window and felt included even though he was not in the classroom. He wrote back to say that the messages made him cheerful. He also suggested a new idea for the display: use a flashlight to make a shadow of a paper tree. The class tried his idea and wrote, 'Best wishes, Ed!' beside the finished display.",
+          questions: [
+            { prompt: "What is the passage mostly about?", options: ["Ed decides never to return to school.", "A class uses a letter to include Ed and use his science idea.", "Rosa builds the whole science display alone.", "The students stop studying shadows after Ed gets hurt."], answer: "B" },
+            { prompt: "Why did the teacher suggest writing a class letter?", options: ["Ed was absent and the class wanted him to feel included.", "The class needed a new cardboard screen.", "Rosa had forgotten Ed's address.", "The students wanted to cancel the display."], answer: "A" },
+            { prompt: "What did Lina add to the letter?", options: ["A recipe", "A new flashlight", "A small picture of the screen", "A map to Ed's house"], answer: "C" },
+            { prompt: "Why did Ed feel included?", options: ["He won the weekend game.", "He received a new window.", "He stayed home from school for a month.", "His classmates shared details and saved him a place."], answer: "D" },
+            { prompt: "What does cheerful mean in the passage?", options: ["Feeling happy and hopeful", "Feeling lost and confused", "Feeling angry about a game", "Feeling ready to sleep"], answer: "A" },
+            { prompt: "What can the reader infer about Ed?", options: ["He does not like science.", "He still wants to help his classmates even while at home.", "He refuses to read the letter.", "He made the class throw away the display."], answer: "B" }
+          ]
+        },
+        {
+          title: "Nine-in-One, Grr! Grr!: A Shared Shelter",
+          text: "Nina visited her grandfather's small farm on a windy afternoon. Near the barn, she heard a strange sound: 'Grr! Grr!' She expected to see one large animal, but nine smaller animals were crowded inside an empty shed. A goat stood beside two ducks, three chickens shared a corner, and three kittens hid near a basket. A sudden storm had begun, and the animals had all searched for the driest shelter. Nina counted the heads twice because the animals kept moving. When thunder shook the roof, the goat stepped backward and bumped the basket. The kittens cried, the ducks flapped, and the chickens clucked. Together, the sounds made one loud, rumbling noise. Nina did not chase the animals outside. She placed dry straw along the floor and asked Grandpa to close the broken side of the shed. After the storm passed, each animal returned to its own place. Nina remembered that the nine animals had needed one shelter for a short time. Sharing space had kept them safe, even though it had made a very noisy afternoon.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["Nine animals share a shelter during a storm and stay safe.", "Nina wants to keep all the farm animals in her room.", "The animals plan to make the barn louder.", "Grandpa teaches Nina how to count to nine."], answer: "A" },
+            { prompt: "Why did the animals go into the shed?", options: ["They wanted to play a game.", "They were looking for a dry place during the storm.", "Nina called them inside for dinner.", "They were preparing to leave the farm."], answer: "B" },
+            { prompt: "How did Nina know there were nine animals?", options: ["Grandpa told her before the storm.", "She read the number on the shed.", "She counted the animals more than once.", "The animals formed nine lines."], answer: "C" },
+            { prompt: "Why did the shed sound like one loud noise?", options: ["The roof was made of metal.", "The wind played a musical instrument.", "Nina shouted into the shed.", "Many animals made different sounds at the same time."], answer: "D" },
+            { prompt: "What did Nina learn from the animals?", options: ["Sharing a safe place can help during a difficult time.", "Animals should never stay near a barn.", "A storm is the best time to count chickens.", "All animals make the same sound."], answer: "A" },
+            { prompt: "What does shelter mean in the passage?", options: ["A kind of food", "A number used for counting", "A safe place that protects someone", "A loud animal sound"], answer: "C" }
+          ]
+        },
+        {
+          title: "The Story Box: Four Objects, Many Ideas",
+          text: "Ms. Chen placed four objects in a box for the writing club: a blue button, a smooth stone, a paper key, and a dried leaf. Each student had to choose one object and write a story that included it. At first, the students stared at the box because none of the objects seemed important. Then Maya picked up the button and imagined a coat that had belonged to a traveler. Joel chose the paper key and imagined a door that opened only for kind people. Their first stories were very short. Ms. Chen asked them to add a problem, a reason for the character's choice, and an ending that solved the problem. The students reread their drafts and noticed that some sentences repeated the same idea. They combined two sentences and added details about the setting. When they shared the stories, the same blue button appeared in two completely different adventures. The club discovered that a good object does not give a writer only one answer. It can open many paths when the writer asks questions and uses imagination.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["Writing objects are useful only when they are expensive.", "A simple object can inspire different stories when writers ask questions.", "The writing club decides to collect buttons instead of books.", "Ms. Chen writes every story for the students."], answer: "B" },
+            { prompt: "Why did the students first stare at the box?", options: ["They did not know how to make ordinary objects into story ideas.", "They had already finished their stories.", "They were waiting for a snack.", "They wanted to hide the box."], answer: "A" },
+            { prompt: "What did Ms. Chen ask the students to add?", options: ["A new object and a recipe", "Only a longer title", "A problem, a reason, and a solution", "A list of every student in the club"], answer: "C" },
+            { prompt: "What did the students notice when they reread their drafts?", options: ["Every story had the same ending.", "The box had disappeared.", "The objects were all broken.", "Some sentences repeated the same idea."], answer: "D" },
+            { prompt: "What can the reader infer about the two blue-button stories?", options: ["They were exactly the same.", "The writers used the same object but imagined different adventures.", "Neither story had a character.", "Both writers stopped before writing an ending."], answer: "B" },
+            { prompt: "What lesson does the writing club learn?", options: ["Imagination can turn an ordinary object into many ideas.", "A writer should never change a first draft.", "Only paper objects belong in stories.", "Short stories are always better than long stories."], answer: "A" }
+          ]
+        }
+      ]
+    };
+
+    const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[character]));
+
+    Object.entries(readingSets).forEach(([id, passages]) => {
+      const root = document.getElementById(`p${id}-readings`);
+      let questionNumber = 0;
+      root.innerHTML = passages.map((passage, passageIndex) => {
+        const questions = passage.questions.map((question) => {
+          questionNumber += 1;
+          const name = `p${id}r${questionNumber}`;
+          const options = question.options.map((option, optionIndex) => {
+            const letter = String.fromCharCode(65 + optionIndex);
+            return `<li><label><input type="radio" name="${name}" value="${letter}"> ${letter}. ${escapeHtml(option)}</label></li>`;
+          }).join('');
+          return `<div class="question"><p>${questionNumber}. ${escapeHtml(question.prompt)}</p><ul class="option-list">${options}</ul></div>`;
+        }).join('');
+        return `<article class="reading-box"><h3>Passage ${passageIndex + 1}: ${escapeHtml(passage.title)}</h3><p>${escapeHtml(passage.text)}</p><div class="question-list">${questions}</div></article>`;
+      }).join('');
+    });
+
     const tabs = [...document.querySelectorAll('.tab')];
     const practices = [...document.querySelectorAll('.practice')];
     const feedback = document.getElementById('feedback');
     const answers = document.getElementById('answers');
+    const answerKeyList = document.getElementById('answer-key-list');
 
-    const answerSets = {
-      1: ['A', 'B', 'A', 'B'],
-      2: ['A', 'C', 'A', 'B'],
-      3: ['A', 'A', 'A', 'A']
-    };
+    const answerSets = Object.fromEntries(Object.entries(readingSets).map(([id, passages]) => [
+      id,
+      passages.flatMap((passage) => passage.questions.map((question) => question.answer))
+    ]));
+
+    answerKeyList.innerHTML = Object.entries(readingSets).map(([id, passages]) => {
+      const readingKey = passages.map((passage, passageIndex) => `Passage ${passageIndex + 1}: ${passage.questions.map((question) => question.answer).join('、')}`).join('；');
+      const grammarKey = [...document.querySelectorAll(`#practice-${id} select[data-answer]`)].map((select) => select.dataset.answer).join('、');
+      return `<p>Practice ${id}：${readingKey}；Grammar：${grammarKey}。</p>`;
+    }).join('');
 
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
@@ -566,7 +726,7 @@
       const writing = [...current.querySelectorAll('.writing-area')];
       const filled = writing.filter((item) => item.value.trim().length > 0).length;
       const complete = writing.filter((item) => /[.!?]\s*$/.test(item.value.trim())).length;
-      feedback.textContent = `目前是 Practice ${id}：選擇題 ${correct + grammarCorrect}/10（Reading ${correct}/4、Grammar ${grammarCorrect}/${selects.length}）。Writing 已填 ${filled}/10，當中 ${complete}/10 句有句點；請再檢查時態和句子意思。`;
+      feedback.textContent = `目前是 Practice ${id}：選擇題 ${correct + grammarCorrect}/${expected.length + selects.length}（Reading ${correct}/${expected.length}、Grammar ${grammarCorrect}/${selects.length}）。Writing 已填 ${filled}/10，當中 ${complete}/10 句有句點；請再檢查時態和句子意思。`;
       feedback.classList.add('show');
     }
 
