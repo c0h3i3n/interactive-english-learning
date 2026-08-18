@@ -376,6 +376,7 @@
         <button class="tab active" type="button" data-practice="1">Practice 1 · Unit 1 · 4 passages</button>
         <button class="tab" type="button" data-practice="2">Practice 2 · Unit 2 · 4 passages</button>
         <button class="tab" type="button" data-practice="3">Practice 3 · Unit 3 · 4 passages</button>
+        <button class="tab" type="button" data-practice="next">Preview · The Best Friends Club</button>
         <button class="tab" type="button" data-practice="vocab">Vocabulary · A Letter to Amy</button>
       </div>
 
@@ -493,6 +494,51 @@
             <div class="writing-prompt"><strong>8. a book you learned to read <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
             <div class="writing-prompt"><strong>9. a plan you learned to change <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
             <div class="writing-prompt"><strong>10. something your friends learned to like <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="practice" id="practice-next">
+        <section>
+          <div class="section-title"><span class="badge">N</span><h2>Next Unit Preview · The Best Friends Club</h2></div>
+          <p class="hint">這是還沒正式上課前的預習卷，內容依照 Workbook Unit 7 的主題與單字表重新編寫，不是直接複製課文。</p>
+          <div class="reading-list" id="pnext-readings"></div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">V</span><h2>Vocabulary Multiple Choice</h2></div>
+          <p class="hint">Choose the word or meaning that is similar to the bold word.</p>
+          <div class="question-list" id="next-vocabulary-questions"></div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">1</span><h2>Past Tense · Present Tense</h2></div>
+          <p>Choose the correct verb. Read the time words carefully.</p>
+          <div class="grammar-grid">
+            <div class="grammar-item"><span>1. Maya ___ her friend new games every week.</span><select data-answer="teaches"><option value="">Choose</option><option value="teaches">teaches</option><option value="taught">taught</option></select></div>
+            <div class="grammar-item"><span>2. Ben ___ his snack with Noah yesterday.</span><select data-answer="shared"><option value="">Choose</option><option value="shares">shares</option><option value="shared">shared</option></select></div>
+            <div class="grammar-item"><span>3. The children ___ about a new club now.</span><select data-answer="think"><option value="">Choose</option><option value="think">think</option><option value="thought">thought</option></select></div>
+            <div class="grammar-item"><span>4. Ella ___ a funny voice last night.</span><select data-answer="heard"><option value="">Choose</option><option value="hears">hears</option><option value="heard">heard</option></select></div>
+            <div class="grammar-item"><span>5. We ___ to follow the club rules.</span><select data-answer="promise"><option value="">Choose</option><option value="promise">promise</option><option value="promised">promised</option></select></div>
+            <div class="grammar-item"><span>6. The friends ___ straight to the garage yesterday.</span><select data-answer="went"><option value="">Choose</option><option value="go">go</option><option value="went">went</option></select></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title"><span class="badge">2</span><h2>Part 2 · Write Ten Sentences</h2></div>
+          <div class="writing-intro">請依照提示自己造 10 句英文。可以練習過去與現在的對照句型：<strong>When I was little, I didn't know how to ___, but now I know how to ___.</strong></div>
+          <p class="hint"><strong>Example:</strong> When I was little, I didn't know how to share, but now I know how to share with my friends.</p>
+          <div class="writing-list">
+            <div class="writing-prompt"><strong>1. something you taught a friend <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>2. a club or group you joined <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>3. a rule you followed <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>4. something you shared with a friend <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>5. a game you played <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>6. something you promised to do <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>7. something you allowed a friend to use <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>8. a time you felt gloomy and then happy <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>9. something you learned to do all by yourself <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
+            <div class="writing-prompt"><strong>10. a place where you followed a sign or rule <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
           </div>
         </section>
       </div>
@@ -667,6 +713,20 @@
             { prompt: "What lesson does the writing club learn?", options: ["Imagination can turn an ordinary object into many ideas.", "A writer should never change a first draft.", "Only paper objects belong in stories.", "Short stories are always better than long stories."], answer: "A" }
           ]
         }
+      ],
+      next: [
+        {
+          title: "The Best Friends Club: A Place for Everyone",
+          text: "Ava and Leo wanted to start a small club after school. They liked different games, but they both believed a good club needed kind members and clear rules. They wrote three rules on a paper sign: listen when someone speaks, share the supplies, and let every member have a turn. Then they carried the sign to the porch and waited for friends.\n\nMina came first, but she stood near the steps instead of joining them. She had belonged to a club before, and one child had always made the decisions. Mina felt gloomy because she thought a new club would be the same. Ava showed her the rules and asked what game Mina would like to teach them. Mina quietly suggested a game of tag. Leo had never played it, so Mina explained the directions and let him try. After a few turns, everyone was laughing.\n\nThe next day, four more children came. Ava wanted to make a club about drawing, but Leo wanted to play outside. Instead of arguing, they made a plan. On Monday they would draw upstairs in the art room, and on Tuesday they would play tag near the garage. Each member could suggest one activity, and the group would vote. The children promised to follow the decision even when their first idea was not chosen.\n\nAt the end of the week, Ava read the club sign aloud. It did not say that the best friends had to like all the same things. It said that members should listen, share, and help one another. Mina smiled because she no longer felt like an outsider. The club was small, but everyone had a voice. The children learned that being good friends did not mean agreeing every minute. It meant making room for one another and keeping a promise to be fair.",
+          questions: [
+            { prompt: "What is the main idea of the passage?", options: ["A group makes fair rules so every member can take part in a club.", "Mina refuses to play any games with her classmates.", "Ava and Leo decide that drawing is better than every other activity.", "The children spend the whole week looking for a lost sign."], answer: "A" },
+            { prompt: "What did Ava and Leo write on the paper sign?", options: ["A list of everyone's favorite snacks", "Three rules about listening, sharing, and taking turns", "Directions to the garage", "A story about a new game"], answer: "B" },
+            { prompt: "Why did Mina first stand near the steps?", options: ["She was waiting for a bus.", "She wanted to hide the club sign.", "She worried that the new club would make decisions unfairly like her old club.", "She did not know where the art room was."], answer: "C" },
+            { prompt: "What happened after Mina taught Leo the game of tag?", options: ["Leo left the club immediately.", "The children stopped speaking to Mina.", "Ava erased all of the club rules.", "Everyone began to enjoy playing together."], answer: "D" },
+            { prompt: "How did the children solve the disagreement about drawing and playing outside?", options: ["They made a schedule and voted on activities.", "They let only Ava make the decision.", "They canceled the club for the week.", "They played only the game Mina chose."], answer: "A" },
+            { prompt: "What can the reader infer about Mina at the end?", options: ["She still feels like an outsider.", "She feels welcome because the club gives everyone a voice.", "She wants to leave the club and start a different one.", "She no longer wants to teach games."], answer: "B" }
+          ]
+        }
       ]
     };
 
@@ -713,14 +773,42 @@
       { word: "reflection", options: ["an image seen in a mirror", "a shadow on the ground", "a picture you draw", "a light in the sky"], answer: "A" }
     ];
 
-    document.getElementById('vocabulary-questions').innerHTML = vocabularyQuestions.map((question, index) => {
-      const number = index + 1;
-      const options = question.options.map((option, optionIndex) => {
-        const letter = String.fromCharCode(65 + optionIndex);
-        return `<li><label><input type="radio" name="v${number}" value="${letter}"> ${letter}. ${escapeHtml(option)}</label></li>`;
+    const nextVocabularyQuestions = [
+      { word: "taught", options: ["showed or told someone something new", "forgot something important", "ran away from a friend", "put something in a box"], answer: "A" },
+      { word: "cat's cradle", options: ["a small bed for a baby", "a string game", "a kind of snack", "a place to park a bicycle"], answer: "B" },
+      { word: "running bases", options: ["drawing a picture of a team", "walking slowly around a house", "running around the bases in a baseball game", "sitting in a club meeting"], answer: "C" },
+      { word: "share", options: ["use something together", "hide something from everyone", "break something apart", "stop a game"], answer: "A" },
+      { word: "club", options: ["a place where cars are stored", "a sound made by people", "a small meal", "a group that meets because of a common interest"], answer: "D" },
+      { word: "let...ride", options: ["ask someone to whisper", "allow someone to use something, such as a bicycle", "tell someone to go upstairs", "make a new rule"], answer: "B" },
+      { word: "porch", options: ["the head of a club", "a piece of string", "a small closed shelter in front of a house", "a sign on a road"], answer: "C" },
+      { word: "sign", options: ["something with words or a picture that gives information", "a meal eaten at night", "a game of chasing", "a pair of feet"], answer: "A" },
+      { word: "member", options: ["someone who is next in charge", "a person who speaks very softly", "a place to meet after school", "a person, animal, or thing that belongs to a group"], answer: "D" },
+      { word: "president", options: ["a person who joins a game", "the head of a club, company, or group", "a small pin", "a piece of paper on a wall"], answer: "B" },
+      { word: "vice president", options: ["a child who plays tag", "a person who cooks supper", "the person next in charge after the president", "the person who arrives first"], answer: "C" },
+      { word: "mine", options: ["belonging to me", "belonging to everyone", "belonging to a club only", "belonging to no one"], answer: "A" },
+      { word: "rule", options: ["a funny sound", "a kind of food", "a place near a garage", "a law or direction that tells what to do"], answer: "D" },
+      { word: "voice", options: ["a small bed", "a sound made by a person speaking", "a sign on a porch", "a game with string"], answer: "B" },
+      { word: "shoelaces", options: ["papers used for drawing", "the people in a club", "strings used to tie shoes", "the last meal of the day"], answer: "C" },
+      { word: "whole", options: ["all of something", "only a small part", "a little bit broken", "not ready yet"], answer: "A" },
+      { word: "gloomily", options: ["quickly", "sadly", "loudly", "carefully"], answer: "B" },
+      { word: "snack", options: ["a club rule", "a long walk", "a loud voice", "a small light meal"], answer: "D" },
+      { word: "allow", options: ["to stop doing something", "to speak in a low voice", "to let someone have or do something", "to run around bases"], answer: "C" },
+      { word: "promise", options: ["to tell someone you will definitely do something", "to look at something quickly", "to crawl under a table", "to tear paper into pieces"], answer: "A" }
+    ];
+
+    const renderVocabulary = (rootId, questions, prefix) => {
+      document.getElementById(rootId).innerHTML = questions.map((question, index) => {
+        const number = index + 1;
+        const options = question.options.map((option, optionIndex) => {
+          const letter = String.fromCharCode(65 + optionIndex);
+          return `<li><label><input type="radio" name="${prefix}${number}" value="${letter}"> ${letter}. ${escapeHtml(option)}</label></li>`;
+        }).join('');
+        return `<div class="question"><p>${number}. Which word or meaning is similar to <strong>${escapeHtml(question.word)}</strong>?</p><ul class="option-list">${options}</ul></div>`;
       }).join('');
-      return `<div class="question"><p>${number}. Which word or meaning is similar to <strong>${escapeHtml(question.word)}</strong>?</p><ul class="option-list">${options}</ul></div>`;
-    }).join('');
+    };
+
+    renderVocabulary('vocabulary-questions', vocabularyQuestions, 'v');
+    renderVocabulary('next-vocabulary-questions', nextVocabularyQuestions, 'nv');
 
     const tabs = [...document.querySelectorAll('.tab')];
     const practices = [...document.querySelectorAll('.practice')];
@@ -733,11 +821,14 @@
       passages.flatMap((passage) => passage.questions.map((question) => question.answer))
     ]));
     answerSets.vocab = vocabularyQuestions.map((question) => question.answer);
+    answerSets.nextVocab = nextVocabularyQuestions.map((question) => question.answer);
 
     answerKeyList.innerHTML = Object.entries(readingSets).map(([id, passages]) => {
       const readingKey = passages.map((passage, passageIndex) => `Passage ${passageIndex + 1}: ${passage.questions.map((question) => question.answer).join('、')}`).join('；');
       const grammarKey = [...document.querySelectorAll(`#practice-${id} select[data-answer]`)].map((select) => select.dataset.answer).join('、');
-      return `<p>Practice ${id}：${readingKey}；Grammar：${grammarKey}。</p>`;
+      const label = id === 'next' ? 'Next Unit Preview · The Best Friends Club' : `Practice ${id}`;
+      const vocabularyKey = id === 'next' ? `；Vocabulary：${nextVocabularyQuestions.map((question) => question.answer).join('、')}` : '';
+      return `<p>${label}：${readingKey}；Grammar：${grammarKey}${vocabularyKey}。</p>`;
     }).join('') + `<p>Vocabulary · A Letter to Amy：${vocabularyQuestions.map((question) => question.answer).join('、')}。</p>`;
 
     tabs.forEach((tab) => {
@@ -770,6 +861,19 @@
       });
       const selects = [...current.querySelectorAll('select[data-answer]')];
       const grammarCorrect = selects.filter((select) => select.value === select.dataset.answer).length;
+      if (id === 'next') {
+        const vocabularyExpected = answerSets.nextVocab;
+        const vocabularyCorrect = vocabularyExpected.filter((answer, index) => {
+          const selected = current.querySelector(`input[name="nv${index + 1}"]:checked`);
+          return selected && selected.value === answer;
+        }).length;
+        const writing = [...current.querySelectorAll('.writing-area')];
+        const filled = writing.filter((item) => item.value.trim().length > 0).length;
+        const complete = writing.filter((item) => /[.!?]\s*$/.test(item.value.trim())).length;
+        feedback.textContent = `Next Unit Preview：Reading ${correct}/${expected.length}、Vocabulary ${vocabularyCorrect}/${vocabularyExpected.length}、Grammar ${grammarCorrect}/${selects.length}。Writing 已填 ${filled}/10，當中 ${complete}/10 句有句點；請再檢查時態和句子意思。`;
+        feedback.classList.add('show');
+        return;
+      }
       const writing = [...current.querySelectorAll('.writing-area')];
       const filled = writing.filter((item) => item.value.trim().length > 0).length;
       const complete = writing.filter((item) => /[.!?]\s*$/.test(item.value.trim())).length;
