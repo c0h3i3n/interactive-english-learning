@@ -376,6 +376,7 @@
         <button class="tab active" type="button" data-practice="1">Practice 1 · Unit 1 · 4 passages</button>
         <button class="tab" type="button" data-practice="2">Practice 2 · Unit 2 · 4 passages</button>
         <button class="tab" type="button" data-practice="3">Practice 3 · Unit 3 · 4 passages</button>
+        <button class="tab" type="button" data-practice="vocab">Vocabulary · A Letter to Amy</button>
       </div>
 
       <div class="practice active" id="practice-1">
@@ -493,6 +494,14 @@
             <div class="writing-prompt"><strong>9. a plan you learned to change <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
             <div class="writing-prompt"><strong>10. something your friends learned to like <span class="tense-tag">past + present</span></strong><textarea class="writing-area" data-tense="past-present"></textarea></div>
           </div>
+        </section>
+      </div>
+
+      <div class="practice" id="practice-vocab">
+        <section>
+          <div class="section-title"><span class="badge">V</span><h2>Vocabulary Review · A Letter to Amy</h2></div>
+          <p class="hint">題型依照你提供的 pre-test：Which word or meaning is similar to...? 目前先整理照片中看得到的第 1–15 題。</p>
+          <div class="question-list" id="vocabulary-questions"></div>
         </section>
       </div>
 
@@ -686,6 +695,33 @@
       }).join('');
     });
 
+    const vocabularyQuestions = [
+      { word: "invite", options: ["ask someone to come", "tell someone to leave", "wait for someone", "follow someone"], answer: "A" },
+      { word: "announce", options: ["hide information", "say something publicly", "ask a question", "write something secretly"], answer: "B" },
+      { word: "stare", options: ["look for a long time", "look quickly", "close your eyes", "turn away"], answer: "A" },
+      { word: "sort of", options: ["exactly", "not at all", "kind of", "always"], answer: "C" },
+      { word: "special", options: ["ordinary", "unusual or important", "broken", "boring"], answer: "B" },
+      { word: "fold", options: ["tear into pieces", "bend over onto itself", "throw away", "open completely"], answer: "B" },
+      { word: "envelope", options: ["paper cover for a letter", "box for a gift", "book for writing", "bag for food"], answer: "A" },
+      { word: "seal", options: ["the part that closes an envelope", "the paper inside an envelope", "the address on an envelope", "the person receiving a letter"], answer: "A" },
+      { word: "glance", options: ["look quickly", "look for a long time", "listen carefully", "speak quietly"], answer: "A" },
+      { word: "peer", options: ["look closely", "run quickly", "speak loudly", "listen secretly"], answer: "A" },
+      { word: "flash of lightning", options: ["a loud sound in the sky", "a quick bright light in the sky", "a strong wind", "a light rain"], answer: "B" },
+      { word: "thunder", options: ["a bright light in the sky", "a loud sound during a storm", "a gentle wind", "a small cloud"], answer: "B" },
+      { word: "chase", options: ["run after something", "hide from something", "wait for something", "walk beside something"], answer: "A" },
+      { word: "spoil", options: ["make something better", "ruin something", "clean something", "find something"], answer: "B" },
+      { word: "reflection", options: ["an image seen in a mirror", "a shadow on the ground", "a picture you draw", "a light in the sky"], answer: "A" }
+    ];
+
+    document.getElementById('vocabulary-questions').innerHTML = vocabularyQuestions.map((question, index) => {
+      const number = index + 1;
+      const options = question.options.map((option, optionIndex) => {
+        const letter = String.fromCharCode(65 + optionIndex);
+        return `<li><label><input type="radio" name="v${number}" value="${letter}"> ${letter}. ${escapeHtml(option)}</label></li>`;
+      }).join('');
+      return `<div class="question"><p>${number}. Which word or meaning is similar to <strong>${escapeHtml(question.word)}</strong>?</p><ul class="option-list">${options}</ul></div>`;
+    }).join('');
+
     const tabs = [...document.querySelectorAll('.tab')];
     const practices = [...document.querySelectorAll('.practice')];
     const feedback = document.getElementById('feedback');
@@ -696,12 +732,13 @@
       id,
       passages.flatMap((passage) => passage.questions.map((question) => question.answer))
     ]));
+    answerSets.vocab = vocabularyQuestions.map((question) => question.answer);
 
     answerKeyList.innerHTML = Object.entries(readingSets).map(([id, passages]) => {
       const readingKey = passages.map((passage, passageIndex) => `Passage ${passageIndex + 1}: ${passage.questions.map((question) => question.answer).join('、')}`).join('；');
       const grammarKey = [...document.querySelectorAll(`#practice-${id} select[data-answer]`)].map((select) => select.dataset.answer).join('、');
       return `<p>Practice ${id}：${readingKey}；Grammar：${grammarKey}。</p>`;
-    }).join('');
+    }).join('') + `<p>Vocabulary · A Letter to Amy：${vocabularyQuestions.map((question) => question.answer).join('、')}。</p>`;
 
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
@@ -715,6 +752,16 @@
     function checkCurrentPractice() {
       const current = document.querySelector('.practice.active');
       const id = current.id.replace('practice-', '');
+      if (id === 'vocab') {
+        const expected = answerSets.vocab;
+        const correct = expected.filter((answer, index) => {
+          const selected = current.querySelector(`input[name="v${index + 1}"]:checked`);
+          return selected && selected.value === answer;
+        }).length;
+        feedback.textContent = `Vocabulary · A Letter to Amy：${correct}/${expected.length} 題正確。錯的題目請重新看單字和英文意思。`;
+        feedback.classList.add('show');
+        return;
+      }
       const expected = answerSets[id];
       let correct = 0;
       expected.forEach((answer, index) => {
