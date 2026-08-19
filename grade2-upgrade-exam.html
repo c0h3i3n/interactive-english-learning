@@ -336,13 +336,19 @@
       body { background: #fff; }
       .page { width: 100%; margin: 0; border: 0; box-shadow: none; }
       .toolbar, .practice-tabs, .btn, .feedback, .answers { display: none !important; }
-      .practice { display: block !important; page-break-before: always; }
-      .practice:first-of-type { page-break-before: auto; }
+      .practice { display: none !important; page-break-before: auto; }
+      body[data-print-practice="1"] #practice-1,
+      body[data-print-practice="2"] #practice-2,
+      body[data-print-practice="3"] #practice-3,
+      body[data-print-practice="next"] #practice-next,
+      body[data-print-practice="vocab"] #practice-vocab {
+        display: block !important;
+      }
       textarea { border-color: #333; }
     }
   </style>
 </head>
-<body>
+<body data-print-practice="1">
   <div class="page">
     <header>
       <div>
@@ -358,7 +364,7 @@
       <button class="btn primary" type="button" id="checkBtn">檢查選擇題</button>
       <button class="btn green" type="button" id="showAnswersBtn">顯示答案</button>
       <button class="btn" type="button" id="resetBtn">重新作答</button>
-      <button class="btn" type="button" onclick="window.print()">列印</button>
+      <button class="btn" type="button" onclick="window.print()">列印目前分頁</button>
     </div>
 
     <main>
@@ -545,8 +551,8 @@
 
       <div class="practice" id="practice-vocab">
         <section>
-          <div class="section-title"><span class="badge">V</span><h2>Vocabulary Review · A Letter to Amy</h2></div>
-          <p class="hint">題型依照你提供的 pre-test：Which word or meaning is similar to...? 目前先整理照片中看得到的第 1–15 題。</p>
+          <div class="section-title"><span class="badge">6</span><h2>Unit 6 · Vocabulary Review · A Letter to Amy</h2></div>
+          <p class="hint">列印時只會保留本單元，答案區不會列印。題目與選項順序已重新整理，請選出和粗體單字意思相近的選項。</p>
           <div class="question-list" id="vocabulary-questions"></div>
         </section>
       </div>
@@ -756,21 +762,21 @@
     });
 
     const vocabularyQuestions = [
-      { word: "invite", options: ["ask someone to come", "tell someone to leave", "wait for someone", "follow someone"], answer: "A" },
-      { word: "announce", options: ["hide information", "say something publicly", "ask a question", "write something secretly"], answer: "B" },
-      { word: "stare", options: ["look for a long time", "look quickly", "close your eyes", "turn away"], answer: "A" },
-      { word: "sort of", options: ["exactly", "not at all", "kind of", "always"], answer: "C" },
-      { word: "special", options: ["ordinary", "unusual or important", "broken", "boring"], answer: "B" },
-      { word: "fold", options: ["tear into pieces", "bend over onto itself", "throw away", "open completely"], answer: "B" },
-      { word: "envelope", options: ["paper cover for a letter", "box for a gift", "book for writing", "bag for food"], answer: "A" },
-      { word: "seal", options: ["the part that closes an envelope", "the paper inside an envelope", "the address on an envelope", "the person receiving a letter"], answer: "A" },
-      { word: "glance", options: ["look quickly", "look for a long time", "listen carefully", "speak quietly"], answer: "A" },
-      { word: "peer", options: ["look closely", "run quickly", "speak loudly", "listen secretly"], answer: "A" },
-      { word: "flash of lightning", options: ["a loud sound in the sky", "a quick bright light in the sky", "a strong wind", "a light rain"], answer: "B" },
-      { word: "thunder", options: ["a bright light in the sky", "a loud sound during a storm", "a gentle wind", "a small cloud"], answer: "B" },
-      { word: "chase", options: ["run after something", "hide from something", "wait for something", "walk beside something"], answer: "A" },
-      { word: "spoil", options: ["make something better", "ruin something", "clean something", "find something"], answer: "B" },
-      { word: "reflection", options: ["an image seen in a mirror", "a shadow on the ground", "a picture you draw", "a light in the sky"], answer: "A" }
+      { word: "reflection", options: ["a light in the sky", "an image seen in a mirror", "a picture you draw", "a shadow on the ground"], answer: "B" },
+      { word: "invite", options: ["wait for someone", "follow someone", "ask someone to come", "tell someone to leave"], answer: "C" },
+      { word: "thunder", options: ["a gentle wind", "a small cloud", "a bright light in the sky", "a loud sound during a storm"], answer: "D" },
+      { word: "fold", options: ["bend over onto itself", "open completely", "throw away", "tear into pieces"], answer: "A" },
+      { word: "peer", options: ["speak loudly", "look closely", "listen secretly", "run quickly"], answer: "B" },
+      { word: "special", options: ["broken", "boring", "ordinary", "unusual or important"], answer: "D" },
+      { word: "seal", options: ["the address on an envelope", "the person receiving a letter", "the part that closes an envelope", "the paper inside an envelope"], answer: "C" },
+      { word: "chase", options: ["wait for something", "walk beside something", "hide from something", "run after something"], answer: "D" },
+      { word: "announce", options: ["write something secretly", "say something publicly", "hide information", "ask a question"], answer: "B" },
+      { word: "envelope", options: ["book for writing", "bag for food", "paper cover for a letter", "box for a gift"], answer: "C" },
+      { word: "glance", options: ["listen carefully", "look quickly", "speak quietly", "look for a long time"], answer: "B" },
+      { word: "spoil", options: ["clean something", "find something", "make something better", "ruin something"], answer: "D" },
+      { word: "stare", options: ["turn away", "close your eyes", "look quickly", "look for a long time"], answer: "D" },
+      { word: "flash of lightning", options: ["a strong wind", "a light rain", "a quick bright light in the sky", "a loud sound in the sky"], answer: "C" },
+      { word: "sort of", options: ["kind of", "always", "exactly", "not at all"], answer: "A" }
     ];
 
     const nextVocabularyQuestions = [
@@ -834,6 +840,7 @@
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
         const id = tab.dataset.practice;
+        document.body.dataset.printPractice = id;
         tabs.forEach((item) => item.classList.toggle('active', item === tab));
         practices.forEach((practice) => practice.classList.toggle('active', practice.id === `practice-${id}`));
         feedback.classList.remove('show');
