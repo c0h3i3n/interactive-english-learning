@@ -491,6 +491,18 @@
     }
 
     /* "I Know It!" — Gryffindor Gold & Red Tones */
+    .btn-know,
+    .btn-dont-know {
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Inter', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
     .btn-know {
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.10), rgba(180, 140, 60, 0.06));
       color: #f0e6a0;
@@ -878,6 +890,48 @@
       margin-top: 4px;
       display: block;
     }
+    .category-chart {
+      display: flex;
+      gap: 10px;
+      min-height: 168px;
+      padding: 12px 4px 4px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+    }
+    .category-bar {
+      flex: 0 0 64px;
+      min-height: 148px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+    .category-bar-track {
+      width: 100%;
+      height: 100px;
+      display: flex;
+      align-items: flex-end;
+      border-radius: 6px 6px 2px 2px;
+      background: rgba(60, 40, 80, 0.2);
+      overflow: hidden;
+    }
+    .category-bar-fill {
+      width: 100%;
+      min-height: 0;
+      border-radius: 6px 6px 0 0;
+      background: linear-gradient(180deg, #d4af37, #b8942e);
+      transition: height 0.5s ease;
+    }
+    .category-label {
+      width: 100%;
+      color: #8880a8;
+      font-size: 9px;
+      line-height: 1.2;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
 
     /* ===== Nav buttons inside card ===== */
     .card-nav-row {
@@ -958,6 +1012,13 @@
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+    }
+    .trivia-bank-note {
+      position: relative;
+      z-index: 1;
+      margin-top: 4px;
+      color: #8880a8;
+      font-size: 11px;
     }
     .trivia-en {
       position: relative;
@@ -1115,7 +1176,40 @@
     .trivia-chinese strong { color: #f0e6a0; }
     .trivia-chinese-question { margin-bottom: 8px; }
     .trivia-chinese-options { display: grid; gap: 5px; }
-    .trivia-chinese-option { color: #d8cfee; }
+    .trivia-chinese-option {
+      display: flex;
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid rgba(200, 180, 140, 0.12);
+      border-radius: 9px;
+      background: rgba(60, 40, 80, 0.2);
+      color: #d8cfee;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .trivia-chinese-option:hover:not(:disabled) {
+      border-color: rgba(212, 175, 55, 0.35);
+      background: rgba(212, 175, 55, 0.1);
+    }
+    .trivia-chinese-option.correct {
+      border-color: #2ecc71;
+      background: rgba(46, 204, 113, 0.15);
+      color: #9ff0bb;
+    }
+    .trivia-chinese-option.incorrect {
+      border-color: #e74c3c;
+      background: rgba(231, 76, 60, 0.15);
+      color: #ffaaa1;
+    }
+    .trivia-chinese-option:disabled { cursor: default; }
+    .trivia-card.chinese-only .trivia-question-label,
+    .trivia-card.chinese-only .trivia-en,
+    .trivia-card.chinese-only .trivia-hint-toggle,
+    .trivia-card.chinese-only .trivia-hint,
+    .trivia-card.chinese-only .trivia-options { display: none !important; }
+    .trivia-card.chinese-only .trivia-chinese { display: block; }
     .trivia-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1207,6 +1301,21 @@
       .container::before {
         border-radius: 0;
       }
+      .card-wrapper {
+        max-width: 760px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #quizPanel > .quiz-tabs,
+      #panelChoice,
+      #panelListening,
+      #panelSpelling,
+      #panelTrivia,
+      #panelStats {
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
   </style>
 </head>
@@ -1257,14 +1366,14 @@
           <option value="beginner_money">💰 Beginner: Money</option>
           <option value="beginner_house">🏠 Beginner: Houses & Apartments</option>
           <option value="beginner_numbers">🔢 Beginner: Numbers</option>
-          <option value="beginner_verbs">🏃 Beginner: Other Verbs</option>
+          <option value="beginner_verbs2">🏃 Beginner: Other Verbs</option>
           <option value="beginner_traits">✨ Beginner: Personal Traits</option>
           <option value="beginner_places">🏛️ Beginner: Places & Buildings</option>
           <option value="beginner_school">📚 Beginner: School Life</option>
           <option value="beginner_sports">⚽ Beginner: Sports & Hobbies</option>
           <option value="beginner_time">⏰ Beginner: Time</option>
           <option value="beginner_transport">🚗 Beginner: Transportation</option>
-          <option value="beginner_weather">🌤️ Beginner: Weather & Nature</option>
+          <option value="beginner_weather2">🌤️ Beginner: Weather & Nature</option>
           <option value="beginner_wh">❓ Beginner: Question Words</option>
           <option value="beginner_pronouns">👤 Beginner: Pronouns</option>
           <option value="beginner_prepositions">🔗 Beginner: Prepositions</option>
@@ -1368,7 +1477,7 @@
       <div class="quiz-panel" id="panelStats" style="display:none;">
         <div class="stats-grid" id="statsGrid"></div>
         <div style="margin-top:16px;">
-          <div id="categoryChart" style="height:120px;display:flex;gap:6px;align-items:flex-end;padding-top:10px;"></div>
+          <div id="categoryChart" class="category-chart"></div>
         </div>
       </div>
 
@@ -1399,6 +1508,7 @@
       <div class="quiz-panel" id="panelTrivia" style="display:none;">
         <div class="trivia-card" aria-live="polite">
           <div class="trivia-counter" id="triviaCounter"></div>
+          <div class="trivia-bank-note">100 個冷知識 × 10 種問法 = 1000 題練習</div>
           <div class="trivia-question-label">Choose the correct answer:</div>
           <div class="trivia-en" id="triviaEn"></div>
           <button class="trivia-hint-toggle" id="triviaHintBtn" type="button">💡 Need a hint?</button>
@@ -2650,6 +2760,30 @@
   /** 當前選中的單字分類名稱（對應 VOCABULARY 的 key） */
   let currentCategory = 'irregular';
 
+  const LEARNING_STATE_KEY = 'hogwarts_learning_state_v1';
+
+  function loadLearningStates() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(LEARNING_STATE_KEY) || '{}');
+      return saved && typeof saved === 'object' ? saved : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveLearningStates() {
+    try {
+      localStorage.setItem(LEARNING_STATE_KEY, JSON.stringify(learningStateByCategory));
+    } catch (e) {}
+  }
+
+  function saveCurrentLearningState() {
+    learningStateByCategory[currentCategory] = { ...learningState };
+    saveLearningStates();
+  }
+
+  let learningStateByCategory = loadLearningStates();
+
   /** 當前分類的所有單字 */
   let currentWords = [];
 
@@ -2694,11 +2828,12 @@
    * @param {string} category - 分類名稱
    */
   function switchCategory(category) {
+    if (currentWords.length) saveCurrentLearningState();
     currentCategory = category;
     //  Copy array to avoid mutating original data
-    currentWords = shuffleArray([...VOCABULARY[category]]);
-    //  Reset learning state
-    learningState = {};
+    currentWords = shuffleArray([...(VOCABULARY[category] || [])]);
+    // Restore this category's progress instead of losing it on every switch.
+    learningState = { ...(learningStateByCategory[category] || {}) };
     currentIndex = 0;
     //  Hide congratulations message
     dom.congratsMessage.style.display = 'none';
@@ -2754,6 +2889,9 @@
 
     //  Mark this word as "learned"
     learningState[word.en] = 'known';
+    updateSR(word.en, true);
+    saveCurrentLearningState();
+    updateStreak();
     // 前進到Next還沒學會的單字
     advanceToNext();
     //  Update progress bar
@@ -2774,6 +2912,9 @@
     }
     // 標記為「Practice More」
     learningState[word.en] = 'unknown';
+    updateSR(word.en, false);
+    saveCurrentLearningState();
+    updateStreak();
     // 前進到Next單字
     advanceToNext();
     //  Update progress bar
@@ -2851,14 +2992,16 @@
    *
    * @param {string} text - 要朗讀的英文單字
    */
-  function speakText(text, onComplete) {
+  function speakText(text, onComplete, targetButton = dom.speakBtn) {
+    const feedbackButton = targetButton || dom.speakBtn;
+
     //  Check if browser supports speech
     if (!window.speechSynthesis) {
       // LINE/FB等內建瀏覽器可能不支援語音，顯示提示
-      if (dom.speakBtn) {
-        dom.speakBtn.textContent = '⚠️';
-        dom.speakBtn.title = '此瀏覽器不支援語音朗讀，請用 Chrome/Safari 開啟';
-        dom.speakBtn.style.opacity = '0.5';
+      if (feedbackButton) {
+        feedbackButton.textContent = '⚠️ Audio unavailable';
+        feedbackButton.title = '此瀏覽器不支援語音朗讀，請用 Chrome/Safari 開啟';
+        feedbackButton.style.opacity = '0.7';
       }
       return;
     }
@@ -2893,21 +3036,22 @@
 
     //  When speech starts, animate the speak button
     utterance.onstart = () => {
-      if (dom.speakBtn) dom.speakBtn.classList.add('speaking');
+      if (feedbackButton) feedbackButton.classList.add('speaking');
     };
 
     //  When speech ends, stop the animation
     utterance.onend = () => {
-      if (dom.speakBtn) dom.speakBtn.classList.remove('speaking');
+      if (feedbackButton) feedbackButton.classList.remove('speaking');
       finishSpeech();
     };
 
     //  If error occurs, also stop animation
     utterance.onerror = () => {
-      if (dom.speakBtn) {
-        dom.speakBtn.classList.remove('speaking');
-        dom.speakBtn.textContent = '⚠️';
-        dom.speakBtn.title = '語音朗讀失敗，請用 Chrome/Safari 開啟';
+      if (feedbackButton) {
+        feedbackButton.classList.remove('speaking');
+        feedbackButton.textContent = '⚠️ Audio unavailable';
+        feedbackButton.title = '語音朗讀失敗，請用 Chrome/Safari 開啟';
+        feedbackButton.style.opacity = '0.7';
       }
       finishSpeech();
     };
@@ -3087,6 +3231,10 @@
    */
   dom.resetBtn.addEventListener('click', function () {
     learningState = {};
+    delete learningStateByCategory[currentCategory];
+    saveLearningStates();
+    currentWords.forEach(word => delete srData[word.en]);
+    saveSR();
     currentIndex = 0;
     dom.congratsMessage.style.display = 'none';
     dom.card.style.display = '';
@@ -3336,11 +3484,11 @@
     document.getElementById('choiceNextBtn').style.display = 'none';
     
     // Add click handlers
-    document.querySelectorAll('.quiz-option').forEach(btn => {
+    document.querySelectorAll('#choiceOptions .quiz-option').forEach(btn => {
       btn.addEventListener('click', function() {
         if (this.disabled) return;
         const isCorrect = this.dataset.correct === 'true';
-        document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+        document.querySelectorAll('#choiceOptions .quiz-option').forEach(b => b.disabled = true);
         
         if (isCorrect) {
           this.classList.add('correct');
@@ -3349,7 +3497,7 @@
           updateSR(word.en, true);
         } else {
           this.classList.add('incorrect');
-          document.querySelector('[data-correct="true"]').classList.add('correct');
+          document.querySelector('#choiceOptions [data-correct="true"]').classList.add('correct');
           document.getElementById('choiceFeedback').innerHTML = `<span style="color:#e74c3c;">❌ Incorrect. The answer is: ${correctDef}</span>`;
           updateSR(word.en, false);
         }
@@ -3365,7 +3513,7 @@
     const grid = document.getElementById('statsGrid');
     if (!grid) return;
     
-    const totalLearned = Object.keys(srData).length;
+    const totalPracticed = Object.keys(srData).length;
     let mastered = 0, learning = 0;
     Object.values(srData).forEach(sr => {
       if (sr.level >= 5) mastered++;
@@ -3373,14 +3521,10 @@
     });
     
     grid.innerHTML = `
-      <div class="stat-card"><span class="stat-value">${totalLearned}</span><span class="stat-label">Words Learned</span>
-      
-      <div class="stat-card"><span class="stat-value">${mastered}</span><span class="stat-label">Mastered</span>
-      
-      <div class="stat-card"><span class="stat-value">${learning}</span><span class="stat-label">In Progress</span>
-      
-      <div class="stat-card"><span class="stat-value">${currentStreak}</span><span class="stat-label">Day Streak</span>
-      
+      <div class="stat-card"><span class="stat-value">${totalPracticed}</span><span class="stat-label">Words Practiced</span></div>
+      <div class="stat-card"><span class="stat-value">${mastered}</span><span class="stat-label">Mastered</span></div>
+      <div class="stat-card"><span class="stat-value">${learning}</span><span class="stat-label">In Progress</span></div>
+      <div class="stat-card"><span class="stat-value">${currentStreak}</span><span class="stat-label">Day Streak</span></div>
     `;
     
     // Category breakdown
@@ -3390,7 +3534,17 @@
       const catLabels = {
         irregular: 'Verbs', animals: 'Animals', colors: 'Colors', numbers: 'Numbers',
         body: 'Body', food: 'Food', family: 'Family', school: 'School',
-        weather: 'Weather', actions: 'Actions', adjectives: 'Adjectives'
+        weather: 'Weather', actions: 'Actions', adjectives: 'Adjectives',
+        beginner_animals: 'Animals 2', beginner_clothing: 'Clothing', beginner_colors: 'Colors 2',
+        beginner_family: 'Family 2', beginner_food: 'Food 2', beginner_address: 'Address',
+        beginner_geography: 'Geography', beginner_holidays: 'Holidays', beginner_health: 'Health',
+        beginner_money: 'Money', beginner_house: 'Housing', beginner_numbers: 'Numbers 2',
+        beginner_verbs2: 'Verbs 2', beginner_traits: 'Traits', beginner_places: 'Places',
+        beginner_school: 'School 2', beginner_sports: 'Sports', beginner_time: 'Time',
+        beginner_transport: 'Transport', beginner_weather2: 'Weather 2', beginner_wh: 'Question words',
+        beginner_pronouns: 'Pronouns', beginner_prepositions: 'Prepositions',
+        magic_spells: 'Spells', magic_creatures: 'Creatures', magic_places: 'Wizarding places',
+        magic_items: 'Magic items', advanced_vocab: 'Advanced'
       };
       let chartHtml = '';
       let maxCount = 0;
@@ -3405,13 +3559,11 @@
         const count = catCounts[cat] || 0;
         const pct = maxCount > 0 ? (count / maxCount * 100) : 0;
         const label = catLabels[cat] || cat;
-        chartHtml += `<div style="flex:1;display:flex;flex-direction:column;align-items:center;">
-          <div style="width:100%;background:rgba(60,40,80,0.2);border-radius:4px 4px 0 0;height:100px;display:flex;align-items:flex-end;">
-            <div style="width:100%;background:linear-gradient(180deg,#d4af37,#b8942e);border-radius:4px 4px 0 0;height:${pct}%;transition:height 0.5s;min-height:${count > 0 ? '4px' : '0'};">
-      
-          
-      
-          <span style="font-size:9px;color:#8880a8;margin-top:4px;white-space:nowrap;">${label}</span>
+        chartHtml += `<div class="category-bar">
+          <div class="category-bar-track" title="${label}: ${count}">
+            <div class="category-bar-fill" style="height:${pct}%;min-height:${count > 0 ? '4px' : '0'};"></div>
+          </div>
+          <span class="category-label">${label}</span>
         </div>`;
       });
       chart.innerHTML = chartHtml;
@@ -3501,8 +3653,6 @@
   const originalUpdateProgress = window.updateProgress;
   window.updateProgress = function() {
     if (originalUpdateProgress) originalUpdateProgress();
-    // Also update streak
-    updateStreak();
     // Build stats if stats panel is visible
     const statsPanel = document.getElementById('panelStats');
     if (statsPanel && statsPanel.style.display !== 'none') {
@@ -3553,30 +3703,6 @@
       });
     });
   }
-  
-  // ---- Integration with existing functions ----
-  // Override handleKnow and handleDontKnow to use SR
-  const origHandleKnow = window.handleKnow;
-  window.handleKnow = function() {
-    const word = currentWords[currentIndex];
-    if (!word) return;
-    learningState[word.en] = 'known';
-    updateSR(word.en, true);
-    updateStreak();
-    advanceToNext();
-    updateProgress();
-  };
-  
-  const origHandleDontKnow = window.handleDontKnow;
-  window.handleDontKnow = function() {
-    const word = currentWords[currentIndex];
-    if (!word) return;
-    if (learningState[word.en] === 'known') delete learningState[word.en];
-    learningState[word.en] = 'unknown';
-    updateSR(word.en, false);
-    advanceToNext();
-    updateProgress();
-  };
   
   // ---- Enhanced showWord with difficulty tag ----
   const origShowWord = window.showWord;
@@ -4136,6 +4262,9 @@
     }
     triviaIndex = nextIndex;
     const question = HARRY_POTTER_TRIVIA[triviaIndex];
+    const triviaCard = document.querySelector('.trivia-card');
+    triviaCard.classList.remove('chinese-only');
+    delete triviaCard.dataset.answered;
     document.getElementById('triviaCounter').textContent = `Question ${triviaIndex + 1} / ${HARRY_POTTER_TRIVIA.length}`;
     document.getElementById('triviaEn').textContent = question.question;
     document.getElementById('triviaOptions').innerHTML = question.options.map((option, index) => `
@@ -4162,27 +4291,35 @@
     const triviaChineseBtn = document.getElementById('triviaChineseBtn');
     triviaChineseBtn.disabled = false;
     triviaChineseBtn.textContent = '🌏 中文問題與選項';
+    triviaChineseBtn.dataset.mode = 'english';
     document.getElementById('triviaSpeakBtn').textContent = '🔊 Listen all';
     document.getElementById('triviaNextBtn').style.display = 'none';
-    document.querySelectorAll('#triviaOptions .trivia-option').forEach(button => {
-      button.addEventListener('click', function() {
-        if (this.disabled) return;
-        const isCorrect = this.dataset.answer === 'true';
-        playTriviaFeedbackSound(isCorrect);
-        document.querySelectorAll('#triviaOptions .trivia-option').forEach(option => {
-          option.disabled = true;
-          if (option.dataset.answer === 'true') option.classList.add('correct');
-        });
-        if (!isCorrect) this.classList.add('incorrect');
-        document.getElementById('triviaFeedback').innerHTML = isCorrect
-          ? `<strong>✅ Correct!</strong> ${question.zh}`
-          : `<strong>❌ Not quite.</strong> The answer is <strong>${question.answer}</strong>. ${question.zh}`;
-        triviaWord.classList.add('revealed');
-        triviaHintBtn.style.display = 'none';
-        document.getElementById('triviaSpeakBtn').textContent = '🔊 Listen + answer';
-        document.getElementById('triviaNextBtn').style.display = 'block';
+    const handleTriviaAnswer = function (button) {
+      if (triviaCard.dataset.answered === 'true' || button.disabled) return;
+      triviaCard.dataset.answered = 'true';
+      const isCorrect = button.dataset.answer === 'true';
+      playTriviaFeedbackSound(isCorrect);
+      document.querySelectorAll('#triviaOptions .trivia-option, #triviaChineseOptions .trivia-chinese-option').forEach(option => {
+        option.disabled = true;
+        if (option.dataset.answer === 'true') option.classList.add('correct');
       });
+      if (!isCorrect) button.classList.add('incorrect');
+      updateStreak();
+      document.getElementById('triviaFeedback').innerHTML = isCorrect
+        ? `<strong>✅ Correct!</strong> ${question.zh}`
+        : `<strong>❌ Not quite.</strong> The answer is <strong>${question.answer}</strong>. ${question.zh}`;
+      triviaWord.classList.add('revealed');
+      triviaHintBtn.style.display = 'none';
+      document.getElementById('triviaSpeakBtn').textContent = '🔊 Listen + answer';
+      document.getElementById('triviaNextBtn').style.display = 'block';
+    };
+    document.querySelectorAll('#triviaOptions .trivia-option').forEach(button => {
+      button.addEventListener('click', function () { handleTriviaAnswer(this); });
     });
+    document.getElementById('triviaChineseOptions').onclick = function (event) {
+      const button = event.target.closest('.trivia-chinese-option');
+      if (button) handleTriviaAnswer(button);
+    };
   }
 
   document.getElementById('triviaHintBtn')?.addEventListener('click', function() {
@@ -4199,16 +4336,26 @@
   document.getElementById('triviaChineseBtn')?.addEventListener('click', function() {
     const question = HARRY_POTTER_TRIVIA[triviaIndex];
     if (!question) return;
+    const triviaCard = document.querySelector('.trivia-card');
+    if (this.dataset.mode === 'chinese') {
+      triviaCard.classList.remove('chinese-only');
+      document.getElementById('triviaChinese').classList.remove('visible');
+      this.dataset.mode = 'english';
+      this.textContent = '🌏 中文問題與選項';
+      return;
+    }
     const chineseQuestion = question.zhQuestion || '請根據這則冷知識選出正確答案。';
     const chineseBox = document.getElementById('triviaChinese');
     document.getElementById('triviaChineseQuestion').innerHTML = `<strong>問題：</strong>${chineseQuestion}`;
     const chineseOptions = question.zhOptions || question.options.map(translateTriviaOption);
     document.getElementById('triviaChineseOptions').innerHTML = chineseOptions.map((option, index) => `
-      <div class="trivia-chinese-option"><strong>${String.fromCharCode(65 + index)}.</strong> ${option}</div>
+      <button type="button" class="trivia-chinese-option" data-answer="${question.options[index] === question.answer}"><strong>${String.fromCharCode(65 + index)}.</strong>&nbsp; ${option}</button>
     `).join('');
     chineseBox.classList.add('visible');
-    this.disabled = true;
-    this.textContent = '🌏 中文題目已顯示';
+    triviaCard.classList.add('chinese-only');
+    this.disabled = false;
+    this.dataset.mode = 'chinese';
+    this.textContent = '↩️ 顯示英文';
   });
 
   document.getElementById('triviaSoundToggle')?.addEventListener('click', function() {
@@ -4237,7 +4384,7 @@
       speakText(parts[partIndex], () => {
         partIndex++;
         speakNextPart();
-      });
+      }, document.getElementById('triviaSpeakBtn'));
     };
     speakNextPart();
   });
@@ -4314,6 +4461,8 @@
           document.getElementById('listenFeedback').innerHTML = '<span style="color:#e74c3c;">\u274c Incorrect</span>';
         }
         listenState.total++;
+        updateSR(currentListenWord.en, isCorrect);
+        updateStreak();
         document.getElementById('listenNextBtn').style.display = 'block';
       });
     });
@@ -4364,6 +4513,8 @@
     } else {
       document.getElementById('spellingFeedback').innerHTML = `<span style="color:#e74c3c;">\u274c The answer is: ${word.en}</span>`;
     }
+    updateSR(word.en, correct === answer);
+    updateStreak();
     spellState.total++;
     document.getElementById('spellingSubmitBtn').style.display = 'none';
     document.getElementById('spellingInput').style.display = 'none';
@@ -4375,7 +4526,7 @@
   if (listenPlayBtn) {
     listenPlayBtn.addEventListener('click', function() {
       if (currentListenWord && currentListenWord.en) {
-        speakText(currentListenWord.en);
+        speakText(currentListenWord.en, null, listenPlayBtn);
       }
     });
   }
