@@ -1216,6 +1216,26 @@
       gap: 8px;
       margin-top: 12px;
     }
+    .trivia-session {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      color: #8880a8;
+      font-size: 11px;
+    }
+    .trivia-retry {
+      display: none;
+      padding: 6px 10px;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.07);
+      color: #f0e6a0;
+      font: inherit;
+      cursor: pointer;
+    }
+    .trivia-retry:hover { background: rgba(212, 175, 55, 0.14); }
     .trivia-sound-toggle {
       display: block;
       margin: 10px auto 0;
@@ -1508,7 +1528,7 @@
       <div class="quiz-panel" id="panelTrivia" style="display:none;">
         <div class="trivia-card" aria-live="polite">
           <div class="trivia-counter" id="triviaCounter"></div>
-          <div class="trivia-bank-note">100 個冷知識 × 10 種問法 = 1000 題練習</div>
+          <div class="trivia-bank-note">100 個冷知識 × 10 種問法 = 1000 題題庫 · 每回合 10 題</div>
           <div class="trivia-question-label">Choose the correct answer:</div>
           <div class="trivia-en" id="triviaEn"></div>
           <button class="trivia-hint-toggle" id="triviaHintBtn" type="button">💡 Need a hint?</button>
@@ -1526,8 +1546,12 @@
           <button class="quiz-option" id="triviaSpeakBtn" style="margin:0;text-align:center;">🔊 Listen all</button>
           <button class="quiz-option trivia-next" id="triviaNextBtn" style="margin:0;text-align:center;">➡️ Next question</button>
         </div>
+        <div class="trivia-session">
+          <span id="triviaRoundScore">本回合 0 / 0</span>
+          <button class="trivia-retry" id="triviaRetryBtn" type="button">重練錯題</button>
+        </div>
         <button class="trivia-sound-toggle" id="triviaSoundToggle" type="button" aria-pressed="true">🔔 Sound on</button>
-        <a class="trivia-source" href="https://www.harrypotter.com/features/10-cool-hogwarts-facts-to-impress-your-friends" target="_blank" rel="noopener noreferrer">Facts checked with the official Harry Potter site ↗</a>
+        <a class="trivia-source" href="https://www.harrypotter.com/features/10-cool-hogwarts-facts-to-impress-your-friends" target="_blank" rel="noopener noreferrer">Official Harry Potter reference ↗</a>
       </div>
 
     <!-- ===== Celebration ===== -->
@@ -3046,12 +3070,14 @@
     };
 
     //  If error occurs, also stop animation
-    utterance.onerror = () => {
+    utterance.onerror = (event) => {
       if (feedbackButton) {
         feedbackButton.classList.remove('speaking');
-        feedbackButton.textContent = '⚠️ Audio unavailable';
-        feedbackButton.title = '語音朗讀失敗，請用 Chrome/Safari 開啟';
-        feedbackButton.style.opacity = '0.7';
+        if (!event || !['canceled', 'interrupted'].includes(event.error)) {
+          feedbackButton.textContent = '⚠️ Audio unavailable';
+          feedbackButton.title = '語音朗讀失敗，請用 Chrome/Safari 開啟';
+          feedbackButton.style.opacity = '0.7';
+        }
       }
       finishSpeech();
     };
@@ -3670,6 +3696,7 @@
         
         ['panelChoice','panelListening','panelSpelling','panelTrivia','panelStats'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
         const mode = this.dataset.mode;
+        if (mode !== 'trivia') stopTriviaSpeech();
         const panel = document.getElementById('panel' + mode.charAt(0).toUpperCase() + mode.slice(1));
         if (panel) {
           panel.style.display = 'block';
@@ -3968,7 +3995,7 @@
     Sectumsempra: '會在目標身上造成深長流血傷口的咒語',
     Hippogriff: '鷹頭馬身的魔法生物',
     Phoenix: '會燃燒並從灰燼重生的不死鳥',
-    Basilisk: '目光可以殺人的巨蛇，又稱蛇妖之王',
+    Basilisk: '目光具有致命力量的巨大蛇形魔法生物',
     Thestral: '只有見過死亡的人才能看見的翼馬',
     Dragon: '巨大、有翅膀且會噴火的魔法爬蟲',
     'House Elf': '受巫師家庭束縛、為其服務的小型魔法生物',
@@ -4118,6 +4145,22 @@
     }
   ];
 
+  function cleanTriviaDescription(description, answer, label) {
+    const replacement = label === 'spell'
+      ? '這個咒語'
+      : label === 'magical creature'
+        ? '這種魔法生物'
+        : label === 'place or Hogwarts term'
+          ? '這個魔法地點或詞彙'
+          : '這個魔法物品';
+    const translatedAnswer = translateTriviaOption(answer);
+    let cleaned = description || '請根據描述判斷正確答案';
+    [translatedAnswer, answer].filter(term => term && term.length > 1).forEach(term => {
+      cleaned = cleaned.split(term).join(replacement);
+    });
+    return cleaned.replace(new RegExp(`${replacement}(?:，|、)?${replacement}`, 'g'), replacement);
+  }
+
   // Build a larger question bank from the Wizarding World vocabulary already
   // in this app. Each item becomes a four-choice definition question.
   function buildMagicTrivia(category, label) {
@@ -4132,10 +4175,11 @@
         question: `Which ${label} matches this description: "${item.zh}"?`,
         options: [item.en, ...distractors].sort(() => Math.random() - 0.5),
         answer: item.en,
-        zh: `答案是「${item.en}」：${item.zh}`,
-        zhQuestion: `哪一個${label === 'spell' ? '咒語' : label === 'magical creature' ? '魔法生物' : label === 'place or Hogwarts term' ? '魔法地點或霍格華茲詞彙' : '魔法物品'}符合以下描述：「${TRIVIA_DESCRIPTION_TRANSLATIONS[item.en] || '這個魔法詞彙的相關描述'}」？`,
+        zh: `答案是「${translateTriviaOption(item.en)}」：${cleanTriviaDescription(TRIVIA_DESCRIPTION_TRANSLATIONS[item.en], item.en, label)}`,
+        zhQuestion: `哪一個${label === 'spell' ? '咒語' : label === 'magical creature' ? '魔法生物' : label === 'place or Hogwarts term' ? '魔法地點或霍格華茲詞彙' : '魔法物品'}符合以下描述：「${cleanTriviaDescription(TRIVIA_DESCRIPTION_TRANSLATIONS[item.en], item.en, label)}」？`,
         word: item.en,
         meaning: item.zh,
+        zhMeaning: cleanTriviaDescription(TRIVIA_DESCRIPTION_TRANSLATIONS[item.en], item.en, label),
         hint: label === 'spell'
           ? 'Think of a magical action performed with a wand.'
           : label === 'magical creature'
@@ -4209,11 +4253,62 @@
     ...CORE_HARRY_POTTER_TRIVIA,
     ...GENERATED_MAGIC_TRIVIA,
     ...EXTRA_HARRY_POTTER_TRIVIA
-  ].slice(0, 100);
+  ].slice(0, 100).map((item, index) => ({ ...item, baseQuestion: index + 1 }));
   const HARRY_POTTER_TRIVIA = expandTriviaBank(BASE_HARRY_POTTER_TRIVIA).slice(0, 1000);
-  let triviaIndex = -1;
+  const TRIVIA_LANGUAGE_KEY = 'hogwarts_trivia_language_v1';
+  const TRIVIA_MISTAKES_KEY = 'hogwarts_trivia_mistakes_v1';
+  let triviaLanguage = 'english';
+  try {
+    triviaLanguage = localStorage.getItem(TRIVIA_LANGUAGE_KEY) === 'chinese' ? 'chinese' : 'english';
+  } catch (e) {}
+  let triviaMistakes = loadTriviaMistakes();
+  let triviaRound = [];
+  let triviaRoundIndex = 0;
+  let triviaRoundCorrect = 0;
+  let triviaRoundAnswered = 0;
+  let triviaRoundIsReview = false;
+  let triviaRoundComplete = false;
   let triviaAudioContext = null;
   let triviaSoundEnabled = true;
+  let triviaSpeechActive = false;
+  let triviaSpeechRunId = 0;
+
+  function loadTriviaMistakes() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(TRIVIA_MISTAKES_KEY) || '[]');
+      return Array.isArray(saved) ? saved.filter(Number.isInteger) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveTriviaMistakes() {
+    try {
+      localStorage.setItem(TRIVIA_MISTAKES_KEY, JSON.stringify([...new Set(triviaMistakes)]));
+    } catch (e) {}
+  }
+
+  function shuffleTrivia(items) {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function createTriviaVariant(item) {
+    const frame = TRIVIA_QUESTION_FRAMES[Math.floor(Math.random() * TRIVIA_QUESTION_FRAMES.length)];
+    const options = shuffleTrivia(item.options);
+    return {
+      ...item,
+      question: frame(item.question),
+      options,
+      zhOptions: options.map(translateTriviaOption),
+      selectedAnswer: null,
+      isCorrect: null
+    };
+  }
 
   // Original Web Audio tones: a bright ascending chime for correct answers
   // and a soft descending wobble for incorrect answers. No film audio is used.
@@ -4251,111 +4346,207 @@
     }
   }
 
-  function showTrivia() {
-    let nextIndex = triviaIndex;
-    if (HARRY_POTTER_TRIVIA.length > 1) {
-      while (nextIndex === triviaIndex) {
-        nextIndex = Math.floor(Math.random() * HARRY_POTTER_TRIVIA.length);
-      }
-    } else {
-      nextIndex = 0;
+  function stopTriviaSpeech() {
+    triviaSpeechRunId++;
+    triviaSpeechActive = false;
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    const button = document.getElementById('triviaSpeakBtn');
+    if (button) {
+      button.classList.remove('speaking');
+      button.textContent = '🔊 Listen all';
     }
-    triviaIndex = nextIndex;
-    const question = HARRY_POTTER_TRIVIA[triviaIndex];
+  }
+
+  function updateTriviaRoundStatus() {
+    const score = document.getElementById('triviaRoundScore');
+    if (score) score.textContent = `${triviaRoundIsReview ? '錯題複習' : '本回合'} ${triviaRoundCorrect} / ${triviaRoundAnswered}`;
+    const retryButton = document.getElementById('triviaRetryBtn');
+    if (retryButton) {
+      retryButton.style.display = triviaMistakes.length ? 'inline-flex' : 'none';
+      retryButton.textContent = `重練錯題 (${triviaMistakes.length})`;
+    }
+  }
+
+  function startTriviaRound(reviewMistakes = false) {
+    const mistakeSet = new Set(triviaMistakes);
+    const source = reviewMistakes
+      ? BASE_HARRY_POTTER_TRIVIA.filter(item => mistakeSet.has(item.baseQuestion))
+      : BASE_HARRY_POTTER_TRIVIA;
+    if (!source.length) return;
+    triviaRound = shuffleTrivia(source).slice(0, 10).map(createTriviaVariant);
+    triviaRoundIndex = 0;
+    triviaRoundCorrect = 0;
+    triviaRoundAnswered = 0;
+    triviaRoundIsReview = reviewMistakes;
+    triviaRoundComplete = false;
+    renderTriviaQuestion();
+  }
+
+  function showTrivia() {
+    if (!triviaRound.length || triviaRoundComplete) startTriviaRound(false);
+    else renderTriviaQuestion();
+  }
+
+  function optionClass(question, option, baseClass) {
+    if (question.selectedAnswer === null) return baseClass;
+    if (option === question.answer) return `${baseClass} correct`;
+    if (option === question.selectedAnswer) return `${baseClass} incorrect`;
+    return baseClass;
+  }
+
+  function renderTriviaFeedback(question) {
+    const feedback = document.getElementById('triviaFeedback');
+    if (question.selectedAnswer === null) {
+      feedback.textContent = '';
+      return;
+    }
+    if (triviaLanguage === 'chinese') {
+      feedback.innerHTML = question.isCorrect
+        ? `<strong>✅ 答對了！</strong> ${question.zh}`
+        : `<strong>❌ 答錯了。</strong>正確答案是 <strong>${translateTriviaOption(question.answer)}</strong>。${question.zh}`;
+    } else {
+      feedback.innerHTML = question.isCorrect
+        ? `<strong>✅ Correct!</strong> ${question.zh}`
+        : `<strong>❌ Not quite.</strong> The answer is <strong>${question.answer}</strong>. ${question.zh}`;
+    }
+  }
+
+  function renderTriviaQuestion() {
+    stopTriviaSpeech();
+    const question = triviaRound[triviaRoundIndex];
+    if (!question) return;
+    const answered = question.selectedAnswer !== null;
     const triviaCard = document.querySelector('.trivia-card');
-    triviaCard.classList.remove('chinese-only');
-    delete triviaCard.dataset.answered;
-    document.getElementById('triviaCounter').textContent = `Question ${triviaIndex + 1} / ${HARRY_POTTER_TRIVIA.length}`;
+    const prefix = triviaRoundIsReview ? '錯題複習' : '本回合';
+    document.getElementById('triviaCounter').textContent = `${prefix} ${triviaRoundIndex + 1} / ${triviaRound.length}`;
+    document.querySelector('.trivia-question-label').style.display = '';
     document.getElementById('triviaEn').textContent = question.question;
     document.getElementById('triviaOptions').innerHTML = question.options.map((option, index) => `
-      <button class="trivia-option" data-answer="${option === question.answer}">
+      <button class="${optionClass(question, option, 'trivia-option')}" data-option="${index}" ${answered ? 'disabled' : ''}>
         <span class="trivia-option-letter">${String.fromCharCode(65 + index)}</span>
         <span>${option}</span>
       </button>
     `).join('');
-    document.getElementById('triviaFeedback').textContent = '';
+
+    const chineseOptions = question.zhOptions || question.options.map(translateTriviaOption);
+    document.getElementById('triviaChineseQuestion').innerHTML = `<strong>問題：</strong>${question.zhQuestion || '請根據這則冷知識選出正確答案。'}`;
+    document.getElementById('triviaChineseOptions').innerHTML = chineseOptions.map((option, index) => `
+      <button type="button" class="${optionClass(question, question.options[index], 'trivia-chinese-option')}" data-option="${index}" ${answered ? 'disabled' : ''}><strong>${String.fromCharCode(65 + index)}.</strong>&nbsp; ${option}</button>
+    `).join('');
+
+    const hint = document.getElementById('triviaHint');
+    hint.textContent = question.hintShown ? `Hint: ${question.hint || 'Read the question carefully and compare the four choices.'}` : '';
+    hint.classList.toggle('visible', Boolean(question.hintShown));
+    const hintButton = document.getElementById('triviaHintBtn');
+    hintButton.style.display = answered ? 'none' : 'inline-flex';
+    hintButton.disabled = Boolean(question.hintShown);
+    hintButton.textContent = question.hintShown ? '💡 Hint shown' : '💡 Need a hint?';
+
+    const chineseBox = document.getElementById('triviaChinese');
+    const chineseButton = document.getElementById('triviaChineseBtn');
+    chineseButton.style.display = 'inline-flex';
+    if (triviaLanguage === 'chinese') {
+      triviaCard.classList.add('chinese-only');
+      chineseBox.classList.add('visible');
+      chineseButton.textContent = '↩️ 顯示英文';
+    } else {
+      triviaCard.classList.remove('chinese-only');
+      chineseBox.classList.remove('visible');
+      chineseButton.textContent = '🌏 中文問題與選項';
+    }
+
+    renderTriviaFeedback(question);
     const triviaWord = document.getElementById('triviaWord');
-    triviaWord.textContent = `Key word: ${question.word} — ${question.meaning}`;
-    triviaWord.classList.remove('revealed');
-    const triviaHint = document.getElementById('triviaHint');
-    triviaHint.textContent = '';
-    triviaHint.classList.remove('visible');
-    const triviaHintBtn = document.getElementById('triviaHintBtn');
-    triviaHintBtn.style.display = 'inline-flex';
-    triviaHintBtn.disabled = false;
-    triviaHintBtn.textContent = '💡 Need a hint?';
-    const triviaChinese = document.getElementById('triviaChinese');
-    document.getElementById('triviaChineseQuestion').textContent = '';
-    document.getElementById('triviaChineseOptions').textContent = '';
-    triviaChinese.classList.remove('visible');
-    const triviaChineseBtn = document.getElementById('triviaChineseBtn');
-    triviaChineseBtn.disabled = false;
-    triviaChineseBtn.textContent = '🌏 中文問題與選項';
-    triviaChineseBtn.dataset.mode = 'english';
-    document.getElementById('triviaSpeakBtn').textContent = '🔊 Listen all';
-    document.getElementById('triviaNextBtn').style.display = 'none';
-    const handleTriviaAnswer = function (button) {
-      if (triviaCard.dataset.answered === 'true' || button.disabled) return;
-      triviaCard.dataset.answered = 'true';
-      const isCorrect = button.dataset.answer === 'true';
-      playTriviaFeedbackSound(isCorrect);
-      document.querySelectorAll('#triviaOptions .trivia-option, #triviaChineseOptions .trivia-chinese-option').forEach(option => {
-        option.disabled = true;
-        if (option.dataset.answer === 'true') option.classList.add('correct');
+    triviaWord.textContent = triviaLanguage === 'chinese'
+      ? `關鍵字：${question.word} — ${question.zhMeaning || question.meaning}`
+      : `Key word: ${question.word} — ${question.meaning}`;
+    triviaWord.classList.toggle('revealed', answered);
+    const nextButton = document.getElementById('triviaNextBtn');
+    nextButton.style.display = answered ? 'block' : 'none';
+    nextButton.textContent = triviaRoundIndex === triviaRound.length - 1
+      ? '📊 查看成績'
+      : triviaLanguage === 'chinese' ? '➡️ 下一題' : '➡️ Next question';
+    const speakButton = document.getElementById('triviaSpeakBtn');
+    speakButton.style.display = 'block';
+    speakButton.textContent = answered ? '🔊 Listen + answer' : '🔊 Listen all';
+    updateTriviaRoundStatus();
+
+    document.querySelectorAll('#triviaOptions .trivia-option, #triviaChineseOptions .trivia-chinese-option').forEach(button => {
+      button.addEventListener('click', function () {
+        handleTriviaAnswer(Number(this.dataset.option));
       });
-      if (!isCorrect) button.classList.add('incorrect');
-      updateStreak();
-      document.getElementById('triviaFeedback').innerHTML = isCorrect
-        ? `<strong>✅ Correct!</strong> ${question.zh}`
-        : `<strong>❌ Not quite.</strong> The answer is <strong>${question.answer}</strong>. ${question.zh}`;
-      triviaWord.classList.add('revealed');
-      triviaHintBtn.style.display = 'none';
-      document.getElementById('triviaSpeakBtn').textContent = '🔊 Listen + answer';
-      document.getElementById('triviaNextBtn').style.display = 'block';
-    };
-    document.querySelectorAll('#triviaOptions .trivia-option').forEach(button => {
-      button.addEventListener('click', function () { handleTriviaAnswer(this); });
     });
-    document.getElementById('triviaChineseOptions').onclick = function (event) {
-      const button = event.target.closest('.trivia-chinese-option');
-      if (button) handleTriviaAnswer(button);
-    };
+  }
+
+  function handleTriviaAnswer(optionIndex) {
+    const question = triviaRound[triviaRoundIndex];
+    if (!question || question.selectedAnswer !== null) return;
+    question.selectedAnswer = question.options[optionIndex];
+    question.isCorrect = question.selectedAnswer === question.answer;
+    triviaRoundAnswered++;
+    if (question.isCorrect) {
+      triviaRoundCorrect++;
+      triviaMistakes = triviaMistakes.filter(id => id !== question.baseQuestion);
+    } else if (!triviaMistakes.includes(question.baseQuestion)) {
+      triviaMistakes.push(question.baseQuestion);
+    }
+    saveTriviaMistakes();
+    playTriviaFeedbackSound(question.isCorrect);
+    updateStreak();
+    renderTriviaQuestion();
+  }
+
+  function renderTriviaSummary() {
+    stopTriviaSpeech();
+    triviaRoundComplete = true;
+    const card = document.querySelector('.trivia-card');
+    card.classList.remove('chinese-only');
+    document.querySelector('.trivia-question-label').style.display = 'none';
+    document.getElementById('triviaCounter').textContent = triviaRoundIsReview ? '錯題複習完成' : '本回合完成';
+    document.getElementById('triviaEn').textContent = triviaLanguage === 'chinese'
+      ? `答對 ${triviaRoundCorrect} / ${triviaRound.length} 題`
+      : `You answered ${triviaRoundCorrect} of ${triviaRound.length} correctly.`;
+    document.getElementById('triviaOptions').innerHTML = '';
+    document.getElementById('triviaChinese').classList.remove('visible');
+    document.getElementById('triviaChineseBtn').style.display = 'none';
+    document.getElementById('triviaHintBtn').style.display = 'none';
+    document.getElementById('triviaHint').classList.remove('visible');
+    document.getElementById('triviaFeedback').textContent = triviaMistakes.length
+      ? `還有 ${triviaMistakes.length} 個錯題可以複習。`
+      : '🎉 目前沒有待複習的錯題！';
+    document.getElementById('triviaWord').classList.remove('revealed');
+    document.getElementById('triviaSpeakBtn').style.display = 'none';
+    const nextButton = document.getElementById('triviaNextBtn');
+    nextButton.style.display = 'block';
+    nextButton.textContent = '✨ 開始新回合';
+    updateTriviaRoundStatus();
+  }
+
+  function advanceTrivia() {
+    if (triviaRoundComplete) {
+      startTriviaRound(false);
+      return;
+    }
+    const question = triviaRound[triviaRoundIndex];
+    if (!question || question.selectedAnswer === null) return;
+    if (triviaRoundIndex >= triviaRound.length - 1) renderTriviaSummary();
+    else {
+      triviaRoundIndex++;
+      renderTriviaQuestion();
+    }
   }
 
   document.getElementById('triviaHintBtn')?.addEventListener('click', function() {
-    const question = HARRY_POTTER_TRIVIA[triviaIndex];
+    const question = triviaRound[triviaRoundIndex];
     if (!question) return;
-    const hint = question.hint || 'Read the question carefully and compare the four choices.';
-    const triviaHint = document.getElementById('triviaHint');
-    triviaHint.textContent = `Hint: ${hint}`;
-    triviaHint.classList.add('visible');
-    this.disabled = true;
-    this.textContent = '💡 Hint shown';
+    question.hintShown = true;
+    renderTriviaQuestion();
   });
 
   document.getElementById('triviaChineseBtn')?.addEventListener('click', function() {
-    const question = HARRY_POTTER_TRIVIA[triviaIndex];
-    if (!question) return;
-    const triviaCard = document.querySelector('.trivia-card');
-    if (this.dataset.mode === 'chinese') {
-      triviaCard.classList.remove('chinese-only');
-      document.getElementById('triviaChinese').classList.remove('visible');
-      this.dataset.mode = 'english';
-      this.textContent = '🌏 中文問題與選項';
-      return;
-    }
-    const chineseQuestion = question.zhQuestion || '請根據這則冷知識選出正確答案。';
-    const chineseBox = document.getElementById('triviaChinese');
-    document.getElementById('triviaChineseQuestion').innerHTML = `<strong>問題：</strong>${chineseQuestion}`;
-    const chineseOptions = question.zhOptions || question.options.map(translateTriviaOption);
-    document.getElementById('triviaChineseOptions').innerHTML = chineseOptions.map((option, index) => `
-      <button type="button" class="trivia-chinese-option" data-answer="${question.options[index] === question.answer}"><strong>${String.fromCharCode(65 + index)}.</strong>&nbsp; ${option}</button>
-    `).join('');
-    chineseBox.classList.add('visible');
-    triviaCard.classList.add('chinese-only');
-    this.disabled = false;
-    this.dataset.mode = 'chinese';
-    this.textContent = '↩️ 顯示英文';
+    triviaLanguage = triviaLanguage === 'chinese' ? 'english' : 'chinese';
+    try { localStorage.setItem(TRIVIA_LANGUAGE_KEY, triviaLanguage); } catch (e) {}
+    renderTriviaQuestion();
   });
 
   document.getElementById('triviaSoundToggle')?.addEventListener('click', function() {
@@ -4364,13 +4555,24 @@
     this.setAttribute('aria-pressed', String(triviaSoundEnabled));
   });
 
-  document.getElementById('triviaNextBtn')?.addEventListener('click', showTrivia);
+  document.getElementById('triviaNextBtn')?.addEventListener('click', advanceTrivia);
+  document.getElementById('triviaRetryBtn')?.addEventListener('click', function() {
+    startTriviaRound(true);
+  });
   document.getElementById('triviaSpeakBtn')?.addEventListener('click', function() {
-    const question = HARRY_POTTER_TRIVIA[triviaIndex];
+    const question = triviaRound[triviaRoundIndex];
     if (!question) return;
+    if (triviaSpeechActive) {
+      stopTriviaSpeech();
+      return;
+    }
     // Read each part only after the previous utterance ends. Some browsers
     // drop later items when several speech requests are queued at once.
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    stopTriviaSpeech();
+    triviaSpeechActive = true;
+    const runId = triviaSpeechRunId;
+    const speakButton = document.getElementById('triviaSpeakBtn');
+    speakButton.textContent = '⏹ Stop';
     const parts = [
       question.question,
       ...question.options.map((option, index) => `Option ${String.fromCharCode(65 + index)}: ${option}`)
@@ -4380,11 +4582,17 @@
     }
     let partIndex = 0;
     const speakNextPart = () => {
-      if (partIndex >= parts.length) return;
+      if (!triviaSpeechActive || runId !== triviaSpeechRunId) return;
+      if (partIndex >= parts.length) {
+        triviaSpeechActive = false;
+        speakButton.textContent = '🔊 Listen all';
+        return;
+      }
       speakText(parts[partIndex], () => {
+        if (!triviaSpeechActive || runId !== triviaSpeechRunId) return;
         partIndex++;
         speakNextPart();
-      }, document.getElementById('triviaSpeakBtn'));
+      }, speakButton);
     };
     speakNextPart();
   });
