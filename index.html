@@ -1236,6 +1236,20 @@
       cursor: pointer;
     }
     .trivia-retry:hover { background: rgba(212, 175, 55, 0.14); }
+    [hidden] { display: none !important; }
+    .practice-status { margin-bottom: 18px; color: #e4c86b; font-size: 14px; }
+    .practice-status p { margin: 0 0 10px; }
+    progress { display: block; width: 100%; height: 8px; accent-color: #d4af37; border: 0; border-radius: 8px; overflow: hidden; background: #282039; }
+    progress::-webkit-progress-bar { background: #282039; }
+    progress::-webkit-progress-value { background: #d4af37; }
+    progress::-moz-progress-bar { background: #d4af37; }
+    .learning-overview h3 { font-size: 16px; color: #e4c86b; margin: 24px 0 14px; }
+    .stats-empty { padding: 14px; text-align: center; color: #c5bbd6; line-height: 1.6; }
+    .stats-note { color: #aea2c5; font-size: 12px; line-height: 1.6; margin: 12px 0; }
+    .category-progress { margin: 14px 0; color: #cec4df; font-size: 13px; line-height: 1.5; }
+    .category-progress progress { margin-top: 7px; }
+    #choiceQuestion { font-size: 20px; text-align: center; line-height: 1.5; margin-bottom: 16px; }
+    select optgroup, select option { color: #eee7fb; background: #241c34; }
     .trivia-sound-toggle {
       display: block;
       margin: 10px auto 0;
@@ -2913,6 +2927,7 @@
 
     //  Mark this word as "learned"
     learningState[word.en] = 'known';
+    recordPractice('flashcard', true, currentCategory, word.en);
     updateSR(word.en, true);
     saveCurrentLearningState();
     updateStreak();
@@ -2936,6 +2951,7 @@
     }
     // 標記為「Practice More」
     learningState[word.en] = 'unknown';
+    recordPractice('flashcard', false, currentCategory, word.en);
     updateSR(word.en, false);
     saveCurrentLearningState();
     updateStreak();
@@ -3456,144 +3472,238 @@
     return { tag: 'Mastered', color: '#d4af37' };
   }
   
-  // ---- Quiz Mode: Multiple Choice ----
-  let quizState = { active: false, words: [], index: 0, correct: 0, total: 0 };
-  
-  function startChoiceQuiz(category) {
-    const words = [...(VOCABULARY[category] || [])];
-    // Shuffle
-    for (let i = words.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [words[i], words[j]] = [words[j], words[i]];
-    }
-    quizState = { active: true, words: words.slice(0, Math.min(10, words.length)), index: 0, correct: 0, total: 0 };
-    showChoiceQuestion();
+  // Shared rounds: one retained session per mode and category.
+  const PRACTICE_KEY = 'hogwarts_practice_v2';
+  function readPracticeData() {
+    try {
+      const value = JSON.parse(localStorage.getItem(PRACTICE_KEY) || '{}');
+      return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+    } catch (e) { return {}; }
   }
-  
-  function showChoiceQuestion() {
-    if (quizState.index >= quizState.words.length) {
-      document.getElementById('choiceQuestion').textContent = `🎉 Quiz complete! ${quizState.correct}/${quizState.total} correct`;
-      document.getElementById('choiceOptions').innerHTML = '';
-      document.getElementById('choiceFeedback').textContent = '';
-      document.getElementById('choiceNextBtn').style.display = 'none';
+  const practiceData = readPracticeData();
+  practiceData.mistakes = practiceData.mistakes || {};
+  practiceData.metrics = practiceData.metrics || {};
+  practiceData.categories = practiceData.categories || {};
+  const practiceSessions = {};
+  const practiceModes = {
+    choice: { panel: 'panelChoice', prefix: 'choice', name: '選擇題' },
+    listening: { panel: 'panelListening', prefix: 'listen', name: '聽力' },
+    spelling: { panel: 'panelSpelling', prefix: 'spelling', name: '拼字' }
+  };
+  function persistPractice() {
+    try { localStorage.setItem(PRACTICE_KEY, JSON.stringify(practiceData)); } catch (e) {}
+  }
+  function recordPractice(mode, correct, category, word) {
+    const metric = practiceData.metrics[mode] || { total: 0, correct: 0 };
+    metric.total++;
+    if (correct) metric.correct++;
+    practiceData.metrics[mode] = metric;
+    if (category && word) {
+      const words = practiceData.categories[category] || [];
+      if (!words.includes(word)) words.push(word);
+      practiceData.categories[category] = words;
+    }
+    persistPractice();
+  }
+  function practiceKey(mode, category = currentCategory) { return mode + ':' + category; }
+  function practiceMistakes(mode, category = currentCategory) {
+    const saved = practiceData.mistakes[practiceKey(mode, category)];
+    return Array.isArray(saved) ? saved : [];
+  }
+  function practiceSession(mode) { return practiceSessions[practiceKey(mode)]; }
+  function practiceOptions(word, category) {
+    const ownDefinitions = (VOCABULARY[category] || []).map(item => item.zh);
+    const otherDefinitions = Object.values(VOCABULARY).flat().map(item => item.zh);
+    const choices = shuffleTrivia([...new Set(ownDefinitions)].filter(text => text !== word.zh)).slice(0, 3);
+    for (const text of shuffleTrivia([...new Set(otherDefinitions)])) {
+      if (choices.length === 3) break;
+      if (text !== word.zh && !choices.includes(text)) choices.push(text);
+    }
+    return shuffleTrivia([word.zh, ...choices]);
+  }
+  function startPractice(mode, review = false) {
+    const words = [...new Map((VOCABULARY[currentCategory] || []).map(word => [word.en, word])).values()];
+    const mistakes = new Set(practiceMistakes(mode));
+    const pool = review ? words.filter(word => mistakes.has(word.en)) : words;
+    if (!pool.length) return;
+    practiceSessions[practiceKey(mode)] = {
+      category: currentCategory, review, index: 0, correct: 0, total: 0,
+      questions: shuffleTrivia(pool).slice(0, 10).map(word => ({
+        word, options: mode === 'spelling' ? [] : practiceOptions(word, currentCategory),
+        answer: null, correct: null, draft: ''
+      }))
+    };
+    renderPractice(mode);
+  }
+  function openPractice(mode) {
+    if (!practiceSession(mode)) startPractice(mode);
+    else renderPractice(mode);
+  }
+  function startChoiceQuiz() { openPractice('choice'); }
+  function startListeningQuiz() { openPractice('listening'); }
+  function startSpellingQuiz() { openPractice('spelling'); }
+  function renderPractice(mode) {
+    const session = practiceSession(mode);
+    if (!session) return;
+    const config = practiceModes[mode], prefix = config.prefix;
+    const complete = session.index >= session.questions.length;
+    const question = session.questions[session.index];
+    const answered = !complete && question.answer !== null;
+    const counter = document.getElementById(prefix + 'RoundCounter');
+    counter.textContent = complete
+      ? '本回合完成 · 答對 ' + session.correct + ' / ' + session.total + ' 題'
+      : (session.review ? '錯題複習' : '本回合') + ' ' + (session.index + 1) + ' / ' + session.questions.length
+        + ' · 已答對 ' + session.correct + ' 題';
+    document.getElementById(prefix + 'RoundProgress').value = complete ? session.questions.length : session.total;
+    document.getElementById(prefix + 'RoundProgress').max = session.questions.length;
+    const feedback = document.getElementById(prefix + 'Feedback');
+    feedback.textContent = complete ? '完成了！可以開始新回合，或複習這個分類的錯題。'
+      : answered ? (question.correct ? '✅ 答對了！' : '❌ 正確答案：' + (mode === 'spelling' ? question.word.en : question.word.zh)) : '';
+    feedback.style.color = answered ? (question.correct ? '#9ff0bb' : '#ffaaa1') : '';
+    const next = document.getElementById(prefix + 'NextBtn');
+    next.style.display = answered || complete ? 'block' : 'none';
+    next.textContent = complete ? '✨ 開始新回合' : session.index === session.questions.length - 1 ? '📊 查看成績' : '➡️ 下一題';
+    const retry = document.getElementById(prefix + 'RetryBtn');
+    retry.hidden = !practiceMistakes(mode).length;
+    retry.textContent = '重練錯題 (' + practiceMistakes(mode).length + ')';
+    if (mode === 'choice') {
+      document.getElementById('choiceQuestion').textContent = complete ? '🎉 完成選擇題練習' : question.word.en + ' — What does this word mean?';
+    }
+    if (mode === 'listening') document.getElementById('listenPlayBtn').style.display = complete ? 'none' : 'block';
+    if (mode === 'spelling') {
+      document.getElementById('spellingDef').textContent = complete ? '🎉 完成拼字練習' : question.word.zh;
+      const input = document.getElementById('spellingInput');
+      input.value = complete ? '' : (answered ? question.answer : question.draft);
+      input.style.display = complete ? 'none' : 'block';
+      input.disabled = answered || complete;
+      document.getElementById('spellingSubmitBtn').style.display = answered || complete ? 'none' : 'block';
+    } else {
+      const options = document.getElementById(prefix + 'Options');
+      options.replaceChildren();
+      if (!complete) question.options.forEach((text, index) => {
+        const button = document.createElement('button');
+        button.className = 'quiz-option';
+        button.textContent = String.fromCharCode(65 + index) + '. ' + text;
+        button.disabled = answered;
+        if (answered && text === question.word.zh) button.classList.add('correct');
+        else if (answered && text === question.answer) button.classList.add('incorrect');
+        button.addEventListener('click', () => answerPractice(mode, text));
+        options.appendChild(button);
+      });
+    }
+  }
+  function answerPractice(mode, answer) {
+    const session = practiceSession(mode), question = session?.questions[session.index];
+    if (!question || question.answer !== null) return;
+    const normalize = text => text.trim().toLowerCase().replace(/’/g, "'").replace(/\s+/g, ' ');
+    if (mode === 'spelling' && !answer.trim()) {
+      document.getElementById('spellingFeedback').textContent = '請先輸入答案。';
       return;
     }
-    
-    const word = quizState.words[quizState.index];
-    const correctDef = word.zh;
-    
-    // Get 3 wrong answers from other words
-    let wrong = quizState.words
-      .filter(w => w.en !== word.en)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
-      .map(w => w.zh);
-    
-    // Pad if not enough
-    while (wrong.length < 3) {
-      const allWords = Object.values(VOCABULARY).flat();
-      const rand = allWords[Math.floor(Math.random() * allWords.length)];
-      if (rand.zh !== correctDef && !wrong.includes(rand.zh)) {
-        wrong.push(rand.zh);
-      } else break;
-    }
-    
-    const options = [correctDef, ...wrong].sort(() => Math.random() - 0.5);
-    
-    document.getElementById('choiceQuestion').innerHTML = `<div style="font-size:24px;font-weight:700;margin-bottom:8px;text-align:center;">"${word.en}"</div><div style="text-align:center;color:#8880a8;font-size:13px;margin-bottom:16px;">What does this word mean?</div>`;
-    
-    const optsHtml = options.map(opt => 
-      `<button class="quiz-option" data-correct="${opt === correctDef}">${opt}</button>`
-    ).join('');
-    document.getElementById('choiceOptions').innerHTML = optsHtml;
-    document.getElementById('choiceFeedback').textContent = '';
-    document.getElementById('choiceNextBtn').style.display = 'none';
-    
-    // Add click handlers
-    document.querySelectorAll('#choiceOptions .quiz-option').forEach(btn => {
-      btn.addEventListener('click', function() {
-        if (this.disabled) return;
-        const isCorrect = this.dataset.correct === 'true';
-        document.querySelectorAll('#choiceOptions .quiz-option').forEach(b => b.disabled = true);
-        
-        if (isCorrect) {
-          this.classList.add('correct');
-          document.getElementById('choiceFeedback').innerHTML = '<span style="color:#2ecc71;">✅ Correct!</span>';
-          quizState.correct++;
-          updateSR(word.en, true);
-        } else {
-          this.classList.add('incorrect');
-          document.querySelector('#choiceOptions [data-correct="true"]').classList.add('correct');
-          document.getElementById('choiceFeedback').innerHTML = `<span style="color:#e74c3c;">❌ Incorrect. The answer is: ${correctDef}</span>`;
-          updateSR(word.en, false);
-        }
-        quizState.total++;
-        updateStreak();
-        document.getElementById('choiceNextBtn').style.display = 'block';
-      });
-    });
+    question.answer = answer;
+    question.correct = mode === 'spelling' ? normalize(answer) === normalize(question.word.en) : answer === question.word.zh;
+    session.total++;
+    if (question.correct) session.correct++;
+    const mistakes = new Set(practiceMistakes(mode, session.category));
+    if (question.correct) mistakes.delete(question.word.en); else mistakes.add(question.word.en);
+    practiceData.mistakes[practiceKey(mode, session.category)] = [...mistakes];
+    recordPractice(mode, question.correct, session.category, question.word.en);
+    updateSR(question.word.en, question.correct);
+    updateStreak();
+    stopTriviaSpeech();
+    renderPractice(mode);
+  }
+  function nextPractice(mode) {
+    const session = practiceSession(mode);
+    if (!session) return;
+    if (session.index >= session.questions.length) { startPractice(mode); return; }
+    if (session.questions[session.index].answer === null) return;
+    stopTriviaSpeech();
+    session.index++;
+    renderPractice(mode);
   }
   
   // ---- Stats & Progress ----
   function buildStats() {
     const grid = document.getElementById('statsGrid');
     if (!grid) return;
-    
-    const totalPracticed = Object.keys(srData).length;
-    let mastered = 0, learning = 0;
-    Object.values(srData).forEach(sr => {
-      if (sr.level >= 5) mastered++;
-      else if (sr.level > 0) learning++;
-    });
-    
-    grid.innerHTML = `
-      <div class="stat-card"><span class="stat-value">${totalPracticed}</span><span class="stat-label">Words Practiced</span></div>
-      <div class="stat-card"><span class="stat-value">${mastered}</span><span class="stat-label">Mastered</span></div>
-      <div class="stat-card"><span class="stat-value">${learning}</span><span class="stat-label">In Progress</span></div>
-      <div class="stat-card"><span class="stat-value">${currentStreak}</span><span class="stat-label">Day Streak</span></div>
-    `;
-    
-    // Category breakdown
+    const entries = Object.values(srData).filter(item => item.lastReview > 0);
+    const mastered = entries.filter(item => item.level >= 5).length;
+    grid.innerHTML = [
+      [entries.length, '已練習單字'], [mastered, '已熟練'],
+      [entries.length - mastered, '學習中'], [currentStreak, '連續學習天數']
+    ].map(([value, label]) => '<div class="stat-card"><span class="stat-value">' + value
+      + '</span><span class="stat-label">' + label + '</span></div>').join('');
     const chart = document.getElementById('categoryChart');
-    if (chart) {
-      const catNames = Object.keys(VOCABULARY);
-      const catLabels = {
-        irregular: 'Verbs', animals: 'Animals', colors: 'Colors', numbers: 'Numbers',
-        body: 'Body', food: 'Food', family: 'Family', school: 'School',
-        weather: 'Weather', actions: 'Actions', adjectives: 'Adjectives',
-        beginner_animals: 'Animals 2', beginner_clothing: 'Clothing', beginner_colors: 'Colors 2',
-        beginner_family: 'Family 2', beginner_food: 'Food 2', beginner_address: 'Address',
-        beginner_geography: 'Geography', beginner_holidays: 'Holidays', beginner_health: 'Health',
-        beginner_money: 'Money', beginner_house: 'Housing', beginner_numbers: 'Numbers 2',
-        beginner_verbs2: 'Verbs 2', beginner_traits: 'Traits', beginner_places: 'Places',
-        beginner_school: 'School 2', beginner_sports: 'Sports', beginner_time: 'Time',
-        beginner_transport: 'Transport', beginner_weather2: 'Weather 2', beginner_wh: 'Question words',
-        beginner_pronouns: 'Pronouns', beginner_prepositions: 'Prepositions',
-        magic_spells: 'Spells', magic_creatures: 'Creatures', magic_places: 'Wizarding places',
-        magic_items: 'Magic items', advanced_vocab: 'Advanced'
-      };
-      let chartHtml = '';
-      let maxCount = 0;
-      const catCounts = {};
-      catNames.forEach(cat => {
-        const words = VOCABULARY[cat] || [];
-        const learned = words.filter(w => srData[w.en] && srData[w.en].level > 0).length;
-        catCounts[cat] = learned;
-        if (learned > maxCount) maxCount = learned;
-      });
-      catNames.forEach(cat => {
-        const count = catCounts[cat] || 0;
-        const pct = maxCount > 0 ? (count / maxCount * 100) : 0;
-        const label = catLabels[cat] || cat;
-        chartHtml += `<div class="category-bar">
-          <div class="category-bar-track" title="${label}: ${count}">
-            <div class="category-bar-fill" style="height:${pct}%;min-height:${count > 0 ? '4px' : '0'};"></div>
-          </div>
-          <span class="category-label">${label}</span>
-        </div>`;
-      });
-      chart.innerHTML = chartHtml;
+    chart.className = 'learning-overview';
+    chart.replaceChildren();
+    const hasActivity = entries.length || Object.values(practiceData.metrics).some(item => item.total > 0);
+    if (!hasActivity) {
+      const empty = document.createElement('div');
+      empty.className = 'stats-empty';
+      empty.innerHTML = '<h3>你的學習旅程從這裡開始</h3><p>完成一次練習後，就能查看正確率與分類進度。</p>';
+      const button = document.createElement('button');
+      button.className = 'quiz-option';
+      button.textContent = '開始 10 題選擇題';
+      button.addEventListener('click', () => document.querySelector('[data-mode="choice"]').click());
+      empty.appendChild(button);
+      chart.appendChild(empty);
+      return;
     }
+    const heading = document.createElement('h3');
+    heading.textContent = '各模式練習紀錄';
+    chart.appendChild(heading);
+    const metrics = document.createElement('div');
+    metrics.className = 'stats-grid';
+    for (const [mode, label] of Object.entries({flashcard: '單字卡自評', choice: '選擇題', listening: '聽力', spelling: '拼字', trivia: '冷知識'})) {
+      const metric = practiceData.metrics[mode] || {total: 0, correct: 0};
+      const card = document.createElement('div');
+      card.className = 'stat-card';
+      const value = document.createElement('span');
+      value.className = 'stat-value';
+      value.textContent = metric.total ? Math.round(metric.correct / metric.total * 100) + '%' : '—';
+      const name = document.createElement('span');
+      name.className = 'stat-label';
+      name.textContent = label + (mode === 'flashcard' ? ' · 已會比例' : ' · 正確率');
+      const detail = document.createElement('span');
+      detail.className = 'stat-label';
+      detail.textContent = metric.total ? metric.correct + ' / ' + metric.total + ' 次' : '尚未練習';
+      card.append(value, name, detail);
+      metrics.appendChild(card);
+    }
+    chart.appendChild(metrics);
+    const note = document.createElement('p');
+    note.className = 'stats-note';
+    note.textContent = '各模式次數從此版本開始累計；重練也計入。單字卡比例為自我評估。紀錄保存在此瀏覽器。';
+    chart.appendChild(note);
+    const recentTitle = document.createElement('h3');
+    recentTitle.textContent = '已練習的分類';
+    const rows = document.createElement('div');
+    const categories = Object.keys(VOCABULARY).map(category => {
+      const words = [...new Set(VOCABULARY[category].map(word => word.en))];
+      const logged = new Set(practiceData.categories[category] || []);
+      return {category, total: words.length, count: words.filter(word => logged.has(word)).length};
+    }).filter(item => item.count > 0).sort((a, b) => b.count / b.total - a.count / a.total);
+    if (categories.length) {
+      chart.appendChild(recentTitle);
+      categories.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'category-progress';
+        const label = document.createElement('span');
+        label.textContent = categoryLabels.get(item.category) + ' · ' + item.count + ' / ' + item.total;
+        const progress = document.createElement('progress');
+        progress.max = item.total;
+        progress.value = item.count;
+        progress.setAttribute('aria-label', label.textContent);
+        row.append(label, progress);
+        rows.appendChild(row);
+      });
+      chart.appendChild(rows);
+    }
+    const legacy = document.createElement('p');
+    legacy.className = 'stats-note';
+    legacy.textContent = '上方單字總數保留舊版紀錄；分類進度從此版本依實際練習的分類累計。';
+    chart.appendChild(legacy);
   }
   
   // ---- Enhanced Speak with US/UK toggle ----
@@ -4483,6 +4593,7 @@
     if (!question || question.selectedAnswer !== null) return;
     question.selectedAnswer = question.options[optionIndex];
     question.isCorrect = question.selectedAnswer === question.answer;
+    recordPractice('trivia', question.isCorrect);
     triviaRoundAnswered++;
     if (question.isCorrect) {
       triviaRoundCorrect++;
@@ -4605,182 +4716,94 @@
   setupNavButtons();
 
   
-  // ---- Listening Quiz ----
-  let listenState = { words: [], index: 0, correct: 0, total: 0 };
-  let currentListenWord = null;
-  
-  function startListeningQuiz(category) {
-    const words = [...(VOCABULARY[category] || [])];
-    for (let i = words.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [words[i], words[j]] = [words[j], words[i]];
-    }
-    listenState = { words: words.slice(0, Math.min(10, words.length)), index: 0, correct: 0, total: 0 };
-    showListenQuestion();
+  // Connect shared round controls after the page and trivia state are ready.
+  for (const [mode, config] of Object.entries(practiceModes)) {
+    const panel = document.getElementById(config.panel);
+    const status = document.createElement('div');
+    status.className = 'practice-status';
+    status.innerHTML = '<p id="' + config.prefix + 'RoundCounter" aria-live="polite"></p>'
+      + '<progress id="' + config.prefix + 'RoundProgress" aria-label="已完成題數" max="10" value="0"></progress>';
+    panel.prepend(status);
+    const retry = document.createElement('button');
+    retry.id = config.prefix + 'RetryBtn';
+    retry.className = 'quiz-option';
+    retry.hidden = true;
+    retry.addEventListener('click', () => { stopTriviaSpeech(); startPractice(mode, true); });
+    panel.appendChild(retry);
+    document.getElementById(config.prefix + 'NextBtn').addEventListener('click', () => nextPractice(mode));
   }
-  
-  function showListenQuestion() {
-    if (listenState.index >= listenState.words.length) {
-      document.getElementById('listenPlayBtn').style.display = 'none';
-      document.getElementById('listenOptions').innerHTML = `<div style="text-align:center;font-size:24px;color:#d4af37;padding:20px;">\ud83c\udf89 Quiz complete! ${listenState.correct}/${listenState.total} correct</div>`;
-      document.getElementById('listenFeedback').textContent = '';
-      document.getElementById('listenNextBtn').style.display = 'none';
-      return;
-    }
-    
-    currentListenWord = listenState.words[listenState.index];
-    const correctDef = currentListenWord.zh;
-    
-    let wrong = listenState.words
-      .filter(w => w.en !== currentListenWord.en)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
-      .map(w => w.zh);
-    
-    while (wrong.length < 3) {
-      const all = Object.values(VOCABULARY).flat();
-      const r = all[Math.floor(Math.random() * all.length)];
-      if (r.zh !== correctDef && !wrong.includes(r.zh)) wrong.push(r.zh);
-      else break;
-    }
-    
-    const options = [correctDef, ...wrong].sort(() => Math.random() - 0.5);
-    
-    document.getElementById('listenPlayBtn').style.display = 'block';
-    document.getElementById('listenOptions').innerHTML = options.map(o =>
-      `<button class="quiz-option" data-correct="${o === correctDef}">${o}</button>`
-    ).join('');
-    document.getElementById('listenFeedback').textContent = '';
-    document.getElementById('listenNextBtn').style.display = 'none';
-    
-    document.querySelectorAll('#listenOptions .quiz-option').forEach(btn => {
-      btn.addEventListener('click', function() {
-        if (this.disabled) return;
-        const isCorrect = this.dataset.correct === 'true';
-        document.querySelectorAll('#listenOptions .quiz-option').forEach(b => b.disabled = true);
-        
-        if (isCorrect) {
-          this.classList.add('correct');
-          document.getElementById('listenFeedback').innerHTML = '<span style="color:#2ecc71;">\u2705 Correct!</span>';
-          listenState.correct++;
-        } else {
-          this.classList.add('incorrect');
-          document.querySelector('#listenOptions [data-correct="true"]').classList.add('correct');
-          document.getElementById('listenFeedback').innerHTML = '<span style="color:#e74c3c;">\u274c Incorrect</span>';
-        }
-        listenState.total++;
-        updateSR(currentListenWord.en, isCorrect);
-        updateStreak();
-        document.getElementById('listenNextBtn').style.display = 'block';
-      });
-    });
-  }
-  
-  // ---- Spelling Quiz ----
-  let spellState = { words: [], index: 0, correct: 0, total: 0 };
-  
-  function startSpellingQuiz(category) {
-    const words = [...(VOCABULARY[category] || [])];
-    for (let i = words.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [words[i], words[j]] = [words[j], words[i]];
-    }
-    spellState = { words: words.slice(0, Math.min(10, words.length)), index: 0, correct: 0, total: 0 };
-    showSpellQuestion();
-  }
-  
-  function showSpellQuestion() {
-    if (spellState.index >= spellState.words.length) {
-      document.getElementById('spellingDef').innerHTML = `\ud83c\udf89 Quiz complete! ${spellState.correct}/${spellState.total} correct`;
-      document.getElementById('spellingInput').style.display = 'none';
-      document.getElementById('spellingSubmitBtn').style.display = 'none';
-      document.getElementById('spellingFeedback').textContent = '';
-      document.getElementById('spellingNextBtn').style.display = 'none';
-      return;
-    }
-    
-    const word = spellState.words[spellState.index];
-    document.getElementById('spellingDef').textContent = word.zh;
-    document.getElementById('spellingInput').value = '';
-    document.getElementById('spellingInput').style.display = 'block';
-    document.getElementById('spellingSubmitBtn').style.display = 'block';
-    document.getElementById('spellingFeedback').textContent = '';
-    document.getElementById('spellingNextBtn').style.display = 'none';
-    document.getElementById('spellingInput').focus();
-  }
-  
-  function checkSpelling() {
-    const word = spellState.words[spellState.index];
-    if (!word) return;
-    const answer = document.getElementById('spellingInput').value.trim().toLowerCase();
-    const correct = word.en.toLowerCase();
-    
-    if (answer === correct) {
-      document.getElementById('spellingFeedback').innerHTML = '<span style="color:#2ecc71;">\u2705 Correct! Well done!</span>';
-      spellState.correct++;
-    } else {
-      document.getElementById('spellingFeedback').innerHTML = `<span style="color:#e74c3c;">\u274c The answer is: ${word.en}</span>`;
-    }
-    updateSR(word.en, correct === answer);
-    updateStreak();
-    spellState.total++;
-    document.getElementById('spellingSubmitBtn').style.display = 'none';
-    document.getElementById('spellingInput').style.display = 'none';
-    document.getElementById('spellingNextBtn').style.display = 'block';
-  }
-
-  // ---- Listen play button ----
-  const listenPlayBtn = document.getElementById('listenPlayBtn');
-  if (listenPlayBtn) {
-    listenPlayBtn.addEventListener('click', function() {
-      if (currentListenWord && currentListenWord.en) {
-        speakText(currentListenWord.en, null, listenPlayBtn);
-      }
-    });
-  }
-  
-  // Listen next button
-  document.getElementById('listenNextBtn')?.addEventListener('click', function() {
-    listenState.index++;
-    showListenQuestion();
+  document.getElementById('listenPlayBtn').addEventListener('click', function () {
+    const session = practiceSession('listening');
+    const question = session?.questions[session.index];
+    if (question) { stopTriviaSpeech(); speakText(question.word.en, null, this); }
   });
-  
-  // Spelling submit
-  document.getElementById('spellingSubmitBtn')?.addEventListener('click', checkSpelling);
-  document.getElementById('spellingInput')?.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkSpelling();
+  document.getElementById('spellingInput').addEventListener('input', function () {
+    const session = practiceSession('spelling');
+    const question = session?.questions[session.index];
+    if (question && question.answer === null) question.draft = this.value;
   });
-  
-  // Spelling next
-  document.getElementById('spellingNextBtn')?.addEventListener('click', function() {
-    spellState.index++;
-    showSpellQuestion();
+  function checkSpelling() { answerPractice('spelling', document.getElementById('spellingInput').value); }
+  document.getElementById('spellingSubmitBtn').addEventListener('click', checkSpelling);
+  document.getElementById('spellingInput').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') { event.preventDefault(); checkSpelling(); }
   });
 
-  // Setup voice toggle
   const voiceBtn = document.getElementById('voiceToggle');
   if (voiceBtn) {
     voiceBtn.addEventListener('touchend', function(e) { e.stopPropagation(); e.preventDefault(); toggleAccent(); });
-  voiceBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleAccent(); });
+    voiceBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleAccent(); });
   }
-  
-  // Setup choice next button
-  const choiceNext = document.getElementById('choiceNextBtn');
-  if (choiceNext) {
-    choiceNext.addEventListener('click', function() {
-      quizState.index++;
-      showChoiceQuestion();
-    });
+
+  // Group the existing labels and retain the last four categories on this device.
+  const categoryLabels = new Map([...dom.vocabSelect.options].map(option => [option.value, option.textContent]));
+  let recentCategories = [];
+  try {
+    const saved = JSON.parse(localStorage.getItem('hogwarts_recent_categories_v1') || '[]');
+    if (Array.isArray(saved)) recentCategories = [...new Set(saved.filter(key => categoryLabels.has(key)))].slice(0, 4);
+  } catch (e) {}
+  function categoryGroup(key) {
+    return key.startsWith('beginner_') ? '初級單字'
+      : key.startsWith('magic_') ? '魔法世界'
+      : key.startsWith('advanced_') ? '進階單字' : '基礎單字';
   }
-  
-  // Override switchCategory to start quiz when in quiz mode
-  const origSwitchCategory = window.switchCategory;
-  window.switchCategory = function(category) {
-    if (origSwitchCategory) origSwitchCategory(category);
-    // Rebuild stats if visible
-    const statsPanel = document.getElementById('panelStats');
-    if (statsPanel && statsPanel.style.display !== 'none') buildStats();
-  };
+  function renderCategoryMenu() {
+    const selected = currentCategory;
+    dom.vocabSelect.replaceChildren();
+    const groups = new Map();
+    if (recentCategories.length) groups.set('最近使用', recentCategories);
+    for (const label of ['基礎單字', '初級單字', '魔法世界', '進階單字']) {
+      groups.set(label, [...categoryLabels.keys()].filter(key => categoryGroup(key) === label));
+    }
+    for (const [label, keys] of groups) {
+      const group = document.createElement('optgroup');
+      group.label = label;
+      keys.forEach(key => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = categoryLabels.get(key);
+        group.appendChild(option);
+      });
+      dom.vocabSelect.appendChild(group);
+    }
+    dom.vocabSelect.value = selected;
+    dom.vocabSelect.setAttribute('aria-label', '選擇單字分類');
+  }
+  renderCategoryMenu();
+  dom.vocabSelect.addEventListener('change', function () {
+    stopTriviaSpeech();
+    recentCategories = [currentCategory, ...recentCategories.filter(key => key !== currentCategory)].slice(0, 4);
+    try { localStorage.setItem('hogwarts_recent_categories_v1', JSON.stringify(recentCategories)); } catch (e) {}
+    renderCategoryMenu();
+    const mode = document.querySelector('.quiz-tab.active')?.dataset.mode;
+    if (mode && mode !== 'flashcard') {
+      for (const selector of ['.card-wrapper', '.action-buttons', '.tap-hint', '.stats', '.progress-section', '#congratsMessage']) {
+        const element = document.querySelector(selector);
+        if (element) element.style.display = 'none';
+      }
+    }
+    if (practiceModes[mode]) openPractice(mode);
+    if (mode === 'stats') buildStats();
+  });
 
 
   // ---- Shuffle Mode ----
